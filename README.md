@@ -74,3 +74,4 @@ plus `blocked` and `archived` for edge cases.
 The schema is already multi-tenant (everything scoped by `client_id`).
 Just insert another row into `clients` and tag people + posts with
 its id. No migration needed.
+
