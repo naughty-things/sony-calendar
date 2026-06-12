@@ -1,22 +1,43 @@
 import './globals.css';
 import type { Metadata } from 'next';
+import { Fraunces, Inter_Tight, JetBrains_Mono } from 'next/font/google';
 import { startSelfPing } from '@/lib/inbound/selfPing';
 
-// Start the Gmail poller on the server. Only runs in Node (Railway/self-hosted).
-// On Vercel, the /api/cron/poll endpoint is used instead.
 if (typeof window === 'undefined') {
   startSelfPing();
 }
 
+const display = Fraunces({
+  subsets: ['latin'],
+  variable: '--font-display',
+  weight: ['300', '400', '500', '600'],
+  style: ['normal', 'italic'],
+  display: 'swap'
+});
+
+const sans = Inter_Tight({
+  subsets: ['latin'],
+  variable: '--font-sans',
+  weight: ['300', '400', '500', '600', '700'],
+  display: 'swap'
+});
+
+const mono = JetBrains_Mono({
+  subsets: ['latin'],
+  variable: '--font-mono',
+  weight: ['400', '500'],
+  display: 'swap'
+});
+
 export const metadata: Metadata = {
-  title: 'SONY Content Calendar',
-  description: 'SONY social content calendar with AI email agent'
+  title: 'SONY — Content Calendar',
+  description: 'Production calendar for SONY social. Email in, calendar out.'
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
-      <body className="bg-neutral-50 text-neutral-900 antialiased">{children}</body>
+    <html lang="en" className={`${display.variable} ${sans.variable} ${mono.variable}`}>
+      <body className="text-ink">{children}</body>
     </html>
   );
 }

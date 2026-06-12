@@ -2,10 +2,157 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ─────────────────────────────────────────
+   Design tokens
+   Editorial Production aesthetic
+   - Paper-grain noise + deep ink
+   - High-contrast palette
+   - Sharp, confident typography
+   ───────────────────────────────────────── */
 :root {
+  /* Surfaces */
+  --paper:        #F4F1EA;  /* warm cream, the canvas */
+  --paper-deep:   #EBE6D9;  /* slight dent, for inset cards */
+  --ink:          #0B0B0E;  /* near-black, not pure black */
+  --ink-soft:     #1C1C22;
+  --ink-mute:     #4A4A52;
+  --rule:         #1A1A1E;  /* hairline rules */
+  --rule-soft:    #C7C0AE;  /* warm hairline on paper */
+
+  /* Accents */
+  --accent:       #FFB000;  /* SONY amber, used sparingly */
+  --accent-deep:  #E89B00;
+  --magenta:      #D8265A;  /* hot pink-magenta for email-from-ai */
+  --copper:       #C86A2C;  /* client-PIC pills */
+  --steel:        #2F4B6E;  /* internal-PIC pills */
+  --forest:       #2E5C3A;  /* posted/success */
+  --rust:         #A03A24;  /* blocked */
+
   color-scheme: light;
 }
 
-body {
-  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+html, body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-sans), ui-sans-serif, system-ui, -apple-system, sans-serif;
+  font-feature-settings: 'ss01', 'ss02', 'cv11';
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
+
+/* Paper grain — subtle, on top of cream, doesn't interfere with legibility */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.42;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.08  0 0 0 0 0.07  0 0 0 0 0.05  0 0 0 0.12 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* Typography — utility classes for the editorial feel */
+.font-display {
+  font-family: var(--font-display), 'Times New Roman', serif;
+  font-feature-settings: 'ss01', 'liga';
+}
+
+.font-mono {
+  font-family: var(--font-mono), 'SF Mono', ui-monospace, Menlo, monospace;
+}
+
+/* The big date numeral — distinctive, italic where the user wants emphasis */
+.numeral {
+  font-family: var(--font-display), serif;
+  font-weight: 400;
+  font-style: italic;
+  font-feature-settings: 'lnum', 'tnum';
+  letter-spacing: -0.04em;
+  line-height: 0.85;
+}
+
+/* Hairline rules */
+.rule-t { border-top: 1px solid var(--rule); }
+.rule-b { border-bottom: 1px solid var(--rule); }
+.rule-soft { border-color: var(--rule-soft); }
+
+/* Status chips — like colored paper tape stuck to a board */
+.tape {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  font-weight: 600;
+  padding: 2px 7px 3px;
+  border-radius: 2px;
+  position: relative;
+  white-space: nowrap;
+}
+
+/* Subtle rotated, slightly translucent tape look */
+.tape::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: inherit;
+  opacity: 0.85;
+  z-index: -1;
+  border-radius: inherit;
+}
+
+/* Subtle entrance animation for items */
+@keyframes ink-in {
+  from { opacity: 0; transform: translateY(4px); }
+  to   { opacity: 1; transform: none; }
+}
+.ink-in { animation: ink-in 0.5s cubic-bezier(0.2, 0.7, 0.2, 1) both; }
+
+/* Subtle pulse for "live" indicator */
+@keyframes live-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(46, 92, 58, 0.4); }
+  50%      { box-shadow: 0 0 0 6px rgba(46, 92, 58, 0); }
+}
+.live-dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: var(--forest);
+  display: inline-block;
+  animation: live-pulse 1.6s ease-out infinite;
+}
+
+/* Subtle attention pulse for newly-arrived items */
+@keyframes arrive {
+  0%   { box-shadow: 0 0 0 0 rgba(255, 176, 0, 0.55); }
+  100% { box-shadow: 0 0 0 10px rgba(255, 176, 0, 0); }
+}
+.just-arrived { animation: arrive 1.2s ease-out 2; }
+
+/* Modal: slide-in with conf */
+@keyframes sheet-in {
+  from { opacity: 0; transform: translateY(8px) scale(0.99); }
+  to   { opacity: 1; transform: none; }
+}
+.sheet { animation: sheet-in 0.22s cubic-bezier(0.2, 0.7, 0.2, 1) both; }
+
+/* Scrollbar — paper-tinted */
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: var(--rule-soft);
+  border-radius: 5px;
+  border: 2px solid var(--paper);
+}
+::-webkit-scrollbar-thumb:hover { background: var(--ink-mute); }
+
+/* Focus rings — strong, with the accent */
+*:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* No tap highlight on iOS */
+button, a { -webkit-tap-highlight-color: transparent; }

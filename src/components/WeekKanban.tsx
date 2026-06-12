@@ -1,48 +1,53 @@
 'use client';
 
-import { isSameDay, format } from 'date-fns';
-import { PostWithPeople, STATUS_COLOR, STATUS_LABEL } from '@/lib/types';
+import { isSameDay, format, isToday } from 'date-fns';
+import { PostWithPeople, STATUS_COLOR, PLATFORM_GLYPH } from '@/lib/types';
+import { Avatar } from './ui/Avatar';
 
 export function WeekKanban({
-  days, posts, onOpenPost
+  days, posts, onOpenPost, arrivedIds
 }: {
   days: Date[];
   posts: PostWithPeople[];
   onOpenPost: (p: PostWithPeople) => void;
+  arrivedIds?: Set<string>;
 }) {
   return (
-    <div className="grid grid-cols-7 gap-3">
+    <div className="grid grid-cols-7 gap-2">
       {days.map(d => {
         const items = posts.filter(p => isSameDay(new Date(p.publish_date), d));
+        const isCurrent = isToday(d);
         return (
-          <div key={d.toISOString()} className="bg-white border border-neutral-200 rounded-lg flex flex-col min-h-[400px]">
-            <div className="px-3 py-2 border-b border-neutral-200 sticky top-0 bg-white">
-              <div className="text-[10px] uppercase tracking-wide text-neutral-500">{format(d, 'EEE')}</div>
-              <div className="text-lg font-semibold">{format(d, 'd MMM')}</div>
-              <div className="text-xs text-neutral-500 mt-0.5">{items.length} item{items.length === 1 ? '' : 's'}</div>
+          <div key={d.toISOString()} className="flex flex-col min-h-[520px]">
+            {/* Day header — editorial */}
+            <div className={`px-3 pt-3 pb-2 rule-b border-rule-soft ${isCurrent ? 'bg-paper-warm' : ''}`}>
+              <div className="flex items-baseline justify-between">
+                <span className={`text-[10px] uppercase tracking-[0.18em] font-mono ${isCurrent ? 'text-accent-deep font-semibold' : 'text-ink-faint'}`}>
+                  {format(d, 'EEE')}
+                </span>
+                {items.length > 0 && (
+                  <span className="text-[10px] font-mono text-ink-mute">{items.length}</span>
+                )}
+              </div>
+              <div className="numeral text-[48px] leading-[0.85] mt-1.5">
+                {format(d, 'd')}
+              </div>
+              <div className="text-[10px] font-mono text-ink-faint uppercase tracking-wide mt-0.5">
+                {format(d, 'MMM')}
+              </div>
             </div>
-            <div className="p-2 space-y-2 flex-1">
+
+            {/* Cards */}
+            <div className="flex-1 px-2 py-2 space-y-2">
               {items.length === 0 && (
-                <div className="text-xs text-neutral-400 italic px-1 py-3">Nothing scheduled</div>
+                <button
+                  onClick={() => onOpenPost({ publish_date: format(d, 'yyyy-MM-dd') } as any)}
+                  className="w-full h-16 border border-dashed border-rule-soft rounded-sm text-[10px] uppercase tracking-[0.14em] text-ink-faint font-mono hover:border-ink-mute hover:text-ink-mute transition flex items-center justify-center">
+                  + drop
+                </button>
               )}
               {items.map(p => (
-                <button
-                  key={p.id}
-                  onClick={() => onOpenPost(p)}
-                  className="w-full text-left rounded border border-neutral-200 p-2 hover:border-amber-400 hover:shadow-sm transition">
-                  <div className="flex items-center justify-between mb-1">
-                    <span className={`text-[10px] px-1.5 py-0.5 rounded ${STATUS_COLOR[p.status]}`}>
-                      {STATUS_LABEL[p.status]}
-                    </span>
-                    {p.platform && <span className="text-[10px] font-semibold text-neutral-500">{p.platform}</span>}
-                  </div>
-                  <div className="text-sm font-medium leading-snug line-clamp-2">{p.title}</div>
-                  <div className="mt-1.5 flex flex-wrap gap-1 text-[10px] text-neutral-500">
-                    {p.internal_assignee && <Pill label={p.internal_assignee.name} side="internal" />}
-                    {p.internal_pic && <Pill label={p.internal_pic.name} side="internal" kind="pic" />}
-                    {p.client_pic && <Pill label={p.client_pic.name} side="client" kind="pic" />}
-                  </div>
-                </button>
+                <Card key={p.id} p={p} onClick={() => onOpenPost(p)} highlight={arrivedIds?.has(p.id)} />
               ))}
             </div>
           </div>
@@ -52,13 +57,28 @@ export function WeekKanban({
   );
 }
 
-function Pill({ label, side, kind }: { label: string; side: 'internal' | 'client'; kind?: 'pic' | 'assignee' }) {
-  const cls = side === 'client'
-    ? 'bg-purple-50 text-purple-700 border-purple-200'
-    : 'bg-blue-50 text-blue-700 border-blue-200';
+function Card({ p, onClick, highlight }: { p: PostWithPeople; onClick: () => void; highlight?: boolean }) {
   return (
-    <span className={`px-1.5 py-0.5 rounded border ${cls}`}>
-      {kind === 'pic' ? '🎯 ' : side === 'client' ? '👤 ' : '✍️ '}{label}
-    </span>
+    <button
+      onClick={onClick}
+      className={`group/card w-full text-left bg-paper-warm border border-rule-soft rounded-sm p-2.5 hover:border-ink hover:shadow-sm transition ${highlight ? 'just-arrived' : ''}`}>
+      <div className="flex items-center justify-between mb-1.5">
+        <span className="font-mono text-[9px] font-bold bg-ink text-paper px-1.5 py-0.5 rounded-sm tracking-wide">
+          {PLATFORM_GLYPH[p.platform || 'Other'] || p.platform}
+        </span>
+        <span className={`text-[9px] px-1.5 py-0.5 rounded-sm font-semibold ${STATUS_COLOR[p.status]}`}>
+          {p.status.replace('_', ' ')}
+        </span>
+      </div>
+      <div className="text-[13px] font-medium leading-[1.3] line-clamp-3 text-ink">
+        {p.title}
+      </div>
+      {(p.internal_pic || p.client_pic) && (
+        <div className="mt-2 pt-2 border-t border-rule-soft flex items-center gap-1.5">
+          {p.internal_pic && <Avatar person={p.internal_pic} size={20} title="Internal PIC" />}
+          {p.client_pic && <Avatar person={p.client_pic} size={20} title="Client PIC" />}
+        </div>
+      )}
+    </button>
   );
 }
