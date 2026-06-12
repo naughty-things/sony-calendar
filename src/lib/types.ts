@@ -1,4 +1,5 @@
 export type PostStatus =
+  | 'staging'
   | 'draft'
   | 'in_progress'
   | 'needs_review'
@@ -10,6 +11,7 @@ export type PostStatus =
   | 'archived';
 
 export const STATUS_ORDER: PostStatus[] = [
+  'staging',
   'draft',
   'in_progress',
   'needs_review',
@@ -22,6 +24,7 @@ export const STATUS_ORDER: PostStatus[] = [
 ];
 
 export const STATUS_LABEL: Record<PostStatus, string> = {
+  staging: 'Staging',
   draft: 'Draft',
   in_progress: 'In progress',
   needs_review: 'Needs review',
@@ -36,6 +39,7 @@ export const STATUS_LABEL: Record<PostStatus, string> = {
 /* Tape palette — like colored paper tape on a production board.
    Strong, saturated colors, no pastels. */
 export const STATUS_COLOR: Record<PostStatus, string> = {
+  staging:      'bg-[#E6D5F0] text-[#4A1A6E]',     // dusty plum — for items needing human triage
   draft:        'bg-[#E5E1D5] text-ink',
   in_progress:  'bg-[#D5E3F0] text-[#1E3A5F]',     // steel blue
   needs_review: 'bg-[#FFE6A8] text-[#6E4A00]',     // warm amber (tape)
@@ -48,6 +52,7 @@ export const STATUS_COLOR: Record<PostStatus, string> = {
 };
 
 export const STATUS_DOT: Record<PostStatus, string> = {
+  staging:      'bg-plum',
   draft:        'bg-ink-faint',
   in_progress:  'bg-steel',
   needs_review: 'bg-accent',
@@ -72,7 +77,7 @@ export type Post = {
   client_id: string;
   title: string;
   platform?: string | null;
-  publish_date: string; // YYYY-MM-DD
+  publish_date: string | null; // YYYY-MM-DD or null when in staging
   status: PostStatus;
   internal_assignee_id?: string | null;
   internal_pic_id?: string | null;

@@ -13,6 +13,7 @@ export default {
         steel:    '#2F4B6E',
         forest:   '#2E5C3A',
         rust:     '#A03A24',
+        plum:     '#7A3DA8',
         sony:     { DEFAULT: '#000000', accent: '#FFB000' }
       },
       fontFamily: {

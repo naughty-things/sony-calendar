@@ -15,7 +15,7 @@ export function WeekKanban({
   return (
     <div className="grid grid-cols-7 gap-2">
       {days.map(d => {
-        const items = posts.filter(p => isSameDay(new Date(p.publish_date), d));
+        const items = posts.filter(p => p.publish_date && isSameDay(new Date(p.publish_date), d));
         const isCurrent = isToday(d);
         return (
           <div key={d.toISOString()} className="flex flex-col min-h-[520px]">

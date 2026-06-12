@@ -195,29 +195,22 @@ export async function pollGmail(): Promise<PollResult> {
           continue;
         }
 
-        if (!ai.publish_date || !ai.title) {
-          await admin
-            .from('email_ingests')
-            .update({
-              status: 'rejected',
-              parsed: ai,
-              matched_client_id: clientRow.id,
-              error: 'Missing publish_date or title'
-            })
-            .eq('id', ingest.id);
-          result.rejected++;
-          continue;
-        }
+        // 4. resolve what we have
+        const hasDate = !!ai.publish_date;
+        const hasTitle = !!ai.title;
 
-        // 4. create post
+        // 5. create post
+        //    - full brief (date + title) → calendar chip with status=needs_review
+        //    - partial brief            → staging zone (publish_date=NULL, status=staging)
+        //      so a human can fill in the gaps and promote to the calendar
         const { data: post, error: postErr } = await admin
           .from('posts')
           .insert({
             client_id: clientRow.id,
-            title: ai.title,
+            title: ai.title || subject || '(untitled)',
             platform: ai.platform,
-            publish_date: ai.publish_date,
-            status: 'needs_review',
+            publish_date: ai.publish_date || null,
+            status: hasDate && hasTitle ? 'needs_review' : 'staging',
             notes: ai.notes,
             source: 'email',
             source_meta: {
@@ -227,7 +220,12 @@ export async function pollGmail(): Promise<PollResult> {
               gmail_id: id,
               mentioned_internal: ai.mentioned_internal,
               mentioned_client: ai.mentioned_client,
-              confidence: ai.confidence
+              confidence: ai.confidence,
+              missing: !hasDate && !hasTitle
+                ? 'date and title'
+                : !hasDate
+                ? 'publish date'
+                : 'title'
             }
           })
           .select()
@@ -242,16 +240,30 @@ export async function pollGmail(): Promise<PollResult> {
           continue;
         }
 
+        // Tag the ingest as created, and also as 'rejected' if it landed in staging
+        // (the count semantics: ingested = auto-placed on calendar, rejected = needs human)
+        const ingestedStatus = hasDate && hasTitle ? 'created' : 'rejected';
+        const ingestError =
+          hasDate && hasTitle
+            ? null
+            : `Missing ${!hasDate && !hasTitle ? 'publish date and title' : !hasDate ? 'publish date' : 'title'}`;
+
         await admin
           .from('email_ingests')
           .update({
-            status: 'created',
+            status: ingestedStatus,
             parsed: ai,
             matched_client_id: clientRow.id,
-            created_post_id: post.id
+            created_post_id: post.id,
+            error: ingestError
           })
           .eq('id', ingest.id);
-        result.ingested++;
+
+        if (hasDate && hasTitle) {
+          result.ingested++;
+        } else {
+          result.rejected++;
+        }
       } catch (e: any) {
         await admin
           .from('email_ingests')

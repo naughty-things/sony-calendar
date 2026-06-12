@@ -21,7 +21,7 @@ export function PostModal({
   const supabase = getBrowserClient();
   const [title, setTitle] = useState(post?.title ?? '');
   const [platform, setPlatform] = useState(post?.platform ?? 'IG');
-  const [publishDate, setPublishDate] = useState(post?.publish_date ?? initialDate ?? new Date().toISOString().slice(0, 10));
+  const [publishDate, setPublishDate] = useState<string>(post?.publish_date ?? initialDate ?? new Date().toISOString().slice(0, 10));
   const [status, setStatus] = useState<PostStatus>(post?.status ?? 'draft');
   const [assigneeId, setAssigneeId] = useState<string>(post?.internal_assignee_id ?? '');
   const [internalPicId, setInternalPicId] = useState<string>(post?.internal_pic_id ?? '');
@@ -42,12 +42,22 @@ export function PostModal({
 
   async function save() {
     setSaving(true);
+    // If a staging post gets a real date + title, promote it out of staging
+    // to needs_review automatically.
+    let finalStatus = status;
+    if (status === 'staging' && publishDate && title) {
+      finalStatus = 'needs_review';
+    }
     const payload: Partial<Post> = {
-      title, platform, publish_date: publishDate, status,
+      title: title || '(untitled)',
+      platform,
+      publish_date: publishDate || null,
+      status: finalStatus,
       internal_assignee_id: assigneeId || null,
       internal_pic_id: internalPicId || null,
       client_pic_id: clientPicId || null,
-      notes, copy_draft: copyDraft
+      notes,
+      copy_draft: copyDraft
     };
     if (post?.id) {
       await supabase.from('posts').update(payload).eq('id', post.id);

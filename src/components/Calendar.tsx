@@ -37,7 +37,8 @@ export function Calendar() {
     const { data: p } = await supabase
       .from('posts')
       .select('*, internal_assignee:people!posts_internal_assignee_id_fkey(*), internal_pic:people!posts_internal_pic_id_fkey(*), client_pic:people!posts_client_pic_id_fkey(*)')
-      .order('publish_date', { ascending: true });
+      .order('publish_date', { ascending: true, nullsFirst: false })
+      .order('created_at', { ascending: false });
     const next = (p as any) || [];
     setPosts(next);
     const { data: pp } = await supabase.from('people').select('*').order('name');
@@ -148,15 +149,27 @@ export function Calendar() {
     });
   }, [posts, statusFilter, search]);
 
+  /* Posts that are scheduled to a date — i.e. everything except staging */
+  const datedPosts = useMemo(
+    () => filteredPosts.filter(p => p.status !== 'staging' && p.publish_date),
+    [filteredPosts]
+  );
+
   const reviewQueue = useMemo(
     () => posts.filter(p => p.status === 'needs_review' || p.status === 'client_review')
       .sort((a, b) => (b.updated_at || '').localeCompare(a.updated_at || '')),
     [posts]
   );
 
+  const stagingQueue = useMemo(
+    () => posts.filter(p => p.status === 'staging')
+      .sort((a, b) => (b.updated_at || '').localeCompare(a.updated_at || '')),
+    [posts]
+  );
+
   const postsOn = useCallback((date: Date) => {
-    return filteredPosts.filter(p => isSameDay(new Date(p.publish_date), date));
-  }, [filteredPosts]);
+    return datedPosts.filter(p => p.publish_date && isSameDay(new Date(p.publish_date), date));
+  }, [datedPosts]);
 
   const counts = useMemo(() => {
     const c: Record<string, number> = { all: posts.length };
@@ -205,12 +218,17 @@ export function Calendar() {
 
               <button
                 onClick={() => setShowReviewInbox(true)}
-                className={`relative flex items-center gap-1.5 text-sm px-2.5 py-1.5 border border-rule-soft rounded-sm hover:border-ink transition ${reviewQueue.length > 0 ? 'text-ink' : 'text-ink-mute'}`}>
+                className={`relative flex items-center gap-1.5 text-sm px-2.5 py-1.5 border border-rule-soft rounded-sm hover:border-ink transition ${(reviewQueue.length + stagingQueue.length) > 0 ? 'text-ink' : 'text-ink-mute'}`}>
                 <Mail size={13} />
-                Review
+                Inbox
                 {reviewQueue.length > 0 && (
                   <span className="ml-1 text-[10px] font-mono font-semibold bg-accent text-ink rounded-full px-1.5 py-0 leading-[1.4]">
                     {reviewQueue.length}
+                  </span>
+                )}
+                {stagingQueue.length > 0 && (
+                  <span className="ml-0.5 text-[10px] font-mono font-semibold bg-plum text-paper rounded-full px-1.5 py-0 leading-[1.4]">
+                    {stagingQueue.length}
                   </span>
                 )}
               </button>
@@ -297,7 +315,7 @@ export function Calendar() {
             arrivedIds={arrivedIds}
           />
         ) : (
-          <WeekKanban days={weekDays} posts={filteredPosts} onOpenPost={(p) => setEditing(p)} arrivedIds={arrivedIds} />
+          <WeekKanban days={weekDays} posts={datedPosts} onOpenPost={(p) => setEditing(p)} arrivedIds={arrivedIds} />
         )}
 
         {/* Subtle legend */}
@@ -314,7 +332,8 @@ export function Calendar() {
       {/* ─── Review inbox (slide-over) ─── */}
       {showReviewInbox && (
         <ReviewInbox
-          items={reviewQueue}
+          reviewItems={reviewQueue}
+          stagingItems={stagingQueue}
           people={people}
           onClose={() => setShowReviewInbox(false)}
           onOpen={(p) => { setEditing(p); setShowReviewInbox(false); }} />
@@ -479,38 +498,79 @@ function PostChip({ p, onOpen, highlight }: { p: PostWithPeople; onOpen: (p: Pos
 }
 
 /* ─────────────────────────────────────────
-   Review inbox (slide-over)
+   Review inbox (slide-over) with Review + Staging tabs
    ───────────────────────────────────────── */
 function ReviewInbox({
-  items, people, onClose, onOpen
+  reviewItems, stagingItems, people, onClose, onOpen
 }: {
-  items: PostWithPeople[];
+  reviewItems: PostWithPeople[];
+  stagingItems: PostWithPeople[];
   people: Person[];
   onClose: () => void;
   onOpen: (p: PostWithPeople) => void;
 }) {
+  const [tab, setTab] = useState<'review' | 'staging'>(reviewItems.length > 0 ? 'review' : 'staging');
+  const items = tab === 'review' ? reviewItems : stagingItems;
+  const total = reviewItems.length + stagingItems.length;
+
   return (
     <>
       <div className="fixed inset-0 bg-ink/30 z-40 sheet" onClick={onClose} />
       <aside className="fixed top-0 right-0 bottom-0 z-50 w-full max-w-md bg-paper border-l border-rule shadow-2xl flex flex-col sheet">
-        <div className="px-6 py-5 rule-b border-rule-soft flex items-center justify-between">
-          <div>
-            <div className="text-[10px] uppercase tracking-[0.16em] text-ink-mute font-mono">Inbox</div>
-            <h2 className="font-display text-2xl tracking-editorial mt-0.5">Awaiting review</h2>
+        <div className="px-6 pt-5 pb-0 rule-b border-rule-soft">
+          <div className="flex items-center justify-between">
+            <div>
+              <div className="text-[10px] uppercase tracking-[0.16em] text-ink-mute font-mono">Inbox</div>
+              <h2 className="font-display text-2xl tracking-editorial mt-0.5">
+                {tab === 'review' ? 'Awaiting review' : 'Staging'}
+              </h2>
+            </div>
+            <button onClick={onClose} className="text-ink-mute hover:text-ink text-xl leading-none">×</button>
           </div>
-          <button onClick={onClose} className="text-ink-mute hover:text-ink text-xl leading-none">×</button>
+
+          {/* Tabs */}
+          <div className="mt-4 -mb-px flex items-center gap-1">
+            <TabBtn active={tab === 'review'} onClick={() => setTab('review')}>
+              <span>Review</span>
+              <span className={`ml-2 font-mono text-[10px] rounded-full px-1.5 py-0 leading-[1.4] ${
+                tab === 'review' ? 'bg-paper text-ink' : 'bg-accent text-ink'
+              }`}>
+                {reviewItems.length}
+              </span>
+            </TabBtn>
+            <TabBtn active={tab === 'staging'} onClick={() => setTab('staging')}>
+              <span>Staging</span>
+              {stagingItems.length > 0 && (
+                <span className={`ml-2 font-mono text-[10px] rounded-full px-1.5 py-0 leading-[1.4] ${
+                  tab === 'staging' ? 'bg-paper text-ink' : 'bg-plum text-paper'
+                }`}>
+                  {stagingItems.length}
+                </span>
+              )}
+            </TabBtn>
+          </div>
         </div>
 
         <div className="flex-1 overflow-y-auto">
           {items.length === 0 && (
             <div className="px-6 py-16 text-center">
-              <div className="font-display italic text-3xl text-ink-faint">Inbox zero</div>
-              <div className="text-sm text-ink-mute mt-2">No posts waiting for your eyes.</div>
+              {tab === 'review' ? (
+                <>
+                  <div className="font-display italic text-3xl text-ink-faint">Inbox zero</div>
+                  <div className="text-sm text-ink-mute mt-2">No posts waiting for your eyes.</div>
+                </>
+              ) : (
+                <>
+                  <div className="font-display italic text-3xl text-ink-faint">Staging is clear</div>
+                  <div className="text-sm text-ink-mute mt-2">Every forwarded email has all the info it needs.</div>
+                </>
+              )}
             </div>
           )}
           <ul>
             {items.map(p => {
               const people = p.internal_assignee || p.internal_pic || p.client_pic;
+              const isStaging = p.status === 'staging';
               return (
                 <li key={p.id} className="rule-b border-rule-soft">
                   <button
@@ -518,26 +578,51 @@ function ReviewInbox({
                     className="w-full text-left px-6 py-4 hover:bg-paper-deep transition flex items-start gap-3">
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2 mb-1.5">
-                        <Tape status={p.status} size="xs" />
+                        {isStaging ? (
+                          <span className="font-mono text-[9px] uppercase tracking-[0.14em] px-1.5 py-0.5 rounded-sm bg-plum text-paper">
+                            Needs details
+                          </span>
+                        ) : (
+                          <Tape status={p.status} size="xs" />
+                        )}
                         {p.platform && (
                           <span className="font-mono text-[9px] uppercase tracking-wide text-ink-mute">
                             {p.platform}
                           </span>
                         )}
-                        {p.publish_date && (
+                        {p.publish_date ? (
                           <span className="font-mono text-[10px] text-ink-faint ml-auto">
                             {format(new Date(p.publish_date), 'MMM d')}
                           </span>
+                        ) : (
+                          <span className="font-mono text-[10px] text-plum ml-auto uppercase tracking-wide">
+                            no date
+                          </span>
                         )}
                       </div>
-                      <div className="font-medium text-[15px] leading-snug">{p.title}</div>
+                      <div className={`font-medium text-[15px] leading-snug ${isStaging ? 'text-ink-soft' : ''}`}>
+                        {p.title}
+                      </div>
                       {p.notes && <div className="text-xs text-ink-mute mt-1 line-clamp-2">{p.notes}</div>}
+
+                      {isStaging && p.source_meta?.missing && (
+                        <div className="mt-2 text-[10px] text-plum font-mono uppercase tracking-wide">
+                          Missing: {p.source_meta.missing}
+                        </div>
+                      )}
+
                       <div className="mt-2 flex items-center gap-1.5 text-[10px] text-ink-faint font-mono uppercase tracking-wide">
                         {p.source === 'email' && <><Mail size={10} className="inline mr-1" />From email</>}
                         {p.source_meta?.confidence != null && (
                           <span className="ml-1">· {(p.source_meta.confidence * 100).toFixed(0)}% confident</span>
                         )}
                       </div>
+
+                      {isStaging && (
+                        <div className="mt-2.5 text-[10px] uppercase tracking-[0.12em] font-semibold text-plum">
+                          → Click to complete the details
+                        </div>
+                      )}
                     </div>
                     {people && <Avatar person={people} size={28} />}
                   </button>
@@ -546,7 +631,23 @@ function ReviewInbox({
             })}
           </ul>
         </div>
+
+        {total === 0 && null /* hint removed - per-tab empty state above */}
       </aside>
     </>
+  );
+}
+
+function TabBtn({ active, onClick, children }: { active: boolean; onClick: () => void; children: React.ReactNode }) {
+  return (
+    <button
+      onClick={onClick}
+      className={`flex items-center px-3 py-2 text-sm font-medium border-b-2 transition ${
+        active
+          ? 'border-ink text-ink'
+          : 'border-transparent text-ink-mute hover:text-ink'
+      }`}>
+      {children}
+    </button>
   );
 }
