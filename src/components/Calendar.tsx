@@ -454,8 +454,10 @@ function DayCell({
   onOpenPost: (p: PostWithPeople) => void;
   arrivedIds: Set<string>;
 }) {
-  // Holiday number + name override the normal color
-  const dayColor = holiday
+  // Sundays (getDay() === 0) are red like holidays. Saturdays stay neutral.
+  const isSunday = d.getDay() === 0;
+  // Holiday number + name override the normal color; Sundays also get red text
+  const dayColor = holiday || isSunday
     ? 'text-holiday'
     : isToday
     ? 'text-accent-deep'
@@ -467,7 +469,7 @@ function DayCell({
       onClick={() => onOpenDay(d)}
       className={`group relative min-h-[148px] border-r border-b border-rule-soft last:border-r-0 p-2.5 cursor-pointer transition
         ${inMonth ? '' : 'bg-paper-deep/50 text-ink-faint'}
-        ${weekend && inMonth ? 'bg-paper-deep/30' : ''}
+        ${isSunday && inMonth && !holiday ? 'bg-holiday-tint/40' : ''}
         ${holiday ? 'bg-holiday-tint' : ''}
         hover:bg-paper-deep`}>
       {/* Day number — large editorial numeral */}

@@ -19,20 +19,22 @@ export function WeekKanban({
       {days.map(d => {
         const items = posts.filter(p => p.publish_date && isSameDay(new Date(p.publish_date), d));
         const isCurrent = isToday(d);
+        const isSunday = d.getDay() === 0;
         const holiday = holidays[format(d, 'yyyy-MM-dd')] ?? null;
+        const dayClassRed = holiday || isSunday;
         return (
           <div key={d.toISOString()} className="flex flex-col min-h-[520px]">
             {/* Day header — editorial */}
-            <div className={`px-3 pt-3 pb-2 rule-b border-rule-soft ${isCurrent ? 'bg-paper-warm' : ''} ${holiday ? 'bg-holiday-tint' : ''}`}>
+            <div className={`px-3 pt-3 pb-2 rule-b border-rule-soft ${isCurrent ? 'bg-paper-warm' : ''} ${holiday ? 'bg-holiday-tint' : isSunday ? 'bg-holiday-tint/40' : ''}`}>
               <div className="flex items-baseline justify-between">
-                <span className={`text-[10px] uppercase tracking-[0.18em] font-mono ${isCurrent ? 'text-accent-deep font-semibold' : holiday ? 'text-holiday font-semibold' : 'text-ink-faint'}`}>
+                <span className={`text-[10px] uppercase tracking-[0.18em] font-mono ${isCurrent ? 'text-accent-deep font-semibold' : dayClassRed ? 'text-holiday font-semibold' : 'text-ink-faint'}`}>
                   {format(d, 'EEE')}
                 </span>
                 {items.length > 0 && (
                   <span className="text-[10px] font-mono text-ink-mute">{items.length}</span>
                 )}
               </div>
-              <div className={`numeral text-[48px] leading-[0.85] mt-1.5 ${holiday ? 'text-holiday' : ''}`}>
+              <div className={`numeral text-[48px] leading-[0.85] mt-1.5 ${dayClassRed ? 'text-holiday' : ''}`}>
                 {format(d, 'd')}
               </div>
               <div className="text-[10px] font-mono text-ink-faint uppercase tracking-wide mt-0.5">
