@@ -629,9 +629,9 @@ function ReviewInbox({
                         ) : (
                           <Tape status={p.status} size="xs" />
                         )}
-                        {p.platform && (
+                        {p.category && (
                           <span className="font-mono text-[9px] uppercase tracking-wide text-ink-mute">
-                            {Array.isArray(p.platform) ? p.platform.join(' + ') : p.platform}
+                            {p.category}
                           </span>
                         )}
                         {p.publish_date ? (
