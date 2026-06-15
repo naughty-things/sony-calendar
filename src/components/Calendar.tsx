@@ -4,7 +4,7 @@ import { useEffect, useMemo, useState, useCallback, useRef } from 'react';
 import { addDays, addMonths, eachDayOfInterval, endOfMonth, endOfWeek, format, isSameDay, isSameMonth, isSameWeek, startOfMonth, startOfWeek, subMonths } from 'date-fns';
 import { Holiday, getHolidaysInRange, getHoliday } from '@/lib/holidays';
 import { getBrowserClient } from '@/lib/supabase/client';
-import { PostWithPeople, PostStatus, Person, STATUS_COLOR, STATUS_LABEL, STATUS_ORDER, STATUS_DOT, PLATFORM_GLYPH, CATEGORY_GLYPH, CATEGORIES } from '@/lib/types';
+import { PostWithPeople, PostStatus, Person, STATUS_COLOR, STATUS_LABEL, STATUS_ORDER, STATUS_DOT, PLATFORM_GLYPH, PLATFORM_CHIP_STYLE, CATEGORY_GLYPH, CATEGORIES } from '@/lib/types';
 import { ChevronLeft, ChevronRight, Plus, Search, Sparkles, Filter, Mail, Loader2, Command } from 'lucide-react';
 import { PostModal } from './PostModal';
 import { WeekKanban } from './WeekKanban';
@@ -82,6 +82,35 @@ export function Calendar() {
   }, [supabase]);
 
   useEffect(() => { load(); }, [load]);
+
+  /* ─── drag-to-reschedule: update publish_date in place + toast on result ─── */
+  const handleMovePost = useCallback(async (postId: string, newDate: string) => {
+    // Optimistic local update so the chip moves immediately
+    setPosts(prev => prev.map(p => p.id === postId ? { ...p, publish_date: newDate } : p));
+    const { error } = await supabase
+      .from('posts')
+      .update({ publish_date: newDate })
+      .eq('id', postId);
+    if (error) {
+      // Revert + show error toast
+      await load(true);
+      setToasts(t => [...t, {
+        id: 'move-err-' + postId + '-' + Date.now(),
+        title: 'Could not reschedule',
+        detail: error.message,
+        kind: 'warning',
+        ttlMs: 5000
+      }]);
+    } else {
+      setToasts(t => [...t, {
+        id: 'move-' + postId + '-' + Date.now(),
+        title: 'Rescheduled',
+        detail: newDate,
+        kind: 'success',
+        ttlMs: 3000
+      }]);
+    }
+  }, [supabase, load]);
 
   /* ─── last ingest timestamp from app_state ─── */
   useEffect(() => {
@@ -321,11 +350,12 @@ export function Calendar() {
             postsOn={postsOn}
             onOpenDay={(d) => setCreating({ date: format(d, 'yyyy-MM-dd') })}
             onOpenPost={(p) => setEditing(p)}
+            onMovePost={handleMovePost}
             arrivedIds={arrivedIds}
             holidays={holidayMap}
           />
         ) : (
-          <WeekKanban days={weekDays} posts={datedPosts} onOpenPost={(p) => setEditing(p)} arrivedIds={arrivedIds} holidays={holidayMap} />
+          <WeekKanban days={weekDays} posts={datedPosts} onOpenPost={(p) => setEditing(p)} onMovePost={handleMovePost} arrivedIds={arrivedIds} holidays={holidayMap} />
         )}
 
         {/* Subtle legend */}
@@ -394,13 +424,14 @@ function Kbd({ children }: { children: React.ReactNode }) {
    Month grid
    ───────────────────────────────────────── */
 function MonthGrid({
-  days, cursor, postsOn, onOpenDay, onOpenPost, arrivedIds, holidays
+  days, cursor, postsOn, onOpenDay, onOpenPost, onMovePost, arrivedIds, holidays
 }: {
   days: Date[];
   cursor: Date;
   postsOn: (d: Date) => PostWithPeople[];
   onOpenDay: (d: Date) => void;
   onOpenPost: (p: PostWithPeople) => void;
+  onMovePost: (postId: string, newDate: string) => Promise<void> | void;
   arrivedIds: Set<string>;
   holidays: Record<string, Holiday>;
 }) {
@@ -433,6 +464,7 @@ function MonthGrid({
               holiday={holiday}
               onOpenDay={onOpenDay}
               onOpenPost={onOpenPost}
+              onMovePost={onMovePost}
               arrivedIds={arrivedIds} />
           );
         })}
@@ -442,7 +474,7 @@ function MonthGrid({
 }
 
 function DayCell({
-  d, inMonth, weekend, isToday, items, holiday, onOpenDay, onOpenPost, arrivedIds
+  d, inMonth, weekend, isToday, items, holiday, onOpenDay, onOpenPost, onMovePost, arrivedIds
 }: {
   d: Date;
   inMonth: boolean;
@@ -452,6 +484,7 @@ function DayCell({
   holiday: Holiday | null;
   onOpenDay: (d: Date) => void;
   onOpenPost: (p: PostWithPeople) => void;
+  onMovePost: (postId: string, newDate: string) => Promise<void> | void;
   arrivedIds: Set<string>;
 }) {
   // Sundays (getDay() === 0) are red like holidays. Saturdays stay neutral.
@@ -464,13 +497,29 @@ function DayCell({
     : inMonth
     ? 'text-ink'
     : 'text-ink-faint';
+  const [dragOver, setDragOver] = useState(false);
   return (
     <div
       onClick={() => onOpenDay(d)}
+      onDragOver={(e) => {
+        if (e.dataTransfer.types.includes('application/x-post-id')) {
+          e.preventDefault();
+          e.dataTransfer.dropEffect = 'move';
+          if (!dragOver) setDragOver(true);
+        }
+      }}
+      onDragLeave={() => setDragOver(false)}
+      onDrop={(e) => {
+        e.preventDefault();
+        setDragOver(false);
+        const postId = e.dataTransfer.getData('application/x-post-id');
+        if (postId) onMovePost(postId, format(d, 'yyyy-MM-dd'));
+      }}
       className={`group relative min-h-[148px] border-r border-b border-rule-soft last:border-r-0 p-2.5 cursor-pointer transition
         ${inMonth ? '' : 'bg-paper-deep/50 text-ink-faint'}
         ${isSunday && inMonth && !holiday ? 'bg-holiday-tint/40' : ''}
         ${holiday ? 'bg-holiday-tint' : ''}
+        ${dragOver ? 'ring-2 ring-accent ring-inset bg-accent/10' : ''}
         hover:bg-paper-deep`}>
       {/* Day number — large editorial numeral */}
       <div className="flex items-start justify-between">
@@ -517,15 +566,26 @@ function PostChip({ p, onOpen, highlight }: { p: PostWithPeople; onOpen: (p: Pos
     : [];
   return (
     <button
+      draggable
+      onDragStart={(e) => {
+        e.dataTransfer.setData('application/x-post-id', p.id);
+        e.dataTransfer.effectAllowed = 'move';
+      }}
       onClick={(e) => { e.stopPropagation(); onOpen(p); }}
-      className={`group/chip w-full text-left relative flex items-start gap-1.5 px-1.5 py-1 rounded-sm ${STATUS_COLOR[p.status]} ${highlight ? 'just-arrived' : ''} hover:translate-x-0.5 transition-transform`}>
+      className={`group/chip w-full text-left relative flex items-start gap-1.5 px-1.5 py-1 rounded-sm cursor-grab active:cursor-grabbing ${STATUS_COLOR[p.status]} ${highlight ? 'just-arrived' : ''} hover:translate-x-0.5 transition-transform`}>
       {/* platform glyph chips (one per platform) */}
       {platforms.length > 0 ? (
-        platforms.map(pl => (
-          <span key={pl} className="font-mono text-[8px] font-bold leading-tight bg-ink/85 text-paper px-1 py-0.5 rounded-sm shrink-0 mt-[1px]">
-            {PLATFORM_GLYPH[pl] || pl}
-          </span>
-        ))
+        platforms.map(pl => {
+          const style = PLATFORM_CHIP_STYLE[pl];
+          return (
+            <span
+              key={pl}
+              style={style}
+              className={`font-mono text-[8px] font-bold leading-tight px-1 py-0.5 rounded-sm shrink-0 mt-[1px] ${style ? '' : 'bg-ink/85 text-paper'}`}>
+              {PLATFORM_GLYPH[pl] || pl}
+            </span>
+          );
+        })
       ) : (
         <span className="font-mono text-[8px] font-bold leading-tight bg-ink/30 text-paper px-1 py-0.5 rounded-sm shrink-0 mt-[1px]">··</span>
       )}

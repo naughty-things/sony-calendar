@@ -35,7 +35,7 @@ create table if not exists posts (
   id uuid primary key default gen_random_uuid(),
   client_id uuid references clients(id) on delete cascade,
   title text not null,
-  platform text[],             -- IG / FB / YouTube / Email / Other (multi-platform post)
+  platform text[],             -- IG / FB / Other (multi-platform post)
   category text,               -- PA / HE / MO / DI / EC / INZONE / OTHER (SONY product line)
   publish_date date not null,
   status text not null default 'draft'
