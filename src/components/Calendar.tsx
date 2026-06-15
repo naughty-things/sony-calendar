@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState, useCallback, useRef } from 'react';
 import { addDays, addMonths, eachDayOfInterval, endOfMonth, endOfWeek, format, isSameDay, isSameMonth, isSameWeek, startOfMonth, startOfWeek, subMonths } from 'date-fns';
+import { Holiday, getHolidaysInRange, getHoliday } from '@/lib/holidays';
 import { getBrowserClient } from '@/lib/supabase/client';
 import { PostWithPeople, PostStatus, Person, STATUS_COLOR, STATUS_LABEL, STATUS_ORDER, STATUS_DOT, PLATFORM_GLYPH, CATEGORY_GLYPH, CATEGORIES } from '@/lib/types';
 import { ChevronLeft, ChevronRight, Plus, Search, Sparkles, Filter, Mail, Loader2, Command } from 'lucide-react';
@@ -130,15 +131,23 @@ export function Calendar() {
 
   /* ─── derived ─── */
   const monthDays = useMemo(() => {
-    const start = startOfWeek(startOfMonth(cursor), { weekStartsOn: 1 });
-    const end = endOfWeek(endOfMonth(cursor), { weekStartsOn: 1 });
+    const start = startOfWeek(startOfMonth(cursor), { weekStartsOn: 0 });
+    const end = endOfWeek(endOfMonth(cursor), { weekStartsOn: 0 });
     return eachDayOfInterval({ start, end });
   }, [cursor]);
 
   const weekDays = useMemo(() => {
-    const start = startOfWeek(cursor, { weekStartsOn: 1 });
+    const start = startOfWeek(cursor, { weekStartsOn: 0 });
     return Array.from({ length: 7 }, (_, i) => addDays(start, i));
   }, [cursor]);
+
+  // Holidays in the visible range (month or week)
+  const holidayMap = useMemo(() => {
+    const start = monthDays[0] ?? weekDays[0];
+    const end = monthDays[monthDays.length - 1] ?? weekDays[weekDays.length - 1];
+    if (!start || !end) return {} as Record<string, import('@/lib/holidays').Holiday>;
+    return getHolidaysInRange(start, end);
+  }, [monthDays, weekDays]);
 
   const filteredPosts = useMemo(() => {
     const q = search.trim().toLowerCase();
@@ -313,9 +322,10 @@ export function Calendar() {
             onOpenDay={(d) => setCreating({ date: format(d, 'yyyy-MM-dd') })}
             onOpenPost={(p) => setEditing(p)}
             arrivedIds={arrivedIds}
+            holidays={holidayMap}
           />
         ) : (
-          <WeekKanban days={weekDays} posts={datedPosts} onOpenPost={(p) => setEditing(p)} arrivedIds={arrivedIds} />
+          <WeekKanban days={weekDays} posts={datedPosts} onOpenPost={(p) => setEditing(p)} arrivedIds={arrivedIds} holidays={holidayMap} />
         )}
 
         {/* Subtle legend */}
@@ -384,7 +394,7 @@ function Kbd({ children }: { children: React.ReactNode }) {
    Month grid
    ───────────────────────────────────────── */
 function MonthGrid({
-  days, cursor, postsOn, onOpenDay, onOpenPost, arrivedIds
+  days, cursor, postsOn, onOpenDay, onOpenPost, arrivedIds, holidays
 }: {
   days: Date[];
   cursor: Date;
@@ -392,14 +402,15 @@ function MonthGrid({
   onOpenDay: (d: Date) => void;
   onOpenPost: (p: PostWithPeople) => void;
   arrivedIds: Set<string>;
+  holidays: Record<string, Holiday>;
 }) {
   const today = new Date();
   return (
     <div className="bg-paper-warm border border-rule rounded-sm overflow-hidden">
-      {/* Day-of-week header */}
+      {/* Day-of-week header — Sun first */}
       <div className="grid grid-cols-7 bg-paper-deep rule-b border-rule-soft">
-        {['Mon','Tue','Wed','Thu','Fri','Sat','Sun'].map((d, i) => (
-          <div key={d} className={`px-3 py-2.5 text-[10px] uppercase tracking-[0.18em] font-semibold text-ink-mute font-mono ${i >= 5 ? 'text-ink-faint' : ''}`}>
+        {['Sun','Mon','Tue','Wed','Thu','Fri','Sat'].map((d, i) => (
+          <div key={d} className={`px-3 py-2.5 text-[10px] uppercase tracking-[0.18em] font-semibold text-ink-mute font-mono ${i === 0 || i === 6 ? 'text-ink-faint' : ''}`}>
             {d}
           </div>
         ))}
@@ -410,6 +421,7 @@ function MonthGrid({
           const items = postsOn(d);
           const isToday = isSameDay(d, today);
           const weekend = d.getDay() === 0 || d.getDay() === 6;
+          const holiday = holidays[format(d, 'yyyy-MM-dd')] ?? null;
           return (
             <DayCell
               key={i}
@@ -418,6 +430,7 @@ function MonthGrid({
               weekend={weekend}
               isToday={isToday}
               items={items}
+              holiday={holiday}
               onOpenDay={onOpenDay}
               onOpenPost={onOpenPost}
               arrivedIds={arrivedIds} />
@@ -429,39 +442,48 @@ function MonthGrid({
 }
 
 function DayCell({
-  d, inMonth, weekend, isToday, items, onOpenDay, onOpenPost, arrivedIds
+  d, inMonth, weekend, isToday, items, holiday, onOpenDay, onOpenPost, arrivedIds
 }: {
   d: Date;
   inMonth: boolean;
   weekend: boolean;
   isToday: boolean;
   items: PostWithPeople[];
+  holiday: Holiday | null;
   onOpenDay: (d: Date) => void;
   onOpenPost: (p: PostWithPeople) => void;
   arrivedIds: Set<string>;
 }) {
+  // Holiday number + name override the normal color
+  const dayColor = holiday
+    ? 'text-holiday'
+    : isToday
+    ? 'text-accent-deep'
+    : inMonth
+    ? 'text-ink'
+    : 'text-ink-faint';
   return (
     <div
       onClick={() => onOpenDay(d)}
       className={`group relative min-h-[148px] border-r border-b border-rule-soft last:border-r-0 p-2.5 cursor-pointer transition
         ${inMonth ? '' : 'bg-paper-deep/50 text-ink-faint'}
         ${weekend && inMonth ? 'bg-paper-deep/30' : ''}
+        ${holiday ? 'bg-holiday-tint' : ''}
         hover:bg-paper-deep`}>
       {/* Day number — large editorial numeral */}
       <div className="flex items-start justify-between">
         <div className="flex flex-col items-start">
-          {isToday ? (
-            <span className="numeral text-[40px] text-accent-deep leading-[0.85]">
-              {format(d, 'd')}
-            </span>
-          ) : (
-            <span className={`numeral text-[36px] ${inMonth ? 'text-ink' : 'text-ink-faint'} leading-[0.85] group-hover:text-ink transition`}>
-              {format(d, 'd')}
-            </span>
-          )}
+          <span className={`numeral text-[36px] ${dayColor} leading-[0.85] group-hover:text-ink transition`}>
+            {format(d, 'd')}
+          </span>
           <span className={`mt-1 text-[9px] uppercase tracking-[0.16em] font-mono ${isToday ? 'text-accent-deep font-semibold' : 'text-ink-faint'}`}>
             {format(d, 'MMM')}
           </span>
+          {holiday && inMonth && (
+            <span title={holiday.name} className="mt-1 text-[9px] font-mono text-holiday font-semibold truncate max-w-full">
+              {holiday.name}
+            </span>
+          )}
         </div>
         {items.length > 0 && (
           <span className="text-[10px] font-mono text-ink-mute mt-0.5">{items.length}</span>

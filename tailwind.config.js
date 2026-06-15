@@ -14,6 +14,7 @@ export default {
         forest:   '#2E5C3A',
         rust:     '#A03A24',
         plum:     '#7A3DA8',
+        holiday:  { DEFAULT: '#9B1B1E', tint: '#F5E3E0' },
         sony:     { DEFAULT: '#000000', accent: '#FFB000' }
       },
       fontFamily: {

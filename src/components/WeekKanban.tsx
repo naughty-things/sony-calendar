@@ -2,39 +2,47 @@
 
 import { isSameDay, format, isToday } from 'date-fns';
 import { PostWithPeople, STATUS_COLOR, PLATFORM_GLYPH } from '@/lib/types';
+import { Holiday } from '@/lib/holidays';
 import { Avatar } from './ui/Avatar';
 
 export function WeekKanban({
-  days, posts, onOpenPost, arrivedIds
+  days, posts, onOpenPost, arrivedIds, holidays = {}
 }: {
   days: Date[];
   posts: PostWithPeople[];
   onOpenPost: (p: PostWithPeople) => void;
   arrivedIds?: Set<string>;
+  holidays?: Record<string, Holiday>;
 }) {
   return (
     <div className="grid grid-cols-7 gap-2">
       {days.map(d => {
         const items = posts.filter(p => p.publish_date && isSameDay(new Date(p.publish_date), d));
         const isCurrent = isToday(d);
+        const holiday = holidays[format(d, 'yyyy-MM-dd')] ?? null;
         return (
           <div key={d.toISOString()} className="flex flex-col min-h-[520px]">
             {/* Day header — editorial */}
-            <div className={`px-3 pt-3 pb-2 rule-b border-rule-soft ${isCurrent ? 'bg-paper-warm' : ''}`}>
+            <div className={`px-3 pt-3 pb-2 rule-b border-rule-soft ${isCurrent ? 'bg-paper-warm' : ''} ${holiday ? 'bg-holiday-tint' : ''}`}>
               <div className="flex items-baseline justify-between">
-                <span className={`text-[10px] uppercase tracking-[0.18em] font-mono ${isCurrent ? 'text-accent-deep font-semibold' : 'text-ink-faint'}`}>
+                <span className={`text-[10px] uppercase tracking-[0.18em] font-mono ${isCurrent ? 'text-accent-deep font-semibold' : holiday ? 'text-holiday font-semibold' : 'text-ink-faint'}`}>
                   {format(d, 'EEE')}
                 </span>
                 {items.length > 0 && (
                   <span className="text-[10px] font-mono text-ink-mute">{items.length}</span>
                 )}
               </div>
-              <div className="numeral text-[48px] leading-[0.85] mt-1.5">
+              <div className={`numeral text-[48px] leading-[0.85] mt-1.5 ${holiday ? 'text-holiday' : ''}`}>
                 {format(d, 'd')}
               </div>
               <div className="text-[10px] font-mono text-ink-faint uppercase tracking-wide mt-0.5">
                 {format(d, 'MMM')}
               </div>
+              {holiday && (
+                <div className="text-[10px] font-mono text-holiday font-semibold mt-1 truncate" title={holiday.name}>
+                  {holiday.name}
+                </div>
+              )}
             </div>
 
             {/* Cards */}
