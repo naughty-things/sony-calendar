@@ -410,7 +410,7 @@ function MonthGrid({
       {/* Day-of-week header — Sun first */}
       <div className="grid grid-cols-7 bg-paper-deep rule-b border-rule-soft">
         {['Sun','Mon','Tue','Wed','Thu','Fri','Sat'].map((d, i) => (
-          <div key={d} className={`px-3 py-2.5 text-[10px] uppercase tracking-[0.18em] font-semibold text-ink-mute font-mono ${i === 0 || i === 6 ? 'text-ink-faint' : ''}`}>
+          <div key={d} className={`px-3 py-2.5 text-[10px] uppercase tracking-[0.18em] font-semibold text-ink-mute font-mono ${i === 0 ? 'text-holiday' : i === 6 ? 'text-ink-faint' : ''}`}>
             {d}
           </div>
         ))}
