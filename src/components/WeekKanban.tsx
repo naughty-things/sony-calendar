@@ -2,9 +2,10 @@
 
 import { useState } from 'react';
 import { isSameDay, format, isToday } from 'date-fns';
-import { PostWithPeople, STATUS_COLOR, PLATFORM_GLYPH, PLATFORM_CHIP_STYLE } from '@/lib/types';
+import { PostWithPeople, STATUS_COLOR } from '@/lib/types';
 import { Holiday } from '@/lib/holidays';
 import { Avatar } from './ui/Avatar';
+import { PlatformChip } from './ui/PlatformChip';
 
 export function WeekKanban({
   days, posts, onOpenPost, onMovePost, arrivedIds, holidays = {}
@@ -120,17 +121,9 @@ function Card({ p, onClick, highlight }: { p: PostWithPeople; onClick: () => voi
         <span className="flex items-center gap-0.5 flex-wrap">
           {(() => {
             const arr = Array.isArray(p.platform) ? p.platform : p.platform ? [p.platform] : ['Other'];
-            return arr.map(pl => {
-              const style = PLATFORM_CHIP_STYLE[pl];
-              return (
-                <span
-                  key={pl}
-                  style={style}
-                  className={`font-mono text-[8px] font-bold leading-tight px-1 py-0.5 rounded-sm shrink-0 ${style ? '' : 'bg-ink/85 text-paper'}`}>
-                  {PLATFORM_GLYPH[pl] || pl}
-                </span>
-              );
-            });
+            return arr.map(pl => (
+              <PlatformChip key={pl} platform={pl} size={18} />
+            ));
           })()}
         </span>
         <span className={`text-[9px] px-1.5 py-0.5 rounded-sm font-semibold ${STATUS_COLOR[p.status]}`}>

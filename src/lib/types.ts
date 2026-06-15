@@ -144,28 +144,3 @@ export const PLATFORM_GLYPH: Record<string, string> = {
 };
 export const PLATFORMS = ['IG', 'FB', 'Other'] as const;
 export type Platform = typeof PLATFORMS[number];
-
-/* Per-platform color: special frames for IG (rainbow) and FB (blue).
-   Used in the PostChip glyph chip — applied as a left/right border + background tint. */
-export type ChipStyle = {
-  backgroundImage?: string;
-  background?: string;
-  color: string;
-  border: string;
-  boxShadow?: string;
-};
-export const PLATFORM_CHIP_STYLE: Record<string, ChipStyle | undefined> = {
-  IG: {
-    backgroundImage: 'linear-gradient(135deg, #feda75 0%, #fa7e1e 25%, #d62976 50%, #962fbf 75%, #4f5bd5 100%)',
-    color: '#fff',
-    border: '1px solid rgba(255,255,255,0.85)',
-    boxShadow: '0 0 0 1px rgba(255,255,255,0.6) inset, 0 1px 2px rgba(0,0,0,0.15)'
-  },
-  FB: {
-    background: '#1877F2',
-    color: '#fff',
-    border: '1px solid #0e5fc7',
-    boxShadow: '0 1px 2px rgba(24,119,242,0.35)'
-  }
-};
-// 'Other' and any unknown platform get the default ink chip (no override)

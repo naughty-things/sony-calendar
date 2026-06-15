@@ -4,7 +4,8 @@ import { useEffect, useMemo, useState, useCallback, useRef } from 'react';
 import { addDays, addMonths, eachDayOfInterval, endOfMonth, endOfWeek, format, isSameDay, isSameMonth, isSameWeek, startOfMonth, startOfWeek, subMonths } from 'date-fns';
 import { Holiday, getHolidaysInRange, getHoliday } from '@/lib/holidays';
 import { getBrowserClient } from '@/lib/supabase/client';
-import { PostWithPeople, PostStatus, Person, STATUS_COLOR, STATUS_LABEL, STATUS_ORDER, STATUS_DOT, PLATFORM_GLYPH, PLATFORM_CHIP_STYLE, CATEGORY_GLYPH, CATEGORIES } from '@/lib/types';
+import { PostWithPeople, PostStatus, Person, STATUS_COLOR, STATUS_LABEL, STATUS_ORDER, STATUS_DOT, PLATFORM_GLYPH, CATEGORY_GLYPH, CATEGORIES } from '@/lib/types';
+import { PlatformChip } from './ui/PlatformChip';
 import { ChevronLeft, ChevronRight, Plus, Search, Sparkles, Filter, Mail, Loader2, Command } from 'lucide-react';
 import { PostModal } from './PostModal';
 import { WeekKanban } from './WeekKanban';
@@ -575,17 +576,9 @@ function PostChip({ p, onOpen, highlight }: { p: PostWithPeople; onOpen: (p: Pos
       className={`group/chip w-full text-left relative flex items-start gap-1.5 px-1.5 py-1 rounded-sm cursor-grab active:cursor-grabbing ${STATUS_COLOR[p.status]} ${highlight ? 'just-arrived' : ''} hover:translate-x-0.5 transition-transform`}>
       {/* platform glyph chips (one per platform) */}
       {platforms.length > 0 ? (
-        platforms.map(pl => {
-          const style = PLATFORM_CHIP_STYLE[pl];
-          return (
-            <span
-              key={pl}
-              style={style}
-              className={`font-mono text-[8px] font-bold leading-tight px-1 py-0.5 rounded-sm shrink-0 mt-[1px] ${style ? '' : 'bg-ink/85 text-paper'}`}>
-              {PLATFORM_GLYPH[pl] || pl}
-            </span>
-          );
-        })
+        platforms.map(pl => (
+          <PlatformChip key={pl} platform={pl} />
+        ))
       ) : (
         <span className="font-mono text-[8px] font-bold leading-tight bg-ink/30 text-paper px-1 py-0.5 rounded-sm shrink-0 mt-[1px]">··</span>
       )}
