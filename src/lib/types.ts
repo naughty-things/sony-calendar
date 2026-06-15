@@ -110,11 +110,7 @@ export function initials(name: string): string {
 export const PLATFORM_GLYPH: Record<string, string> = {
   IG: 'IG',
   FB: 'FB',
-  X: 'X',
-  LinkedIn: 'in',
-  TikTok: 'TT',
   YouTube: 'YT',
-  Blog: 'BL',
   Email: 'EM',
   Other: '…'
 };

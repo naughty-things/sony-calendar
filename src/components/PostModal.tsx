@@ -138,7 +138,7 @@ export function PostModal({
             <div className="grid grid-cols-2 gap-4">
               <Field label="Platform">
                 <select value={platform ?? ''} onChange={e => setPlatform(e.target.value)} className={inputCls}>
-                  {['IG','FB','X','LinkedIn','TikTok','YouTube','Blog','Email','Other'].map(p => (
+                  {['IG','FB','YouTube','Email','Other'].map(p => (
                     <option key={p} value={p}>{p}</option>
                   ))}
                 </select>

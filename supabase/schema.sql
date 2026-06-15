@@ -35,7 +35,7 @@ create table if not exists posts (
   id uuid primary key default gen_random_uuid(),
   client_id uuid references clients(id) on delete cascade,
   title text not null,
-  platform text,               -- IG / FB / X / LinkedIn / TikTok / YouTube
+  platform text,               -- IG / FB / YouTube / Email / Other
   publish_date date not null,
   status text not null default 'draft'
     check (status in ('draft','in_progress','needs_review','client_review','approved','scheduled','posted','blocked','archived')),
@@ -83,6 +83,27 @@ create index on email_ingests(received_at desc);
 -- ─────────────────────────────────────────
 insert into clients (name, slug) values ('SONY', 'sony')
 on conflict (slug) do nothing;
+
+-- ─────────────────────────────────────────
+-- Platform migration (2026-06-15)
+-- SONY dropped X / LinkedIn / TikTok / Blog. Re-tag any existing rows to
+-- 'Other' and record the original value in source_meta for audit.
+-- Safe to re-run: only touches rows that haven't been migrated yet.
+-- ─────────────────────────────────────────
+update posts
+   set platform = 'Other',
+       source_meta = coalesce(source_meta, '{}'::jsonb)
+                     || jsonb_build_object(
+                          'platform_migrated_from', platform,
+                          'platform_migrated_at',   to_char(now(), 'YYYY-MM-DD"T"HH24:MI:SSOF')
+                        )
+ where platform in ('X','LinkedIn','TikTok','Blog')
+   and coalesce(source_meta->>'platform_migrated_from','') = '';
+
+-- Normalize the legacy 'Instagram' label to the canonical 'IG' glyph.
+update posts
+   set platform = 'IG'
+ where platform = 'Instagram';
 
 -- ─────────────────────────────────────────
 -- Grants (needed when "Automatically expose new tables" is OFF)

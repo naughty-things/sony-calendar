@@ -8,7 +8,7 @@ import { getMinimax, MINIMAX_CHAT_MODEL } from './client';
 
 const ParsedEmailSchema = z.object({
   publish_date: z.string().nullable(),          // YYYY-MM-DD
-  platform: z.string().nullable(),               // IG, FB, X, LinkedIn, YouTube, TikTok, etc.
+  platform: z.string().nullable(),               // IG, FB, YouTube, Email, Other
   title: z.string().nullable(),
   notes: z.string().nullable(),
   mentioned_internal: z.array(z.string()).default([]),
@@ -20,7 +20,7 @@ export type ParsedEmail = z.infer<typeof ParsedEmailSchema>;
 const SYSTEM = `You are an intake assistant for a content calendar.
 A team member has forwarded an email to you. Extract:
 - the proposed publish date (today is ${new Date().toISOString().slice(0, 10)}; interpret "next Friday" etc. relative to today)
-- the platform (IG, FB, X, TikTok, LinkedIn, YouTube, Blog, Email, Other)
+- the platform (IG, FB, YouTube, Email, Other)
 - a short title for the post
 - relevant notes (campaign name, product, copy direction)
 - names of any internal team members mentioned
