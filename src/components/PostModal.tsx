@@ -142,17 +142,32 @@ export function PostModal({
                 <div className="flex flex-wrap gap-1.5">
                   {PLATFORMS.map(p => {
                     const active = platform.includes(p);
+                    const isLogo = p === 'IG' || p === 'FB';
                     return (
                       <button
                         key={p}
                         type="button"
                         onClick={() => setPlatform(active ? platform.filter(x => x !== p) : [...platform, p])}
-                        className={`text-[10px] px-2 py-1 rounded-sm border font-semibold uppercase tracking-wide transition ${
+                        title={p}
+                        className={`px-1.5 py-0.5 rounded-sm border transition flex items-center gap-1.5 ${
                           active
-                            ? 'bg-ink text-paper border-ink'
-                            : 'bg-transparent text-ink-soft border-rule-soft hover:border-ink-mute'
+                            ? 'bg-ink border-ink'
+                            : 'bg-transparent border-rule-soft hover:border-ink-mute'
                         }`}>
-                        {PLATFORM_GLYPH[p]}
+                        {isLogo ? (
+                          <img
+                            src={p === 'IG' ? '/platforms/instagram.png' : '/platforms/facebook.png'}
+                            alt={p}
+                            width={18}
+                            height={18}
+                            className="block shrink-0 rounded-[2px]"
+                            style={{ width: 18, height: 18 }}
+                          />
+                        ) : (
+                          <span className={`text-[10px] font-semibold uppercase tracking-wide ${active ? 'text-paper' : 'text-ink-soft'}`}>
+                            {PLATFORM_GLYPH[p]}
+                          </span>
+                        )}
                       </button>
                     );
                   })}
