@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState, useCallback, useRef } from 'react';
 import { addDays, addMonths, eachDayOfInterval, endOfMonth, endOfWeek, format, isSameDay, isSameMonth, isSameWeek, startOfMonth, startOfWeek, subMonths } from 'date-fns';
 import { getBrowserClient } from '@/lib/supabase/client';
-import { PostWithPeople, PostStatus, Person, STATUS_COLOR, STATUS_LABEL, STATUS_ORDER, STATUS_DOT, PLATFORM_GLYPH } from '@/lib/types';
+import { PostWithPeople, PostStatus, Person, STATUS_COLOR, STATUS_LABEL, STATUS_ORDER, STATUS_DOT, PLATFORM_GLYPH, CATEGORY_GLYPH, CATEGORIES } from '@/lib/types';
 import { ChevronLeft, ChevronRight, Plus, Search, Sparkles, Filter, Mail, Loader2, Command } from 'lucide-react';
 import { PostModal } from './PostModal';
 import { WeekKanban } from './WeekKanban';
@@ -482,6 +482,9 @@ function DayCell({
 }
 
 function PostChip({ p, onOpen, highlight }: { p: PostWithPeople; onOpen: (p: PostWithPeople) => void; highlight?: boolean }) {
+  const cat = p.category && (CATEGORIES as readonly string[]).includes(p.category)
+    ? p.category
+    : null;
   return (
     <button
       onClick={(e) => { e.stopPropagation(); onOpen(p); }}
@@ -490,6 +493,11 @@ function PostChip({ p, onOpen, highlight }: { p: PostWithPeople; onOpen: (p: Pos
       <span className="font-mono text-[8px] font-bold leading-tight bg-ink/85 text-paper px-1 py-0.5 rounded-sm shrink-0 mt-[1px]">
         {PLATFORM_GLYPH[p.platform || 'Other'] || p.platform}
       </span>
+      {cat && (
+        <span className="font-mono text-[8px] font-bold leading-tight bg-paper/70 text-ink px-1 py-0.5 rounded-sm shrink-0 mt-[1px]">
+          {CATEGORY_GLYPH[cat as keyof typeof CATEGORY_GLYPH]}
+        </span>
+      )}
       <span className="text-[11px] leading-[1.25] font-medium line-clamp-2 flex-1 min-w-0">
         {p.title}
       </span>

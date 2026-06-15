@@ -36,6 +36,7 @@ create table if not exists posts (
   client_id uuid references clients(id) on delete cascade,
   title text not null,
   platform text,               -- IG / FB / YouTube / Email / Other
+  category text,               -- PA / HE / MO / DI / EC / INZONE / OTHER (SONY product line)
   publish_date date not null,
   status text not null default 'draft'
     check (status in ('draft','in_progress','needs_review','client_review','approved','scheduled','posted','blocked','archived')),
@@ -52,6 +53,7 @@ create table if not exists posts (
 );
 create index on posts(client_id, publish_date);
 create index on posts(status);
+create index on posts(client_id, category);
 
 create trigger posts_updated_at
 before update on posts

@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
-import { Person, Post, PostStatus, PostWithPeople, STATUS_LABEL, STATUS_ORDER } from '@/lib/types';
+import { Person, Post, PostStatus, PostWithPeople, STATUS_LABEL, STATUS_ORDER, CATEGORIES, CATEGORY_LABEL } from '@/lib/types';
 import { getBrowserClient } from '@/lib/supabase/client';
 import { X, Trash2, Sparkles, Mail, User, Briefcase, Building2, FileText, Check, Loader2 } from 'lucide-react';
 import { Tape } from './ui/Tape';
@@ -21,6 +21,7 @@ export function PostModal({
   const supabase = getBrowserClient();
   const [title, setTitle] = useState(post?.title ?? '');
   const [platform, setPlatform] = useState(post?.platform ?? 'IG');
+  const [category, setCategory] = useState<string>(post?.category ?? '');
   const [publishDate, setPublishDate] = useState<string>(post?.publish_date ?? initialDate ?? new Date().toISOString().slice(0, 10));
   const [status, setStatus] = useState<PostStatus>(post?.status ?? 'draft');
   const [assigneeId, setAssigneeId] = useState<string>(post?.internal_assignee_id ?? '');
@@ -51,6 +52,7 @@ export function PostModal({
     const payload: Partial<Post> = {
       title: title || '(untitled)',
       platform,
+      category: category || null,
       publish_date: publishDate || null,
       status: finalStatus,
       internal_assignee_id: assigneeId || null,
@@ -143,6 +145,16 @@ export function PostModal({
                   ))}
                 </select>
               </Field>
+              <Field label="Category">
+                <select value={category} onChange={e => setCategory(e.target.value)} className={inputCls}>
+                  <option value="">— none —</option>
+                  {CATEGORIES.map(c => (
+                    <option key={c} value={c}>{c} — {CATEGORY_LABEL[c]}</option>
+                  ))}
+                </select>
+              </Field>
+            </div>
+            <div className="grid grid-cols-1 gap-4">
               <Field label="Publish date">
                 <input type="date" value={publishDate} onChange={e => setPublishDate(e.target.value)} className={inputCls} />
               </Field>

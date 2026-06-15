@@ -51,6 +51,35 @@ export const STATUS_COLOR: Record<PostStatus, string> = {
   archived:     'bg-[#D6D2C4] text-ink-faint'
 };
 
+/* SONY product line categories. Codes map to full names for display.
+   PA = Professional Audio (?)
+   HE = Headphones
+   MO = Mobile (Xperia)
+   DI = Digital Imaging (cameras + lenses)
+   EC = ? (consumer electronics — likely TV or BRAVIA)
+   INZONE = INZONE gaming line
+   OTHER = catch-all */
+export const CATEGORIES = ['PA', 'HE', 'MO', 'DI', 'EC', 'INZONE', 'OTHER'] as const;
+export type Category = typeof CATEGORIES[number];
+export const CATEGORY_LABEL: Record<Category, string> = {
+  PA:     'PA',
+  HE:     'Headphones',
+  MO:     'Mobile',
+  DI:     'Digital Imaging',
+  EC:     'EC',
+  INZONE: 'INZONE',
+  OTHER:  'Other'
+};
+export const CATEGORY_GLYPH: Record<Category, string> = {
+  PA:     'PA',
+  HE:     'HE',
+  MO:     'MO',
+  DI:     'DI',
+  EC:     'EC',
+  INZONE: 'IZ',
+  OTHER:  '··'
+};
+
 export const STATUS_DOT: Record<PostStatus, string> = {
   staging:      'bg-plum',
   draft:        'bg-ink-faint',
@@ -77,6 +106,7 @@ export type Post = {
   client_id: string;
   title: string;
   platform?: string | null;
+  category?: Category | string | null;
   publish_date: string | null; // YYYY-MM-DD or null when in staging
   status: PostStatus;
   internal_assignee_id?: string | null;
