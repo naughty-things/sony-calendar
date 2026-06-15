@@ -4,7 +4,6 @@ import { useState } from 'react';
 import { isSameDay, format, isToday } from 'date-fns';
 import { PostWithPeople, STATUS_COLOR } from '@/lib/types';
 import { Holiday } from '@/lib/holidays';
-import { Avatar } from './ui/Avatar';
 import { PlatformChip } from './ui/PlatformChip';
 
 export function WeekKanban({
@@ -133,10 +132,9 @@ function Card({ p, onClick, highlight }: { p: PostWithPeople; onClick: () => voi
       <div className="text-[13px] font-medium leading-[1.3] line-clamp-3 text-ink">
         {p.title}
       </div>
-      {(p.internal_pic || p.client_pic) && (
-        <div className="mt-2 pt-2 border-t border-rule-soft flex items-center gap-1.5">
-          {p.internal_pic && <Avatar person={p.internal_pic} size={20} title="Internal PIC" />}
-          {p.client_pic && <Avatar person={p.client_pic} size={20} title="Client PIC" />}
+      {([p.designer, p.copy_writer, p.internal_pic, p.client_pic].filter(Boolean).length > 0) && (
+        <div className="mt-2 pt-2 border-t border-rule-soft text-[10px] text-ink-mute font-mono leading-tight">
+          {[p.designer, p.copy_writer, p.internal_pic, p.client_pic].filter(Boolean).join(' · ')}
         </div>
       )}
     </button>

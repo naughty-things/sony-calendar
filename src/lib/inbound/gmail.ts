@@ -212,6 +212,10 @@ export async function pollGmail(): Promise<PollResult> {
             category: ai.category || null,
             publish_date: ai.publish_date || null,
             status: hasDate && hasTitle ? 'needs_review' : 'staging',
+            designer: ai.designer || null,
+            copy_writer: ai.copy_writer || null,
+            internal_pic: ai.internal_pic || null,
+            client_pic: ai.client_pic || null,
             notes: ai.notes,
             source: 'email',
             source_meta: {

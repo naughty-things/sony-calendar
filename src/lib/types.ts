@@ -109,9 +109,13 @@ export type Post = {
   category?: Category | string | null;
   publish_date: string | null; // YYYY-MM-DD or null when in staging
   status: PostStatus;
-  internal_assignee_id?: string | null;
-  internal_pic_id?: string | null;
-  client_pic_id?: string | null;
+  /* Free-text names (replaces FKs to people).
+     The system remembers every name ever typed in each field
+     and offers it back as autocomplete for future posts. */
+  designer?: string | null;
+  copy_writer?: string | null;
+  internal_pic?: string | null;
+  client_pic?: string | null;
   notes?: string | null;
   copy_draft?: string | null;
   source: 'manual' | 'email' | 'ai_draft';
@@ -120,11 +124,7 @@ export type Post = {
   updated_at: string;
 };
 
-export type PostWithPeople = Post & {
-  internal_assignee?: Person | null;
-  internal_pic?: Person | null;
-  client_pic?: Person | null;
-};
+export type PostWithPeople = Post; // legacy alias — fields are now inline strings
 
 /* Small helper to get initials for avatar fallback */
 export function initials(name: string): string {

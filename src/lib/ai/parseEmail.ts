@@ -12,6 +12,10 @@ const ParsedEmailSchema = z.object({
   category: z.string().nullable(),                // PA / HE / MO / DI / EC / INZONE / OTHER
   title: z.string().nullable(),
   notes: z.string().nullable(),
+  designer: z.string().nullable(),                // free-text name, if mentioned ("design by X")
+  copy_writer: z.string().nullable(),             // free-text name, if mentioned ("copy by X")
+  internal_pic: z.string().nullable(),            // free-text internal PIC name
+  client_pic: z.string().nullable(),              // free-text client PIC name
   mentioned_internal: z.array(z.string()).default([]),
   mentioned_client: z.array(z.string()).default([]),
   confidence: z.number().min(0).max(1)
@@ -25,12 +29,16 @@ A team member has forwarded an email to you. Extract:
 - the SONY product category if discernible. Codes are: PA (pro audio), HE (headphones), MO (mobile / Xperia), DI (digital imaging — cameras, lenses), EC (consumer electronics), INZONE (gaming line), OTHER. If nothing matches, return null.
 - a short title for the post
 - relevant notes (campaign name, product, copy direction)
-- names of any internal team members mentioned
-- names of any client-side people mentioned
+- designer (free-text name) if mentioned — e.g. "design by Sam Lee", "designer: Cheri"
+- copy writer (free-text name) if mentioned — e.g. "copy by X", "writer: Y"
+- internal PIC (free-text name) — the main internal contact for this post
+- client PIC (free-text name) — the main client contact for this post
+- names of any internal team members mentioned (array of strings)
+- names of any client-side people mentioned (array of strings)
 - a confidence score 0-1
 
 If a field is unknown, return null. Do not invent dates. Return ONLY a JSON object matching this exact shape — no prose, no markdown fences:
-{"publish_date": string|null, "platform": string[]|null, "category": string|null, "title": string|null, "notes": string|null, "mentioned_internal": string[], "mentioned_client": string[], "confidence": number}`;
+{"publish_date": string|null, "platform": string[]|null, "category": string|null, "title": string|null, "notes": string|null, "designer": string|null, "copy_writer": string|null, "internal_pic": string|null, "client_pic": string|null, "mentioned_internal": string[], "mentioned_client": string[], "confidence": number}`;
 
 export async function parseEmail(input: {
   from: string;

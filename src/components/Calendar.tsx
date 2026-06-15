@@ -9,7 +9,6 @@ import { PlatformChip } from './ui/PlatformChip';
 import { ChevronLeft, ChevronRight, Plus, Search, Sparkles, Filter, Mail, Loader2, Command } from 'lucide-react';
 import { PostModal } from './PostModal';
 import { WeekKanban } from './WeekKanban';
-import { Avatar } from './ui/Avatar';
 import { Tape } from './ui/Tape';
 import { Toast, ToastItem } from './ui/Toast';
 
@@ -21,6 +20,7 @@ export function Calendar() {
   const [cursor, setCursor] = useState<Date>(new Date());
   const [posts, setPosts] = useState<PostWithPeople[]>([]);
   const [people, setPeople] = useState<Person[]>([]);
+  const [recentNames, setRecentNames] = useState<{ designer: string[]; copy_writer: string[]; internal_pic: string[]; client_pic: string[] }>({ designer: [], copy_writer: [], internal_pic: [], client_pic: [] });
   const [editing, setEditing] = useState<PostWithPeople | null>(null);
   const [creating, setCreating] = useState<{ date?: string } | null>(null);
   const [statusFilter, setStatusFilter] = useState<StatusFilter>('all');
@@ -38,13 +38,35 @@ export function Calendar() {
   const load = useCallback(async (silent = false) => {
     const { data: p } = await supabase
       .from('posts')
-      .select('*, internal_assignee:people!posts_internal_assignee_id_fkey(*), internal_pic:people!posts_internal_pic_id_fkey(*), client_pic:people!posts_client_pic_id_fkey(*)')
+      .select('*')
       .order('publish_date', { ascending: true, nullsFirst: false })
       .order('created_at', { ascending: false });
     const next = (p as any) || [];
     setPosts(next);
     const { data: pp } = await supabase.from('people').select('*').order('name');
     setPeople(pp || []);
+
+    // Build autocomplete suggestions for designer/copy_writer/internal_pic/client_pic
+    // from distinct non-null values across all posts, plus the people table for
+    // names that may have been mentioned in emails (Sam, Cheri, etc).
+    const collect = (col: 'designer' | 'copy_writer' | 'internal_pic' | 'client_pic') => {
+      const set = new Set<string>();
+      for (const x of next) {
+        const v = (x as any)[col];
+        if (typeof v === 'string' && v.trim()) set.add(v.trim());
+      }
+      // Also include people names so email-mentioned folks show up
+      for (const person of pp || []) {
+        if (person.name && person.name.trim()) set.add(person.name.trim());
+      }
+      return Array.from(set).sort((a, b) => a.localeCompare(b));
+    };
+    setRecentNames({
+      designer: collect('designer'),
+      copy_writer: collect('copy_writer'),
+      internal_pic: collect('internal_pic'),
+      client_pic: collect('client_pic')
+    });
 
     // First load: just record what exists
     if (!initialLoaded.current) {
@@ -385,7 +407,7 @@ export function Calendar() {
         <PostModal
           post={editing}
           initialDate={creating?.date}
-          people={people}
+          recentNames={recentNames}
           onClose={() => { setEditing(null); setCreating(null); }}
           onSaved={async () => { setEditing(null); setCreating(null); await load(false); }}
         />
@@ -666,7 +688,7 @@ function ReviewInbox({
           )}
           <ul>
             {items.map(p => {
-              const people = p.internal_assignee || p.internal_pic || p.client_pic;
+              const peopleLine = [p.designer, p.copy_writer, p.internal_pic, p.client_pic].filter(Boolean).join(' · ');
               const isStaging = p.status === 'staging';
               return (
                 <li key={p.id} className="rule-b border-rule-soft">
@@ -721,7 +743,11 @@ function ReviewInbox({
                         </div>
                       )}
                     </div>
-                    {people && <Avatar person={people} size={28} />}
+                    {peopleLine && (
+                      <div className="mt-2 text-[10px] text-ink-mute font-mono">
+                        {peopleLine}
+                      </div>
+                    )}
                   </button>
                 </li>
               );

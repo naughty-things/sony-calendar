@@ -40,9 +40,11 @@ create table if not exists posts (
   publish_date date not null,
   status text not null default 'draft'
     check (status in ('draft','in_progress','needs_review','client_review','approved','scheduled','posted','blocked','archived')),
-  internal_assignee_id uuid references people(id) on delete set null,
-  internal_pic_id uuid references people(id) on delete set null,
-  client_pic_id uuid references people(id) on delete set null,
+  /* Free-text names — every name ever typed becomes a future autocomplete option. */
+  designer text,
+  copy_writer text,
+  internal_pic text,
+  client_pic text,
   notes text,
   copy_draft text,
   source text default 'manual'  -- 'manual' | 'email' | 'ai_draft'
@@ -55,6 +57,10 @@ create index on posts(client_id, publish_date);
 create index on posts(status);
 create index on posts(client_id, category);
 create index on posts using gin (platform);
+create index on posts(designer) where designer is not null;
+create index on posts(copy_writer) where copy_writer is not null;
+create index on posts(internal_pic) where internal_pic is not null;
+create index on posts(client_pic) where client_pic is not null;
 
 create trigger posts_updated_at
 before update on posts

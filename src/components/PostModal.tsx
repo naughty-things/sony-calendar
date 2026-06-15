@@ -1,20 +1,27 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
-import { Person, Post, PostStatus, PostWithPeople, STATUS_LABEL, STATUS_ORDER, CATEGORIES, CATEGORY_LABEL, PLATFORMS, PLATFORM_GLYPH } from '@/lib/types';
+import { Post, PostStatus, PostWithPeople, STATUS_LABEL, STATUS_ORDER, CATEGORIES, CATEGORY_LABEL, PLATFORMS, PLATFORM_GLYPH } from '@/lib/types';
 import { getBrowserClient } from '@/lib/supabase/client';
-import { X, Trash2, Sparkles, Mail, User, Briefcase, Building2, FileText, Check, Loader2 } from 'lucide-react';
+import { X, Trash2, Sparkles, Mail, Briefcase, Building2, FileText, Check, Loader2, Pen, Type } from 'lucide-react';
 import { Tape } from './ui/Tape';
-import { Avatar } from './ui/Avatar';
+import { NameInput } from './ui/NameInput';
 
 const ALL_STATUSES: PostStatus[] = STATUS_ORDER;
 
+export type RecentNames = {
+  designer: string[];
+  copy_writer: string[];
+  internal_pic: string[];
+  client_pic: string[];
+};
+
 export function PostModal({
-  post, initialDate, people, onClose, onSaved
+  post, initialDate, recentNames, onClose, onSaved
 }: {
   post: PostWithPeople | null;
   initialDate?: string;
-  people: Person[];
+  recentNames: RecentNames;
   onClose: () => void;
   onSaved: () => void | Promise<void>;
 }) {
@@ -24,9 +31,10 @@ export function PostModal({
   const [category, setCategory] = useState<string>(post?.category ?? '');
   const [publishDate, setPublishDate] = useState<string>(post?.publish_date ?? initialDate ?? new Date().toISOString().slice(0, 10));
   const [status, setStatus] = useState<PostStatus>(post?.status ?? 'draft');
-  const [assigneeId, setAssigneeId] = useState<string>(post?.internal_assignee_id ?? '');
-  const [internalPicId, setInternalPicId] = useState<string>(post?.internal_pic_id ?? '');
-  const [clientPicId, setClientPicId] = useState<string>(post?.client_pic_id ?? '');
+  const [designer, setDesigner] = useState<string>(post?.designer ?? '');
+  const [copyWriter, setCopyWriter] = useState<string>(post?.copy_writer ?? '');
+  const [internalPic, setInternalPic] = useState<string>(post?.internal_pic ?? '');
+  const [clientPic, setClientPic] = useState<string>(post?.client_pic ?? '');
   const [notes, setNotes] = useState(post?.notes ?? '');
   const [copyDraft, setCopyDraft] = useState(post?.copy_draft ?? '');
   const [saving, setSaving] = useState(false);
@@ -38,9 +46,6 @@ export function PostModal({
     setTimeout(() => firstFieldRef.current?.focus(), 100);
   }, []);
 
-  const internal = people.filter(p => p.side === 'internal');
-  const clients = people.filter(p => p.side === 'client');
-
   async function save() {
     setSaving(true);
     // If a staging post gets a real date + title, promote it out of staging
@@ -49,15 +54,17 @@ export function PostModal({
     if (status === 'staging' && publishDate && title) {
       finalStatus = 'needs_review';
     }
+    const trim = (s: string) => s.trim() || null;
     const payload: Partial<Post> = {
       title: title || '(untitled)',
       platform: platform.length > 0 ? platform : null,
       category: category || null,
       publish_date: publishDate || null,
       status: finalStatus,
-      internal_assignee_id: assigneeId || null,
-      internal_pic_id: internalPicId || null,
-      client_pic_id: clientPicId || null,
+      designer: trim(designer),
+      copy_writer: trim(copyWriter),
+      internal_pic: trim(internalPic),
+      client_pic: trim(clientPic),
       notes,
       copy_draft: copyDraft
     };
@@ -92,9 +99,6 @@ export function PostModal({
   }
 
   const showEmail = post?.source === 'email' && post?.source_meta;
-  const assignee = people.find(p => p.id === assigneeId);
-  const iPic = people.find(p => p.id === internalPicId);
-  const cPic = people.find(p => p.id === clientPicId);
 
   return (
     <div className="fixed inset-0 z-50 bg-ink/40 flex items-center justify-center p-4 backdrop-blur-sm" onClick={onClose}>
@@ -208,18 +212,42 @@ export function PostModal({
               </div>
             </Field>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <Field label={<><User size={11} className="inline mr-1" />Internal assignee</>}>
-                <PersonSelect value={assigneeId} onChange={setAssigneeId} options={internal} placeholder="— unassigned —" />
-                {assignee && <Chip person={assignee} />}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <Field label={<><Pen size={11} className="inline mr-1" />Designer</>}>
+                <NameInput
+                  id="designer"
+                  value={designer}
+                  onChange={setDesigner}
+                  suggestions={recentNames.designer}
+                  placeholder="e.g. Sam Lee"
+                  className={inputCls} />
+              </Field>
+              <Field label={<><Type size={11} className="inline mr-1" />Copy writer</>}>
+                <NameInput
+                  id="copy-writer"
+                  value={copyWriter}
+                  onChange={setCopyWriter}
+                  suggestions={recentNames.copy_writer}
+                  placeholder="e.g. Cheri Cheung"
+                  className={inputCls} />
               </Field>
               <Field label={<><Briefcase size={11} className="inline mr-1" />Internal PIC</>}>
-                <PersonSelect value={internalPicId} onChange={setInternalPicId} options={internal} placeholder="— none —" />
-                {iPic && <Chip person={iPic} />}
+                <NameInput
+                  id="internal-pic"
+                  value={internalPic}
+                  onChange={setInternalPic}
+                  suggestions={recentNames.internal_pic}
+                  placeholder="e.g. Sam Lee"
+                  className={inputCls} />
               </Field>
               <Field label={<><Building2 size={11} className="inline mr-1" />Client PIC</>}>
-                <PersonSelect value={clientPicId} onChange={setClientPicId} options={clients} placeholder="— none —" />
-                {cPic && <Chip person={cPic} />}
+                <NameInput
+                  id="client-pic"
+                  value={clientPic}
+                  onChange={setClientPic}
+                  suggestions={recentNames.client_pic}
+                  placeholder="e.g. Sony HK"
+                  className={inputCls} />
               </Field>
             </div>
 
@@ -333,23 +361,5 @@ function Field({ label, children }: { label: React.ReactNode; children: React.Re
       <div className="text-[10px] uppercase tracking-[0.16em] text-ink-mute font-mono font-semibold mb-1.5">{label}</div>
       {children}
     </label>
-  );
-}
-
-function PersonSelect({ value, onChange, options, placeholder }: { value: string; onChange: (v: string) => void; options: Person[]; placeholder: string }) {
-  return (
-    <select value={value} onChange={e => onChange(e.target.value)} className={inputCls}>
-      <option value="">{placeholder}</option>
-      {options.map(o => <option key={o.id} value={o.id}>{o.name}{o.role ? ` · ${o.role}` : ''}</option>)}
-    </select>
-  );
-}
-
-function Chip({ person }: { person: Person }) {
-  return (
-    <div className="mt-1.5 flex items-center gap-1.5 text-[11px] text-ink-soft">
-      <Avatar person={person} size={16} />
-      <span>{person.role}</span>
-    </div>
   );
 }
