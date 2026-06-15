@@ -64,7 +64,14 @@ function Card({ p, onClick, highlight }: { p: PostWithPeople; onClick: () => voi
       className={`group/card w-full text-left bg-paper-warm border border-rule-soft rounded-sm p-2.5 hover:border-ink hover:shadow-sm transition ${highlight ? 'just-arrived' : ''}`}>
       <div className="flex items-center justify-between mb-1.5">
         <span className="font-mono text-[9px] font-bold bg-ink text-paper px-1.5 py-0.5 rounded-sm tracking-wide">
-          {PLATFORM_GLYPH[p.platform || 'Other'] || p.platform}
+          {(() => {
+            const arr = Array.isArray(p.platform) ? p.platform : p.platform ? [p.platform] : ['Other'];
+            return arr.map(pl => (
+              <span key={pl} className="font-mono text-[8px] font-bold leading-tight bg-ink/85 text-paper px-1 py-0.5 rounded-sm shrink-0">
+                {PLATFORM_GLYPH[pl] || pl}
+              </span>
+            ));
+          })()}
         </span>
         <span className={`text-[9px] px-1.5 py-0.5 rounded-sm font-semibold ${STATUS_COLOR[p.status]}`}>
           {p.status.replace('_', ' ')}

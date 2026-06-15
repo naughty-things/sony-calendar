@@ -144,7 +144,7 @@ export function Calendar() {
     const q = search.trim().toLowerCase();
     return posts.filter(p => {
       if (statusFilter !== 'all' && p.status !== statusFilter) return false;
-      if (q && !p.title?.toLowerCase().includes(q) && !p.notes?.toLowerCase().includes(q) && !p.platform?.toLowerCase().includes(q)) return false;
+      if (q && !p.title?.toLowerCase().includes(q) && !p.notes?.toLowerCase().includes(q) && !(Array.isArray(p.platform) ? p.platform.join(' ').toLowerCase() : (p.platform || '').toLowerCase()).includes(q)) return false;
       return true;
     });
   }, [posts, statusFilter, search]);
@@ -485,14 +485,26 @@ function PostChip({ p, onOpen, highlight }: { p: PostWithPeople; onOpen: (p: Pos
   const cat = p.category && (CATEGORIES as readonly string[]).includes(p.category)
     ? p.category
     : null;
+  // Normalize platform to an array — handle legacy string and new array shapes
+  const platforms: string[] = Array.isArray(p.platform)
+    ? p.platform
+    : p.platform
+    ? [p.platform]
+    : [];
   return (
     <button
       onClick={(e) => { e.stopPropagation(); onOpen(p); }}
       className={`group/chip w-full text-left relative flex items-start gap-1.5 px-1.5 py-1 rounded-sm ${STATUS_COLOR[p.status]} ${highlight ? 'just-arrived' : ''} hover:translate-x-0.5 transition-transform`}>
-      {/* platform glyph chip */}
-      <span className="font-mono text-[8px] font-bold leading-tight bg-ink/85 text-paper px-1 py-0.5 rounded-sm shrink-0 mt-[1px]">
-        {PLATFORM_GLYPH[p.platform || 'Other'] || p.platform}
-      </span>
+      {/* platform glyph chips (one per platform) */}
+      {platforms.length > 0 ? (
+        platforms.map(pl => (
+          <span key={pl} className="font-mono text-[8px] font-bold leading-tight bg-ink/85 text-paper px-1 py-0.5 rounded-sm shrink-0 mt-[1px]">
+            {PLATFORM_GLYPH[pl] || pl}
+          </span>
+        ))
+      ) : (
+        <span className="font-mono text-[8px] font-bold leading-tight bg-ink/30 text-paper px-1 py-0.5 rounded-sm shrink-0 mt-[1px]">··</span>
+      )}
       {cat && (
         <span className="font-mono text-[8px] font-bold leading-tight bg-paper/70 text-ink px-1 py-0.5 rounded-sm shrink-0 mt-[1px]">
           {CATEGORY_GLYPH[cat as keyof typeof CATEGORY_GLYPH]}
@@ -595,7 +607,7 @@ function ReviewInbox({
                         )}
                         {p.platform && (
                           <span className="font-mono text-[9px] uppercase tracking-wide text-ink-mute">
-                            {p.platform}
+                            {Array.isArray(p.platform) ? p.platform.join(' + ') : p.platform}
                           </span>
                         )}
                         {p.publish_date ? (

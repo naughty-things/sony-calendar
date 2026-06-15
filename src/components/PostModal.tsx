@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
-import { Person, Post, PostStatus, PostWithPeople, STATUS_LABEL, STATUS_ORDER, CATEGORIES, CATEGORY_LABEL } from '@/lib/types';
+import { Person, Post, PostStatus, PostWithPeople, STATUS_LABEL, STATUS_ORDER, CATEGORIES, CATEGORY_LABEL, PLATFORMS, PLATFORM_GLYPH } from '@/lib/types';
 import { getBrowserClient } from '@/lib/supabase/client';
 import { X, Trash2, Sparkles, Mail, User, Briefcase, Building2, FileText, Check, Loader2 } from 'lucide-react';
 import { Tape } from './ui/Tape';
@@ -20,7 +20,7 @@ export function PostModal({
 }) {
   const supabase = getBrowserClient();
   const [title, setTitle] = useState(post?.title ?? '');
-  const [platform, setPlatform] = useState(post?.platform ?? 'IG');
+  const [platform, setPlatform] = useState<string[]>(Array.isArray(post?.platform) ? post!.platform! : (post?.platform ? [post.platform] : ['IG']));
   const [category, setCategory] = useState<string>(post?.category ?? '');
   const [publishDate, setPublishDate] = useState<string>(post?.publish_date ?? initialDate ?? new Date().toISOString().slice(0, 10));
   const [status, setStatus] = useState<PostStatus>(post?.status ?? 'draft');
@@ -51,7 +51,7 @@ export function PostModal({
     }
     const payload: Partial<Post> = {
       title: title || '(untitled)',
-      platform,
+      platform: platform.length > 0 ? platform : null,
       category: category || null,
       publish_date: publishDate || null,
       status: finalStatus,
@@ -138,12 +138,25 @@ export function PostModal({
             </Field>
 
             <div className="grid grid-cols-2 gap-4">
-              <Field label="Platform">
-                <select value={platform ?? ''} onChange={e => setPlatform(e.target.value)} className={inputCls}>
-                  {['IG','FB','YouTube','Email','Other'].map(p => (
-                    <option key={p} value={p}>{p}</option>
-                  ))}
-                </select>
+              <Field label="Platforms (multi-select)">
+                <div className="flex flex-wrap gap-1.5">
+                  {PLATFORMS.map(p => {
+                    const active = platform.includes(p);
+                    return (
+                      <button
+                        key={p}
+                        type="button"
+                        onClick={() => setPlatform(active ? platform.filter(x => x !== p) : [...platform, p])}
+                        className={`text-[10px] px-2 py-1 rounded-sm border font-semibold uppercase tracking-wide transition ${
+                          active
+                            ? 'bg-ink text-paper border-ink'
+                            : 'bg-transparent text-ink-soft border-rule-soft hover:border-ink-mute'
+                        }`}>
+                        {PLATFORM_GLYPH[p]}
+                      </button>
+                    );
+                  })}
+                </div>
               </Field>
               <Field label="Category">
                 <select value={category} onChange={e => setCategory(e.target.value)} className={inputCls}>

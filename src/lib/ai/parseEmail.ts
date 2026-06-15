@@ -8,7 +8,7 @@ import { getMinimax, MINIMAX_CHAT_MODEL } from './client';
 
 const ParsedEmailSchema = z.object({
   publish_date: z.string().nullable(),          // YYYY-MM-DD
-  platform: z.string().nullable(),               // IG, FB, YouTube, Email, Other
+  platform: z.array(z.string()).nullable(),     // IG, FB, YouTube, Email, Other (multi-platform)
   category: z.string().nullable(),                // PA / HE / MO / DI / EC / INZONE / OTHER
   title: z.string().nullable(),
   notes: z.string().nullable(),
@@ -21,7 +21,7 @@ export type ParsedEmail = z.infer<typeof ParsedEmailSchema>;
 const SYSTEM = `You are an intake assistant for a content calendar.
 A team member has forwarded an email to you. Extract:
 - the proposed publish date (today is ${new Date().toISOString().slice(0, 10)}; interpret "next Friday" etc. relative to today)
-- the platform (IG, FB, YouTube, Email, Other)
+- the platform(s) the post is for, as an array (IG, FB, YouTube, Email, Other). A post can be cross-posted — e.g. "IG + FB" → ["IG","FB"]. If the brief mentions only one platform, return a one-element array. If unknown, return null.
 - the SONY product category if discernible. Codes are: PA (pro audio), HE (headphones), MO (mobile / Xperia), DI (digital imaging — cameras, lenses), EC (consumer electronics), INZONE (gaming line), OTHER. If nothing matches, return null.
 - a short title for the post
 - relevant notes (campaign name, product, copy direction)
@@ -30,7 +30,7 @@ A team member has forwarded an email to you. Extract:
 - a confidence score 0-1
 
 If a field is unknown, return null. Do not invent dates. Return ONLY a JSON object matching this exact shape — no prose, no markdown fences:
-{"publish_date": string|null, "platform": string|null, "category": string|null, "title": string|null, "notes": string|null, "mentioned_internal": string[], "mentioned_client": string[], "confidence": number}`;
+{"publish_date": string|null, "platform": string[]|null, "category": string|null, "title": string|null, "notes": string|null, "mentioned_internal": string[], "mentioned_client": string[], "confidence": number}`;
 
 export async function parseEmail(input: {
   from: string;

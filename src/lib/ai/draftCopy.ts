@@ -7,12 +7,13 @@ import { getMinimax, MINIMAX_CHAT_MODEL } from './client';
 
 export async function draftCopy(input: {
   title: string;
-  platform: string;
+  platform: string[] | string;
   notes?: string | null;
   template?: string | null; // user-supplied template
 }): Promise<string> {
+  const platformLabel = Array.isArray(input.platform) ? input.platform.join(' + ') : input.platform;
   if (!input.template || input.template.trim().length === 0) {
-    return `[Copy template not set yet]\n\nTitle: ${input.title}\nPlatform: ${input.platform}\nNotes: ${input.notes ?? '—'}\n\nPaste your template into the AI settings to enable auto-drafting.`;
+    return `[Copy template not set yet]\n\nTitle: ${input.title}\nPlatform: ${platformLabel}\nNotes: ${input.notes ?? '—'}\n\nPaste your template into the AI settings to enable auto-drafting.`;
   }
   const minimax = getMinimax();
   const msg = await minimax.messages.create({
@@ -22,7 +23,7 @@ export async function draftCopy(input: {
     messages: [
       {
         role: 'user',
-        content: `Title: ${input.title}\nPlatform: ${input.platform}\nNotes: ${input.notes ?? '—'}`
+        content: `Title: ${input.title}\nPlatform: ${platformLabel}\nNotes: ${input.notes ?? '—'}`
       }
     ]
   });

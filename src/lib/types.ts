@@ -105,7 +105,7 @@ export type Post = {
   id: string;
   client_id: string;
   title: string;
-  platform?: string | null;
+  platform?: string[] | null;
   category?: Category | string | null;
   publish_date: string | null; // YYYY-MM-DD or null when in staging
   status: PostStatus;
@@ -144,3 +144,5 @@ export const PLATFORM_GLYPH: Record<string, string> = {
   Email: 'EM',
   Other: '…'
 };
+export const PLATFORMS = ['IG', 'FB', 'YouTube', 'Email', 'Other'] as const;
+export type Platform = typeof PLATFORMS[number];

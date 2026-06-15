@@ -35,7 +35,7 @@ create table if not exists posts (
   id uuid primary key default gen_random_uuid(),
   client_id uuid references clients(id) on delete cascade,
   title text not null,
-  platform text,               -- IG / FB / YouTube / Email / Other
+  platform text[],             -- IG / FB / YouTube / Email / Other (multi-platform post)
   category text,               -- PA / HE / MO / DI / EC / INZONE / OTHER (SONY product line)
   publish_date date not null,
   status text not null default 'draft'
@@ -54,6 +54,7 @@ create table if not exists posts (
 create index on posts(client_id, publish_date);
 create index on posts(status);
 create index on posts(client_id, category);
+create index on posts using gin (platform);
 
 create trigger posts_updated_at
 before update on posts

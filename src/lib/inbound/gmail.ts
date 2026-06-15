@@ -208,7 +208,7 @@ export async function pollGmail(): Promise<PollResult> {
           .insert({
             client_id: clientRow.id,
             title: ai.title || subject || '(untitled)',
-            platform: ai.platform,
+            platform: ai.platform || null,
             category: ai.category || null,
             publish_date: ai.publish_date || null,
             status: hasDate && hasTitle ? 'needs_review' : 'staging',
