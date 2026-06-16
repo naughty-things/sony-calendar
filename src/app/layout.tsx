@@ -2,6 +2,7 @@ import './globals.css';
 import type { Metadata, Viewport } from 'next';
 import { Fraunces, Inter_Tight, JetBrains_Mono } from 'next/font/google';
 import { startSelfPing } from '@/lib/inbound/selfPing';
+import { AuthProvider } from '@/lib/auth/AuthProvider';
 
 if (typeof window === 'undefined') {
   startSelfPing();
@@ -52,7 +53,9 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={`${display.variable} ${sans.variable} ${mono.variable}`}>
-      <body className="text-ink">{children}</body>
+      <body className="text-ink">
+        <AuthProvider>{children}</AuthProvider>
+      </body>
     </html>
   );
 }

@@ -12,6 +12,9 @@ import { WeekKanban } from './WeekKanban';
 import { Tape } from './ui/Tape';
 import { Toast, ToastItem } from './ui/Toast';
 import { useIsMobile } from '@/lib/useIsMobile';
+import { useAuth } from '@/lib/auth/AuthProvider';
+import { useRouter, usePathname } from 'next/navigation';
+import { LogIn, LogOut, User as UserIcon } from 'lucide-react';
 
 type View = 'month' | 'week';
 type StatusFilter = PostStatus | 'all';
@@ -36,7 +39,31 @@ export function Calendar() {
 
   const supabase = getBrowserClient();
   const isMobile = useIsMobile();
-  const [showMobileNew, setShowMobileNew] = useState(false);
+  const { user, signOut } = useAuth();
+  const isAdmin = !!user;
+  const router = useRouter();
+  const pathname = usePathname();
+  const [userMenuOpen, setUserMenuOpen] = useState(false);
+
+  // Guards: route write actions through here so non-admins get bounced to /login.
+  const requireAdmin = useCallback((): boolean => {
+    if (isAdmin) return true;
+    const next = encodeURIComponent(pathname || '/');
+    router.push(`/login?next=${next}`);
+    return false;
+  }, [isAdmin, router, pathname]);
+
+  const openCreate = useCallback((init?: { date?: string }) => {
+    if (requireAdmin()) setCreating(init ?? {});
+  }, [requireAdmin]);
+
+  const openEdit = useCallback((p: PostWithPeople) => {
+    if (requireAdmin()) setEditing(p);
+  }, [requireAdmin]);
+
+  const openInbox = useCallback(() => {
+    if (requireAdmin()) setShowReviewInbox(true);
+  }, [requireAdmin]);
 
   /* ─── data load ─── */
   const load = useCallback(async (silent = false) => {
@@ -112,6 +139,7 @@ export function Calendar() {
 
   /* ─── drag-to-reschedule: update publish_date in place + toast on result ─── */
   const handleMovePost = useCallback(async (postId: string, newDate: string) => {
+    if (!isAdmin) return;
     // Optimistic local update so the chip moves immediately
     setPosts(prev => prev.map(p => p.id === postId ? { ...p, publish_date: newDate } : p));
     const { error } = await supabase
@@ -137,7 +165,7 @@ export function Calendar() {
         ttlMs: 3000
       }]);
     }
-  }, [supabase, load]);
+  }, [supabase, load, isAdmin]);
 
   /* ─── last ingest timestamp from app_state ─── */
   useEffect(() => {
@@ -173,7 +201,7 @@ export function Calendar() {
         const tag = e.target.tagName;
         if (tag === 'INPUT' || tag === 'TEXTAREA' || e.target.isContentEditable) return;
       }
-      if (e.key === 'n') { e.preventDefault(); setCreating({}); }
+      if (e.key === 'n') { e.preventDefault(); openCreate(); }
       else if (e.key === 't') { e.preventDefault(); setCursor(new Date()); }
       else if (e.key === 'ArrowLeft')  { e.preventDefault(); setCursor(view === 'month' ? subMonths(cursor, 1) : addDays(cursor, -7)); }
       else if (e.key === 'ArrowRight') { e.preventDefault(); setCursor(view === 'month' ? addMonths(cursor, 1) : addDays(cursor, 7)); }
@@ -183,7 +211,7 @@ export function Calendar() {
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, [cursor, view]);
+  }, [cursor, view, openCreate]);
 
   /* ─── derived ─── */
   const monthDays = useMemo(() => {
@@ -292,22 +320,25 @@ export function Calendar() {
                 </button>
               )}
 
-              <button
-                onClick={() => setShowReviewInbox(true)}
-                className={`relative flex items-center gap-1.5 text-sm px-2 sm:px-2.5 py-1.5 border border-rule-soft rounded-sm hover:border-ink transition ${(reviewQueue.length + stagingQueue.length) > 0 ? 'text-ink' : 'text-ink-mute'}`}>
-                <Mail size={13} />
-                <span className="hidden sm:inline">Inbox</span>
-                {reviewQueue.length > 0 && (
-                  <span className="ml-1 text-[10px] font-mono font-semibold bg-accent text-ink rounded-full px-1.5 py-0 leading-[1.4]">
-                    {reviewQueue.length}
-                  </span>
-                )}
-                {stagingQueue.length > 0 && (
-                  <span className="ml-0.5 text-[10px] font-mono font-semibold bg-plum text-paper rounded-full px-1.5 py-0 leading-[1.4]">
-                    {stagingQueue.length}
-                  </span>
-                )}
-              </button>
+              {/* Inbox + New post — admin only */}
+              {isAdmin && (
+                <button
+                  onClick={openInbox}
+                  className={`relative flex items-center gap-1.5 text-sm px-2 sm:px-2.5 py-1.5 border border-rule-soft rounded-sm hover:border-ink transition ${(reviewQueue.length + stagingQueue.length) > 0 ? 'text-ink' : 'text-ink-mute'}`}>
+                  <Mail size={13} />
+                  <span className="hidden sm:inline">Inbox</span>
+                  {reviewQueue.length > 0 && (
+                    <span className="ml-1 text-[10px] font-mono font-semibold bg-accent text-ink rounded-full px-1.5 py-0 leading-[1.4]">
+                      {reviewQueue.length}
+                    </span>
+                  )}
+                  {stagingQueue.length > 0 && (
+                    <span className="ml-0.5 text-[10px] font-mono font-semibold bg-plum text-paper rounded-full px-1.5 py-0 leading-[1.4]">
+                      {stagingQueue.length}
+                    </span>
+                  )}
+                </button>
+              )}
 
               <div className="flex items-stretch border border-rule-soft rounded-sm overflow-hidden">
                 <button
@@ -328,15 +359,58 @@ export function Calendar() {
                 </button>
               </div>
 
-              <button
-                onClick={() => setCreating({})}
-                className="group flex items-center gap-1.5 text-sm font-semibold px-2.5 sm:px-3 py-1.5 bg-ink text-paper rounded-sm hover:bg-accent hover:text-ink transition shrink-0"
-                title="New post (N)"
-                aria-label="New post">
-                <Plus size={14} strokeWidth={2.5} />
-                <span className="hidden sm:inline">New post</span>
-                <kbd className="ml-1 font-mono text-[10px] text-paper/50 group-hover:text-ink/50 hidden sm:inline">N</kbd>
-              </button>
+              {isAdmin ? (
+                <button
+                  onClick={() => openCreate()}
+                  className="group flex items-center gap-1.5 text-sm font-semibold px-2.5 sm:px-3 py-1.5 bg-ink text-paper rounded-sm hover:bg-accent hover:text-ink transition shrink-0"
+                  title="New post (N)"
+                  aria-label="New post">
+                  <Plus size={14} strokeWidth={2.5} />
+                  <span className="hidden sm:inline">New post</span>
+                  <kbd className="ml-1 font-mono text-[10px] text-paper/50 group-hover:text-ink/50 hidden sm:inline">N</kbd>
+                </button>
+              ) : (
+                <button
+                  onClick={() => router.push('/login')}
+                  className="group flex items-center gap-1.5 text-sm font-semibold px-2.5 sm:px-3 py-1.5 bg-ink text-paper rounded-sm hover:bg-accent hover:text-ink transition shrink-0"
+                  title="Sign in to edit"
+                  aria-label="Sign in">
+                  <LogIn size={14} strokeWidth={2.5} />
+                  <span>Sign in</span>
+                </button>
+              )}
+
+              {/* User menu (admin) */}
+              {isAdmin && (
+                <div className="relative">
+                  <button
+                    onClick={() => setUserMenuOpen(v => !v)}
+                    aria-label="Account menu"
+                    className="flex items-center gap-1.5 text-sm px-2 py-1.5 border border-rule-soft rounded-sm hover:border-ink transition text-ink-soft">
+                    <UserIcon size={13} />
+                    <span className="hidden md:inline text-[11px] font-mono text-ink-faint max-w-[140px] truncate">
+                      {user?.email}
+                    </span>
+                  </button>
+                  {userMenuOpen && (
+                    <>
+                      <div className="fixed inset-0 z-30" onClick={() => setUserMenuOpen(false)} />
+                      <div className="absolute right-0 top-full mt-1.5 z-40 bg-paper-warm border border-rule rounded-sm shadow-lg w-56 py-1.5">
+                        <div className="px-3 py-2 border-b border-rule-soft">
+                          <div className="text-[10px] uppercase tracking-[0.14em] text-ink-faint font-mono">Signed in as</div>
+                          <div className="text-sm text-ink mt-0.5 truncate">{user?.email}</div>
+                        </div>
+                        <button
+                          onClick={async () => { setUserMenuOpen(false); await signOut(); }}
+                          className="w-full text-left px-3 py-2 text-sm text-ink hover:bg-paper-deep transition flex items-center gap-2">
+                          <LogOut size={13} />
+                          Sign out
+                        </button>
+                      </div>
+                    </>
+                  )}
+                </div>
+              )}
             </div>
           </div>
 
@@ -434,8 +508,8 @@ export function Calendar() {
               days={monthDays}
               cursor={cursor}
               postsOn={postsOn}
-              onOpenDay={(d) => setCreating({ date: format(d, 'yyyy-MM-dd') })}
-              onOpenPost={(p) => setEditing(p)}
+              onOpenDay={(d) => openCreate({ date: format(d, 'yyyy-MM-dd') })}
+              onOpenPost={(p) => openEdit(p)}
               arrivedIds={arrivedIds}
               holidays={holidayMap}
             />
@@ -444,19 +518,20 @@ export function Calendar() {
               days={monthDays}
               cursor={cursor}
               postsOn={postsOn}
-              onOpenDay={(d) => setCreating({ date: format(d, 'yyyy-MM-dd') })}
-              onOpenPost={(p) => setEditing(p)}
+              onOpenDay={(d) => openCreate({ date: format(d, 'yyyy-MM-dd') })}
+              onOpenPost={(p) => openEdit(p)}
               onMovePost={handleMovePost}
               arrivedIds={arrivedIds}
               holidays={holidayMap}
+              isAdmin={isAdmin}
             />
           )
         ) : (
-          <WeekKanban days={weekDays} posts={datedPosts} onOpenPost={(p) => setEditing(p)} onMovePost={handleMovePost} arrivedIds={arrivedIds} holidays={holidayMap} />
+          <WeekKanban days={weekDays} posts={datedPosts} onOpenPost={(p) => openEdit(p)} onMovePost={handleMovePost} arrivedIds={arrivedIds} holidays={holidayMap} />
         )}
 
-        {/* Subtle legend — desktop only (no room on mobile) */}
-        {!isMobile && (
+        {/* Subtle legend — admin only (just navigation hints otherwise) */}
+        {!isMobile && isAdmin && (
           <div className="mt-8 flex items-center gap-5 flex-wrap text-[10px] uppercase tracking-[0.14em] text-ink-faint font-mono">
             <span>Press</span>
             <Kbd>N</Kbd><span>new</span>
@@ -464,6 +539,24 @@ export function Calendar() {
             <Kbd>T</Kbd><span>today</span>
             <Kbd>M</Kbd><Kbd>W</Kbd><span>view</span>
             <Kbd>Esc</Kbd><span>close</span>
+          </div>
+        )}
+
+        {/* Read-only banner for unauthenticated viewers */}
+        {!isAdmin && (
+          <div className={`mt-6 ${isMobile ? 'mb-4' : 'mb-2'} flex items-center gap-2.5 px-4 py-2.5 bg-paper-warm border border-rule-soft rounded-sm text-sm text-ink-soft`}>
+            <span className="w-1.5 h-1.5 rounded-full bg-ink-faint shrink-0" />
+            <span className="flex-1">
+              <span className="font-medium text-ink">View-only mode.</span>{' '}
+              <span className="text-ink-mute">
+                Sign in as the Naughty Things admin to add or edit posts.
+              </span>
+            </span>
+            <button
+              onClick={() => router.push('/login')}
+              className="text-ink font-semibold hover:underline shrink-0 inline-flex items-center gap-1">
+              <LogIn size={12} /> Sign in
+            </button>
           </div>
         )}
       </main>
@@ -475,7 +568,7 @@ export function Calendar() {
           stagingItems={stagingQueue}
           people={people}
           onClose={() => setShowReviewInbox(false)}
-          onOpen={(p) => { setEditing(p); setShowReviewInbox(false); }} />
+          onOpen={(p) => { openEdit(p); setShowReviewInbox(false); }} />
       )}
 
       {/* ─── Modal ─── */}
@@ -523,7 +616,7 @@ function Kbd({ children }: { children: React.ReactNode }) {
    Month grid
    ───────────────────────────────────────── */
 function MonthGrid({
-  days, cursor, postsOn, onOpenDay, onOpenPost, onMovePost, arrivedIds, holidays
+  days, cursor, postsOn, onOpenDay, onOpenPost, onMovePost, arrivedIds, holidays, isAdmin
 }: {
   days: Date[];
   cursor: Date;
@@ -533,6 +626,7 @@ function MonthGrid({
   onMovePost: (postId: string, newDate: string) => Promise<void> | void;
   arrivedIds: Set<string>;
   holidays: Record<string, Holiday>;
+  isAdmin?: boolean;
 }) {
   const today = new Date();
   return (
@@ -564,7 +658,8 @@ function MonthGrid({
               onOpenDay={onOpenDay}
               onOpenPost={onOpenPost}
               onMovePost={onMovePost}
-              arrivedIds={arrivedIds} />
+              arrivedIds={arrivedIds}
+              isAdmin={isAdmin} />
           );
         })}
       </div>
@@ -573,7 +668,7 @@ function MonthGrid({
 }
 
 function DayCell({
-  d, inMonth, weekend, isToday, items, holiday, onOpenDay, onOpenPost, onMovePost, arrivedIds
+  d, inMonth, weekend, isToday, items, holiday, onOpenDay, onOpenPost, onMovePost, arrivedIds, isAdmin
 }: {
   d: Date;
   inMonth: boolean;
@@ -585,6 +680,7 @@ function DayCell({
   onOpenPost: (p: PostWithPeople) => void;
   onMovePost: (postId: string, newDate: string) => Promise<void> | void;
   arrivedIds: Set<string>;
+  isAdmin?: boolean;
 }) {
   // Sundays (getDay() === 0) are red like holidays. Saturdays stay neutral.
   const isSunday = d.getDay() === 0;
@@ -601,6 +697,7 @@ function DayCell({
     <div
       onClick={() => onOpenDay(d)}
       onDragOver={(e) => {
+        if (!isAdmin) return;
         if (e.dataTransfer.types.includes('application/x-post-id')) {
           e.preventDefault();
           e.dataTransfer.dropEffect = 'move';
@@ -611,6 +708,7 @@ function DayCell({
       onDrop={(e) => {
         e.preventDefault();
         setDragOver(false);
+        if (!isAdmin) return;
         const postId = e.dataTransfer.getData('application/x-post-id');
         if (postId) onMovePost(postId, format(d, 'yyyy-MM-dd'));
       }}
@@ -643,7 +741,7 @@ function DayCell({
       {/* Post chips */}
       <div className="mt-2 space-y-1">
         {items.slice(0, 3).map(p => (
-          <PostChip key={p.id} p={p} onOpen={onOpenPost} highlight={arrivedIds.has(p.id)} />
+          <PostChip key={p.id} p={p} onOpen={onOpenPost} highlight={arrivedIds.has(p.id)} draggable={!!isAdmin} />
         ))}
         {items.length > 3 && (
           <div className="text-[10px] text-ink-faint font-mono pl-1.5">+{items.length - 3} more</div>
@@ -653,7 +751,7 @@ function DayCell({
   );
 }
 
-function PostChip({ p, onOpen, highlight }: { p: PostWithPeople; onOpen: (p: PostWithPeople) => void; highlight?: boolean }) {
+function PostChip({ p, onOpen, highlight, draggable = true }: { p: PostWithPeople; onOpen: (p: PostWithPeople) => void; highlight?: boolean; draggable?: boolean }) {
   const cat = p.category && (CATEGORIES as readonly string[]).includes(p.category)
     ? p.category
     : null;
@@ -665,13 +763,13 @@ function PostChip({ p, onOpen, highlight }: { p: PostWithPeople; onOpen: (p: Pos
     : [];
   return (
     <button
-      draggable
-      onDragStart={(e) => {
+      draggable={draggable}
+      onDragStart={draggable ? (e) => {
         e.dataTransfer.setData('application/x-post-id', p.id);
         e.dataTransfer.effectAllowed = 'move';
-      }}
+      } : undefined}
       onClick={(e) => { e.stopPropagation(); onOpen(p); }}
-      className={`group/chip w-full text-left relative flex items-start gap-1.5 px-1.5 py-1 rounded-sm cursor-grab active:cursor-grabbing ${STATUS_COLOR[p.status]} ${highlight ? 'just-arrived' : ''} hover:translate-x-0.5 transition-transform`}>
+      className={`group/chip w-full text-left relative flex items-start gap-1.5 px-1.5 py-1 rounded-sm ${draggable ? 'cursor-grab active:cursor-grabbing' : ''} ${STATUS_COLOR[p.status]} ${highlight ? 'just-arrived' : ''} ${draggable ? 'hover:translate-x-0.5' : ''} transition-transform`}>
       {/* platform glyph chips (one per platform) */}
       {platforms.length > 0 ? (
         platforms.map(pl => (
@@ -830,7 +928,7 @@ function MobileDayRow({
       {items.length > 0 && (
         <div className="space-y-1.5">
           {items.map(p => (
-            <PostChip key={p.id} p={p} onOpen={onOpenPost} highlight={arrivedIds.has(p.id)} />
+            <PostChip key={p.id} p={p} onOpen={onOpenPost} highlight={arrivedIds.has(p.id)} draggable={false} />
           ))}
         </div>
       )}

@@ -49,6 +49,14 @@ export function PostModal({
 
   async function save() {
     setSaving(true);
+    // Defense-in-depth: server-side RLS will reject this too, but bail
+    // early with a clear message if somehow reached without auth.
+    const { data: sess } = await supabase.auth.getSession();
+    if (!sess.session) {
+      setSaving(false);
+      alert('You need to sign in to save changes.');
+      return;
+    }
     // If a staging post gets a real date + title, promote it out of staging
     // to needs_review automatically.
     let finalStatus = status;
@@ -82,6 +90,11 @@ export function PostModal({
 
   async function remove() {
     if (!post?.id) return;
+    const { data: sess } = await supabase.auth.getSession();
+    if (!sess.session) {
+      alert('You need to sign in to delete posts.');
+      return;
+    }
     if (!confirm('Delete this post?')) return;
     await supabase.from('posts').delete().eq('id', post.id);
     await onSaved();
