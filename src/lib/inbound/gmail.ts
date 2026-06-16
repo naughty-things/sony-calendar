@@ -19,7 +19,23 @@ export type PollResult = {
   ingested: number;
   rejected: number;
   errors: number;
+  skipped: number;
 };
+
+/**
+ * Process-level mutex: only one pollGmail() runs at a time across the whole
+ * Node process. On Railway, multiple Next.js server workers / hot-reload
+ * edge cases have been seen to fire pollGmail() 5–10 times in 250 ms. Without
+ * this, the dedupe-by-gmail_id check below still saves us (we won't double-
+ * insert), but we'd waste 5–10× the API quota and AI calls per minute. With
+ * this, concurrent invocations return immediately with a "skipped" result.
+ *
+ * Stored on globalThis so it survives Next.js module re-evaluation.
+ */
+declare global {
+  // eslint-disable-next-line no-var
+  var __sonyPollInFlight: Promise<PollResult> | null | undefined;
+}
 
 function getAuth(): JWT {
   const email = process.env.GMAIL_SA_EMAIL;
@@ -126,37 +142,58 @@ function bodyFromPayload(payload: gmail_v1.Schema$MessagePart | undefined): stri
 }
 
 export async function pollGmail(): Promise<PollResult> {
-  const result: PollResult = { scanned: 0, ingested: 0, rejected: 0, errors: 0 };
-
-  const auth = getAuth();
-  const gmail = google.gmail({ version: 'v1', auth });
-  const admin = createAdminClient();
-
-  const startHistoryId = await getHistoryId(admin);
-  let newestHistoryId: string | null = startHistoryId;
-  let profileHistoryId: string | null = null;
-
-  try {
-    const profile = await gmail.users.getProfile({ userId: 'me' });
-    profileHistoryId = profile.data.historyId || null;
-  } catch (e: any) {
-    // If we can't even get the profile, surface the error
-    throw new Error(`getProfile failed: ${e.message}`);
+  // Concurrency guard: if another poll is in flight, skip this one. This
+  // protects against self-pinger / cron / route handler all firing at once.
+  if (globalThis.__sonyPollInFlight) {
+    return { scanned: 0, ingested: 0, rejected: 0, errors: 0, skipped: 1 };
   }
 
-  const { ids, latestHistoryId } = await fetchNewMessageIds(gmail, startHistoryId);
-  if (latestHistoryId) newestHistoryId = latestHistoryId;
+  const run = (async () => {
+    const result: PollResult = { scanned: 0, ingested: 0, rejected: 0, errors: 0, skipped: 0 };
 
-  for (const id of ids) {
-    result.scanned++;
+    const auth = getAuth();
+    const gmail = google.gmail({ version: 'v1', auth });
+    const admin = createAdminClient();
+
+    const startHistoryId = await getHistoryId(admin);
+    let newestHistoryId: string | null = startHistoryId;
+    let profileHistoryId: string | null = null;
+
     try {
-      const msg = await getMessage(gmail, id);
-      const from = header(msg.payload?.headers, 'From');
-      const subject = header(msg.payload?.headers, 'Subject');
-      const body = bodyFromPayload(msg.payload);
+      const profile = await gmail.users.getProfile({ userId: 'me' });
+      profileHistoryId = profile.data.historyId || null;
+    } catch (e: any) {
+      // If we can't even get the profile, surface the error
+      throw new Error(`getProfile failed: ${e.message}`);
+    }
 
-      // 1. log raw
-      const { data: ingest, error: logErr } = await admin
+    const { ids, latestHistoryId } = await fetchNewMessageIds(gmail, startHistoryId);
+    if (latestHistoryId) newestHistoryId = latestHistoryId;
+
+    for (const id of ids) {
+      result.scanned++;
+      try {
+        // Dedup: skip if we've already logged this Gmail message id.
+        // The DB also has a unique constraint (see migration) but checking
+        // here first saves the AI parse call entirely.
+        const { data: existing } = await admin
+          .from('email_ingests')
+          .select('id')
+          .eq('raw_payload->>gmail_id', id)
+          .limit(1)
+          .maybeSingle();
+        if (existing) {
+          result.skipped++;
+          continue;
+        }
+
+        const msg = await getMessage(gmail, id);
+        const from = header(msg.payload?.headers, 'From');
+        const subject = header(msg.payload?.headers, 'Subject');
+        const body = bodyFromPayload(msg.payload);
+
+        // 1. log raw
+        const { data: ingest, error: logErr } = await admin
         .from('email_ingests')
         .insert({
           from_email: from,
@@ -287,4 +324,14 @@ export async function pollGmail(): Promise<PollResult> {
   if (final) await setHistoryId(admin, final);
 
   return result;
+  })();
+
+  globalThis.__sonyPollInFlight = run;
+  try {
+    return await run;
+  } finally {
+    if (globalThis.__sonyPollInFlight === run) {
+      globalThis.__sonyPollInFlight = null;
+    }
+  }
 }
