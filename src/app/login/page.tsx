@@ -91,7 +91,7 @@ function LoginInner() {
                 autoFocus
                 value={username}
                 onChange={e => setUsername(e.target.value)}
-                placeholder="admin"
+                
                 className="w-full pl-8 pr-3 py-2.5 text-sm bg-paper border border-rule-soft rounded-sm focus:border-ink focus:outline-none placeholder:text-ink-faint transition" />
             </div>
           </Field>
@@ -105,7 +105,6 @@ function LoginInner() {
                 required
                 value={password}
                 onChange={e => setPassword(e.target.value)}
-                placeholder="••••••••"
                 className="w-full pl-8 pr-10 py-2.5 text-sm bg-paper border border-rule-soft rounded-sm focus:border-ink focus:outline-none placeholder:text-ink-faint transition" />
               <button
                 type="button"
@@ -132,7 +131,7 @@ function LoginInner() {
           </button>
 
           <p className="text-[10px] uppercase tracking-[0.14em] text-ink-faint font-mono text-center pt-1">
-            Public read-only · admin can edit
+            Public read-only · staff can edit
           </p>
         </form>
 
