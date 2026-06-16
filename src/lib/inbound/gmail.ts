@@ -232,80 +232,112 @@ export async function pollGmail(): Promise<PollResult> {
           continue;
         }
 
-        // 4. resolve what we have
-        const hasDate = !!ai.publish_date;
-        const hasTitle = !!ai.title;
-
-        // 5. create post
-        //    - full brief (date + title) → calendar chip with status=needs_review
-        //    - partial brief            → staging zone (publish_date=NULL, status=staging)
-        //      so a human can fill in the gaps and promote to the calendar
-        const { data: post, error: postErr } = await admin
-          .from('posts')
-          .insert({
-            client_id: clientRow.id,
-            title: ai.title || subject || '(untitled)',
-            platform: ai.platform || null,
-            category: ai.category || null,
-            publish_date: ai.publish_date || null,
-            status: hasDate && hasTitle ? 'needs_review' : 'staging',
-            designer: ai.designer || null,
-            copy_writer: ai.copy_writer || null,
-            internal_pic: ai.internal_pic || null,
-            client_pic: ai.client_pic || null,
-            notes: ai.notes,
-            source: 'email',
-            source_meta: {
-              ingest_id: ingest.id,
-              from,
-              subject,
-              gmail_id: id,
-              mentioned_internal: ai.mentioned_internal,
-              mentioned_client: ai.mentioned_client,
-              confidence: ai.confidence,
-              missing: !hasDate && !hasTitle
-                ? 'date and title'
-                : !hasDate
-                ? 'publish date'
-                : 'title'
-            }
-          })
-          .select()
-          .single();
-
-        if (postErr) {
+        // 4. One email can describe multiple posts (planning table with
+        //    one row per post, numbered briefs, etc.). The AI returns an
+        //    array — we create one staging/calendar post per item. Empty
+        //    array = irrelevant email (out-of-office, calendar invite).
+        if (ai.posts.length === 0) {
           await admin
             .from('email_ingests')
-            .update({ status: 'error', error: postErr.message, parsed: ai })
+            .update({
+              status: 'irrelevant',
+              parsed: ai,
+              matched_client_id: clientRow.id,
+              error: null
+            })
             .eq('id', ingest.id);
-          result.errors++;
+          result.rejected++;
           continue;
         }
 
-        // Tag the ingest as created, and also as 'rejected' if it landed in staging
-        // (the count semantics: ingested = auto-placed on calendar, rejected = needs human)
-        const ingestedStatus = hasDate && hasTitle ? 'created' : 'rejected';
-        const ingestError =
-          hasDate && hasTitle
-            ? null
-            : `Missing ${!hasDate && !hasTitle ? 'publish date and title' : !hasDate ? 'publish date' : 'title'}`;
+        const createdPostIds: string[] = [];
+        let lastError: string | null = null;
+        let allHaveDateAndTitle = true;
+        let primaryPostId: string | null = null;
+
+        for (let i = 0; i < ai.posts.length; i++) {
+          const item = ai.posts[i];
+          const hasDate = !!item.publish_date;
+          const hasTitle = !!item.title;
+          if (!(hasDate && hasTitle)) allHaveDateAndTitle = false;
+
+          //    - full brief (date + title) → calendar chip with status=needs_review
+          //    - partial brief            → staging zone (publish_date=NULL, status=staging)
+          //      so a human can fill in the gaps and promote to the calendar
+          const { data: post, error: postErr } = await admin
+            .from('posts')
+            .insert({
+              client_id: clientRow.id,
+              title: item.title || subject || '(untitled)',
+              platform: item.platform || null,
+              category: item.category || null,
+              publish_date: item.publish_date || null,
+              status: hasDate && hasTitle ? 'needs_review' : 'staging',
+              designer: item.designer || null,
+              copy_writer: item.copy_writer || null,
+              internal_pic: item.internal_pic || null,
+              client_pic: item.client_pic || null,
+              notes: item.notes,
+              source: 'email',
+              source_meta: {
+                ingest_id: ingest.id,
+                from,
+                subject,
+                gmail_id: id,
+                row_index: i,
+                total_rows: ai.posts.length,
+                mentioned_internal: item.mentioned_internal,
+                mentioned_client: item.mentioned_client,
+                confidence: item.confidence,
+                missing: !hasDate && !hasTitle
+                  ? 'date and title'
+                  : !hasDate
+                  ? 'publish date'
+                  : 'title'
+              }
+            })
+            .select()
+            .single();
+
+          if (postErr) {
+            lastError = postErr.message;
+            // Keep going — one bad row shouldn't kill the rest of the email
+            continue;
+          }
+          createdPostIds.push(post.id);
+          if (!primaryPostId) primaryPostId = post.id;
+        }
+
+        // Tag the ingest
+        // - all rows had full data         → 'created'  (auto-placed on calendar)
+        // - some rows missing date/title   → 'rejected' (mixed; humans need to review)
+        // - no rows inserted at all        → 'error'    (parse succeeded, insert failed)
+        const status = createdPostIds.length === 0
+          ? 'error'
+          : (allHaveDateAndTitle ? 'created' : 'rejected');
+        const errMsg = createdPostIds.length === 0
+          ? (lastError || `Parsed ${ai.posts.length} post(s) but none inserted`)
+          : (!allHaveDateAndTitle
+              ? `Parsed ${ai.posts.length} post(s); some missing date/title (in staging)`
+              : null);
 
         await admin
           .from('email_ingests')
           .update({
-            status: ingestedStatus,
+            status,
             parsed: ai,
             matched_client_id: clientRow.id,
-            created_post_id: post.id,
-            error: ingestError
+            created_post_id: primaryPostId,
+            error: errMsg
           })
           .eq('id', ingest.id);
 
-        if (hasDate && hasTitle) {
-          result.ingested++;
-        } else {
-          result.rejected++;
-        }
+        // Count: each created post counts as ingested (auto-placed) or
+        // rejected (in staging, awaiting human).
+        const goodCount = allHaveDateAndTitle ? createdPostIds.length : 0;
+        const badCount = createdPostIds.length - goodCount;
+        result.ingested += goodCount;
+        result.rejected += badCount;
       } catch (e: any) {
         await admin
           .from('email_ingests')

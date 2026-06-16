@@ -107,9 +107,15 @@ using ranked r
 where p.id = r.id
   and r.rn > 1;
 
--- 5) Partial unique index on posts for the same key, so the
---    post insert path also hard-fails on dups.
-create unique index if not exists posts_gmail_id_key
+-- 5) Drop the (now wrong) per-gmail_id unique index on posts and replace
+--    with a plain btree index. With the new multi-post parser, ONE email
+--    can produce MANY posts, so the unique constraint would block them.
+--    The dedupe that mattered (preventing the 8x loop) is already enforced
+--    by email_ingests.gmail_id unique index (step 3 above) — that one
+--    stays. The post-side index is just a lookup helper now.
+drop index if exists posts_gmail_id_key;
+
+create index if not exists posts_gmail_id_idx
   on posts ((source_meta->>'gmail_id'))
   where source = 'email'
     and source_meta->>'gmail_id' is not null;
