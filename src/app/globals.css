@@ -156,3 +156,14 @@ body::before {
 
 /* No tap highlight on iOS */
 button, a { -webkit-tap-highlight-color: transparent; }
+
+/* Hide horizontal scrollbar on mobile filter strip while keeping it scrollable */
+.no-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.no-scrollbar::-webkit-scrollbar { display: none; }
+
+/* Safe area insets for iPhone notches in the bottom bar */
+.safe-bottom { padding-bottom: env(safe-area-inset-bottom); }
+.safe-top { padding-top: env(safe-area-inset-top); }

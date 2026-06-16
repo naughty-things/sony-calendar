@@ -11,6 +11,7 @@ import { PostModal } from './PostModal';
 import { WeekKanban } from './WeekKanban';
 import { Tape } from './ui/Tape';
 import { Toast, ToastItem } from './ui/Toast';
+import { useIsMobile } from '@/lib/useIsMobile';
 
 type View = 'month' | 'week';
 type StatusFilter = PostStatus | 'all';
@@ -29,10 +30,13 @@ export function Calendar() {
   const [lastIngestAt, setLastIngestAt] = useState<string | null>(null);
   const [toasts, setToasts] = useState<ToastItem[]>([]);
   const [arrivedIds, setArrivedIds] = useState<Set<string>>(new Set());
+  const [searchOpen, setSearchOpen] = useState(false);
   const initialLoaded = useRef(false);
   const seenPostIds = useRef<Set<string>>(new Set());
 
   const supabase = getBrowserClient();
+  const isMobile = useIsMobile();
+  const [showMobileNew, setShowMobileNew] = useState(false);
 
   /* ─── data load ─── */
   const load = useCallback(async (silent = false) => {
@@ -251,14 +255,14 @@ export function Calendar() {
     <div className="min-h-screen flex flex-col relative z-10">
       {/* ─── Header ─── */}
       <header className="sticky top-0 z-30 bg-paper/85 backdrop-blur-md">
-        <div className="max-w-[1480px] mx-auto px-7 pt-5 pb-3">
+        <div className="max-w-[1480px] mx-auto px-4 sm:px-7 pt-4 sm:pt-5 pb-3">
           {/* Top bar — wordmark + status live + actions */}
-          <div className="flex items-end justify-between gap-6">
-            <div className="flex items-baseline gap-3 min-w-0">
-              <div className="font-display text-[28px] font-medium tracking-editorial leading-none">
+          <div className="flex items-end justify-between gap-3 sm:gap-6">
+            <div className="flex items-baseline gap-2 sm:gap-3 min-w-0 shrink">
+              <div className="font-display text-[22px] sm:text-[28px] font-medium tracking-editorial leading-none whitespace-nowrap">
                 SONY<span className="text-accent">/</span>
               </div>
-              <div className="font-display italic text-[20px] text-ink-soft leading-none -mb-0.5">
+              <div className="font-display italic text-[15px] sm:text-[20px] text-ink-soft leading-none -mb-0.5 truncate hidden xs:block">
                 Content&nbsp;Calendar
               </div>
               <div className="hidden md:flex items-center gap-1.5 ml-3 mb-1 text-[10px] uppercase tracking-[0.14em] text-ink-mute font-mono">
@@ -267,21 +271,32 @@ export function Calendar() {
               </div>
             </div>
 
-            <div className="flex items-center gap-2">
-              <div className="relative">
-                <Search size={13} className="absolute left-2.5 top-1/2 -translate-y-1/2 text-ink-faint" />
-                <input
-                  value={search}
-                  onChange={e => setSearch(e.target.value)}
-                  placeholder="Search posts…"
-                  className="pl-8 pr-3 py-1.5 w-56 text-sm bg-transparent border-b border-rule-soft focus:border-ink focus:outline-none placeholder:text-ink-faint transition" />
-              </div>
+            <div className="flex items-center gap-1.5 sm:gap-2">
+              {/* Search — desktop: inline input; mobile: icon that expands */}
+              {!isMobile && (
+                <div className="relative">
+                  <Search size={13} className="absolute left-2.5 top-1/2 -translate-y-1/2 text-ink-faint" />
+                  <input
+                    value={search}
+                    onChange={e => setSearch(e.target.value)}
+                    placeholder="Search posts…"
+                    className="pl-8 pr-3 py-1.5 w-56 text-sm bg-transparent border-b border-rule-soft focus:border-ink focus:outline-none placeholder:text-ink-faint transition" />
+                </div>
+              )}
+              {isMobile && (
+                <button
+                  onClick={() => setSearchOpen(v => !v)}
+                  aria-label="Search"
+                  className={`p-2 rounded-sm border transition ${searchOpen ? 'border-ink text-ink' : 'border-rule-soft text-ink-soft'}`}>
+                  <Search size={15} />
+                </button>
+              )}
 
               <button
                 onClick={() => setShowReviewInbox(true)}
-                className={`relative flex items-center gap-1.5 text-sm px-2.5 py-1.5 border border-rule-soft rounded-sm hover:border-ink transition ${(reviewQueue.length + stagingQueue.length) > 0 ? 'text-ink' : 'text-ink-mute'}`}>
+                className={`relative flex items-center gap-1.5 text-sm px-2 sm:px-2.5 py-1.5 border border-rule-soft rounded-sm hover:border-ink transition ${(reviewQueue.length + stagingQueue.length) > 0 ? 'text-ink' : 'text-ink-mute'}`}>
                 <Mail size={13} />
-                Inbox
+                <span className="hidden sm:inline">Inbox</span>
                 {reviewQueue.length > 0 && (
                   <span className="ml-1 text-[10px] font-mono font-semibold bg-accent text-ink rounded-full px-1.5 py-0 leading-[1.4]">
                     {reviewQueue.length}
@@ -297,99 +312,160 @@ export function Calendar() {
               <div className="flex items-stretch border border-rule-soft rounded-sm overflow-hidden">
                 <button
                   onClick={() => setView('month')}
-                  className={`px-2.5 py-1.5 text-xs uppercase tracking-[0.1em] font-semibold transition ${view === 'month' ? 'bg-ink text-paper' : 'text-ink hover:bg-paper-deep'}`}>
-                  Month
+                  className={`px-2 sm:px-2.5 py-1.5 text-xs uppercase tracking-[0.1em] font-semibold transition ${view === 'month' ? 'bg-ink text-paper' : 'text-ink hover:bg-paper-deep'}`}
+                  title="Month view"
+                  aria-label="Month view">
+                  <span className="sm:hidden">M</span>
+                  <span className="hidden sm:inline">Month</span>
                 </button>
                 <button
                   onClick={() => setView('week')}
-                  className={`px-2.5 py-1.5 text-xs uppercase tracking-[0.1em] font-semibold transition ${view === 'week' ? 'bg-ink text-paper' : 'text-ink hover:bg-paper-deep'}`}>
-                  Week
+                  className={`px-2 sm:px-2.5 py-1.5 text-xs uppercase tracking-[0.1em] font-semibold transition ${view === 'week' ? 'bg-ink text-paper' : 'text-ink hover:bg-paper-deep'}`}
+                  title="Week view"
+                  aria-label="Week view">
+                  <span className="sm:hidden">W</span>
+                  <span className="hidden sm:inline">Week</span>
                 </button>
               </div>
 
               <button
                 onClick={() => setCreating({})}
-                className="group flex items-center gap-1.5 text-sm font-semibold px-3 py-1.5 bg-ink text-paper rounded-sm hover:bg-accent hover:text-ink transition">
+                className="group flex items-center gap-1.5 text-sm font-semibold px-2.5 sm:px-3 py-1.5 bg-ink text-paper rounded-sm hover:bg-accent hover:text-ink transition shrink-0"
+                title="New post (N)"
+                aria-label="New post">
                 <Plus size={14} strokeWidth={2.5} />
-                New post
-                <kbd className="ml-1 font-mono text-[10px] text-paper/50 group-hover:text-ink/50">N</kbd>
+                <span className="hidden sm:inline">New post</span>
+                <kbd className="ml-1 font-mono text-[10px] text-paper/50 group-hover:text-ink/50 hidden sm:inline">N</kbd>
               </button>
             </div>
           </div>
 
+          {/* Mobile: expanding search row */}
+          {isMobile && searchOpen && (
+            <div className="mt-3 relative">
+              <Search size={13} className="absolute left-3 top-1/2 -translate-y-1/2 text-ink-faint" />
+              <input
+                autoFocus
+                value={search}
+                onChange={e => setSearch(e.target.value)}
+                onBlur={() => { if (!search) setSearchOpen(false); }}
+                placeholder="Search posts…"
+                className="w-full pl-8 pr-3 py-2 text-sm bg-paper-warm border border-rule-soft rounded-sm focus:border-ink focus:outline-none placeholder:text-ink-faint transition" />
+            </div>
+          )}
+
           {/* Date nav row */}
-          <div className="mt-4 flex items-end justify-between gap-4">
-            <div className="flex items-end gap-3">
+          <div className="mt-4 flex items-end justify-between gap-3 sm:gap-4">
+            <div className="flex items-end gap-2 sm:gap-3 min-w-0 flex-1">
               <button onClick={() => setCursor(view === 'month' ? subMonths(cursor, 1) : addDays(cursor, -7))}
-                className="p-1.5 -ml-1 rounded-sm hover:bg-paper-deep text-ink-soft">
+                className="p-1.5 -ml-1 rounded-sm hover:bg-paper-deep text-ink-soft shrink-0"
+                aria-label="Previous">
                 <ChevronLeft size={18} />
               </button>
-              <h1 className="font-display text-[56px] sm:text-[68px] leading-[0.9] tracking-editorial font-light text-ink">
+              <h1 className="font-display text-[36px] sm:text-[68px] leading-[0.9] tracking-editorial font-light text-ink min-w-0 truncate">
                 <span className="italic">{format(cursor, view === 'month' ? 'LLLL' : 'MMM')}</span>
-                <span className="ml-3 font-mono not-italic text-ink-mute text-[36px] sm:text-[44px] align-[0.05em]">
+                <span className="ml-2 sm:ml-3 font-mono not-italic text-ink-mute text-[24px] sm:text-[44px] align-[0.05em]">
                   {format(cursor, view === 'month' ? 'yyyy' : 'yyyy')}
                 </span>
               </h1>
               <button onClick={() => setCursor(view === 'month' ? addMonths(cursor, 1) : addDays(cursor, 7))}
-                className="p-1.5 rounded-sm hover:bg-paper-deep text-ink-soft">
+                className="p-1.5 rounded-sm hover:bg-paper-deep text-ink-soft shrink-0"
+                aria-label="Next">
                 <ChevronRight size={18} />
               </button>
               <button onClick={() => setCursor(new Date())}
-                className="ml-1 mb-1 text-[10px] uppercase tracking-[0.16em] font-semibold text-ink-mute hover:text-ink font-mono">
+                className="ml-1 mb-1 text-[10px] uppercase tracking-[0.16em] font-semibold text-ink-mute hover:text-ink font-mono shrink-0">
                 today
               </button>
             </div>
+          </div>
 
-            {/* Status filter strip */}
-            <div className="flex items-center gap-1.5 flex-wrap justify-end pb-1.5 max-w-[60%]">
-              <FilterChip
-                label={`All · ${counts.all}`}
-                active={statusFilter === 'all'}
-                onClick={() => setStatusFilter('all')} />
-              {STATUS_ORDER.map(s => {
-                const n = counts[s] || 0;
-                if (n === 0 && statusFilter !== s) return null;
-                return (
-                  <FilterChip
-                    key={s}
-                    label={`${STATUS_LABEL[s]} · ${n}`}
-                    color={STATUS_DOT[s]}
-                    active={statusFilter === s}
-                    onClick={() => setStatusFilter(s)} />
-                );
-              })}
-            </div>
+          {/* Status filter strip — desktop inline, mobile horizontally scrollable */}
+          <div className={`mt-3 sm:mt-4 ${isMobile ? '-mx-4 px-4 overflow-x-auto no-scrollbar' : 'flex items-center gap-1.5 flex-wrap justify-end pb-1.5'}`}>
+            {isMobile ? (
+              <div className="flex items-center gap-1.5 pb-1 min-w-max">
+                <FilterChip
+                  label={`All · ${counts.all}`}
+                  active={statusFilter === 'all'}
+                  onClick={() => setStatusFilter('all')} />
+                {STATUS_ORDER.map(s => {
+                  const n = counts[s] || 0;
+                  if (n === 0 && statusFilter !== s) return null;
+                  return (
+                    <FilterChip
+                      key={s}
+                      label={`${STATUS_LABEL[s]} · ${n}`}
+                      color={STATUS_DOT[s]}
+                      active={statusFilter === s}
+                      onClick={() => setStatusFilter(s)} />
+                  );
+                })}
+              </div>
+            ) : (
+              <>
+                <FilterChip
+                  label={`All · ${counts.all}`}
+                  active={statusFilter === 'all'}
+                  onClick={() => setStatusFilter('all')} />
+                {STATUS_ORDER.map(s => {
+                  const n = counts[s] || 0;
+                  if (n === 0 && statusFilter !== s) return null;
+                  return (
+                    <FilterChip
+                      key={s}
+                      label={`${STATUS_LABEL[s]} · ${n}`}
+                      color={STATUS_DOT[s]}
+                      active={statusFilter === s}
+                      onClick={() => setStatusFilter(s)} />
+                  );
+                })}
+              </>
+            )}
           </div>
         </div>
         <div className="rule-t rule-soft" />
       </header>
 
       {/* ─── Body ─── */}
-      <main className="flex-1 max-w-[1480px] w-full mx-auto px-7 py-6">
+      <main className={`flex-1 max-w-[1480px] w-full mx-auto px-4 sm:px-7 py-4 sm:py-6 ${isMobile ? 'pb-24 safe-bottom' : ''}`}>
         {view === 'month' ? (
-          <MonthGrid
-            days={monthDays}
-            cursor={cursor}
-            postsOn={postsOn}
-            onOpenDay={(d) => setCreating({ date: format(d, 'yyyy-MM-dd') })}
-            onOpenPost={(p) => setEditing(p)}
-            onMovePost={handleMovePost}
-            arrivedIds={arrivedIds}
-            holidays={holidayMap}
-          />
+          isMobile ? (
+            <MobileAgenda
+              days={monthDays}
+              cursor={cursor}
+              postsOn={postsOn}
+              onOpenDay={(d) => setCreating({ date: format(d, 'yyyy-MM-dd') })}
+              onOpenPost={(p) => setEditing(p)}
+              arrivedIds={arrivedIds}
+              holidays={holidayMap}
+            />
+          ) : (
+            <MonthGrid
+              days={monthDays}
+              cursor={cursor}
+              postsOn={postsOn}
+              onOpenDay={(d) => setCreating({ date: format(d, 'yyyy-MM-dd') })}
+              onOpenPost={(p) => setEditing(p)}
+              onMovePost={handleMovePost}
+              arrivedIds={arrivedIds}
+              holidays={holidayMap}
+            />
+          )
         ) : (
           <WeekKanban days={weekDays} posts={datedPosts} onOpenPost={(p) => setEditing(p)} onMovePost={handleMovePost} arrivedIds={arrivedIds} holidays={holidayMap} />
         )}
 
-        {/* Subtle legend */}
-        <div className="mt-8 flex items-center gap-5 flex-wrap text-[10px] uppercase tracking-[0.14em] text-ink-faint font-mono">
-          <span>Press</span>
-          <Kbd>N</Kbd><span>new</span>
-          <Kbd>←</Kbd><Kbd>→</Kbd><span>navigate</span>
-          <Kbd>T</Kbd><span>today</span>
-          <Kbd>M</Kbd><Kbd>W</Kbd><span>view</span>
-          <Kbd>Esc</Kbd><span>close</span>
-        </div>
+        {/* Subtle legend — desktop only (no room on mobile) */}
+        {!isMobile && (
+          <div className="mt-8 flex items-center gap-5 flex-wrap text-[10px] uppercase tracking-[0.14em] text-ink-faint font-mono">
+            <span>Press</span>
+            <Kbd>N</Kbd><span>new</span>
+            <Kbd>←</Kbd><Kbd>→</Kbd><span>navigate</span>
+            <Kbd>T</Kbd><span>today</span>
+            <Kbd>M</Kbd><Kbd>W</Kbd><span>view</span>
+            <Kbd>Esc</Kbd><span>close</span>
+          </div>
+        )}
       </main>
 
       {/* ─── Review inbox (slide-over) ─── */}
@@ -617,6 +693,152 @@ function PostChip({ p, onOpen, highlight }: { p: PostWithPeople; onOpen: (p: Pos
 }
 
 /* ─────────────────────────────────────────
+   Mobile agenda — vertical day list for month view
+   Designed for 360–430px wide screens where the 7-column
+   grid is unusable. Same editorial style; days as cards.
+   ───────────────────────────────────────── */
+function MobileAgenda({
+  days, cursor, postsOn, onOpenDay, onOpenPost, arrivedIds, holidays
+}: {
+  days: Date[];
+  cursor: Date;
+  postsOn: (d: Date) => PostWithPeople[];
+  onOpenDay: (d: Date) => void;
+  onOpenPost: (p: PostWithPeople) => void;
+  arrivedIds: Set<string>;
+  holidays: Record<string, Holiday>;
+}) {
+  const today = new Date();
+  // Only show days in the current month, plus a 1-day lookahead if the
+  // surrounding weeks bleed into the next month. Keeps the list focused.
+  const visible = days; // already padded weeks from the month grid
+  // For mobile we just show all the days from the month grid; if a day has
+  // no posts and isn't a holiday/today/weekend, collapse it to a thin row
+  // so the user can scan quickly. Past days in the month are shown small.
+  const hasAnyPost = visible.some(d => postsOn(d).length > 0);
+  return (
+    <div className="space-y-1.5">
+      {visible.map((d, i) => {
+        const inMonth = isSameMonth(d, cursor);
+        const items = postsOn(d);
+        const isToday = isSameDay(d, today);
+        const weekend = d.getDay() === 0 || d.getDay() === 6;
+        const holiday = holidays[format(d, 'yyyy-MM-dd')] ?? null;
+        const isEmpty = items.length === 0 && !holiday && !isToday;
+        if (!inMonth && isEmpty) return null;
+        return (
+          <MobileDayRow
+            key={i}
+            d={d}
+            inMonth={inMonth}
+            weekend={weekend}
+            isToday={isToday}
+            items={items}
+            holiday={holiday}
+            compact={isEmpty}
+            onOpenDay={onOpenDay}
+            onOpenPost={onOpenPost}
+            arrivedIds={arrivedIds} />
+        );
+      })}
+      {!hasAnyPost && (
+        <div className="text-center py-12 text-ink-faint font-display italic text-2xl">
+          Nothing scheduled this month
+        </div>
+      )}
+    </div>
+  );
+}
+
+function MobileDayRow({
+  d, inMonth, weekend, isToday, items, holiday, compact, onOpenDay, onOpenPost, arrivedIds
+}: {
+  d: Date;
+  inMonth: boolean;
+  weekend: boolean;
+  isToday: boolean;
+  items: PostWithPeople[];
+  holiday: Holiday | null;
+  compact: boolean;
+  onOpenDay: (d: Date) => void;
+  onOpenPost: (p: PostWithPeople) => void;
+  arrivedIds: Set<string>;
+}) {
+  const isSunday = d.getDay() === 0;
+  const dayColor = holiday || isSunday
+    ? 'text-holiday'
+    : isToday
+    ? 'text-accent-deep'
+    : inMonth
+    ? 'text-ink'
+    : 'text-ink-faint';
+
+  if (compact) {
+    // Thin weekday-only row, but still tappable to create
+    return (
+      <button
+        onClick={() => onOpenDay(d)}
+        className={`w-full flex items-baseline gap-3 px-3 py-2 rounded-sm transition active:bg-paper-deep ${
+          inMonth ? '' : 'opacity-50'
+        }`}>
+        <span className={`numeral text-[20px] ${dayColor} leading-none w-8 text-left`}>
+          {format(d, 'd')}
+        </span>
+        <span className={`text-[10px] uppercase tracking-[0.18em] font-mono ${
+          isToday ? 'text-accent-deep font-semibold' : 'text-ink-faint'
+        }`}>
+          {format(d, 'EEE')}
+        </span>
+      </button>
+    );
+  }
+
+  return (
+    <div
+      onClick={() => onOpenDay(d)}
+      className={`relative rounded-sm border p-3 transition active:scale-[0.995] ${
+        inMonth ? 'bg-paper-warm border-rule-soft' : 'bg-paper border-rule-soft opacity-70'
+      } ${isToday ? 'border-accent border-2 -m-px' : ''} ${holiday ? 'bg-holiday-tint/60' : ''}`}>
+      <div className="flex items-baseline justify-between gap-3 mb-2">
+        <div className="flex items-baseline gap-2 min-w-0">
+          <span className={`numeral text-[32px] ${dayColor} leading-none`}>
+            {format(d, 'd')}
+          </span>
+          <div className="flex flex-col">
+            <span className={`text-[10px] uppercase tracking-[0.18em] font-mono ${
+              isToday ? 'text-accent-deep font-semibold' : 'text-ink-mute'
+            }`}>
+              {format(d, 'EEE')}
+              {isToday && <span className="ml-1.5 text-accent-deep">· today</span>}
+            </span>
+            {holiday ? (
+              <span className="text-[10px] font-mono text-holiday font-semibold truncate" title={holiday.name}>
+                {holiday.name}
+              </span>
+            ) : (
+              <span className="text-[9px] uppercase tracking-wide font-mono text-ink-faint">
+                {format(d, 'MMM')}
+              </span>
+            )}
+          </div>
+        </div>
+        <span className="text-[10px] font-mono text-ink-faint shrink-0">
+          {items.length > 0 ? `${items.length} post${items.length === 1 ? '' : 's'}` : 'tap to add'}
+        </span>
+      </div>
+
+      {items.length > 0 && (
+        <div className="space-y-1.5">
+          {items.map(p => (
+            <PostChip key={p.id} p={p} onOpen={onOpenPost} highlight={arrivedIds.has(p.id)} />
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+/* ─────────────────────────────────────────
    Review inbox (slide-over) with Review + Staging tabs
    ───────────────────────────────────────── */
 function ReviewInbox({
@@ -694,58 +916,57 @@ function ReviewInbox({
                 <li key={p.id} className="rule-b border-rule-soft">
                   <button
                     onClick={() => onOpen(p)}
-                    className="w-full text-left px-6 py-4 hover:bg-paper-deep transition flex items-start gap-3">
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-2 mb-1.5">
-                        {isStaging ? (
-                          <span className="font-mono text-[9px] uppercase tracking-[0.14em] px-1.5 py-0.5 rounded-sm bg-plum text-paper">
-                            Needs details
-                          </span>
-                        ) : (
-                          <Tape status={p.status} size="xs" />
-                        )}
-                        {p.category && (
-                          <span className="font-mono text-[9px] uppercase tracking-wide text-ink-mute">
-                            {p.category}
-                          </span>
-                        )}
-                        {p.publish_date ? (
-                          <span className="font-mono text-[10px] text-ink-faint ml-auto">
-                            {format(new Date(p.publish_date), 'MMM d')}
-                          </span>
-                        ) : (
-                          <span className="font-mono text-[10px] text-plum ml-auto uppercase tracking-wide">
-                            no date
-                          </span>
-                        )}
-                      </div>
-                      <div className={`font-medium text-[15px] leading-snug ${isStaging ? 'text-ink-soft' : ''}`}>
-                        {p.title}
-                      </div>
-                      {p.notes && <div className="text-xs text-ink-mute mt-1 line-clamp-2">{p.notes}</div>}
-
-                      {isStaging && p.source_meta?.missing && (
-                        <div className="mt-2 text-[10px] text-plum font-mono uppercase tracking-wide">
-                          Missing: {p.source_meta.missing}
-                        </div>
+                    className="w-full text-left px-4 sm:px-6 py-4 hover:bg-paper-deep transition block">
+                    <div className="flex items-center gap-2 mb-1.5">
+                      {isStaging ? (
+                        <span className="font-mono text-[9px] uppercase tracking-[0.14em] px-1.5 py-0.5 rounded-sm bg-plum text-paper">
+                          Needs details
+                        </span>
+                      ) : (
+                        <Tape status={p.status} size="xs" />
                       )}
-
-                      <div className="mt-2 flex items-center gap-1.5 text-[10px] text-ink-faint font-mono uppercase tracking-wide">
-                        {p.source === 'email' && <><Mail size={10} className="inline mr-1" />From email</>}
-                        {p.source_meta?.confidence != null && (
-                          <span className="ml-1">· {(p.source_meta.confidence * 100).toFixed(0)}% confident</span>
-                        )}
-                      </div>
-
-                      {isStaging && (
-                        <div className="mt-2.5 text-[10px] uppercase tracking-[0.12em] font-semibold text-plum">
-                          → Click to complete the details
-                        </div>
+                      {p.category && (
+                        <span className="font-mono text-[9px] uppercase tracking-wide text-ink-mute">
+                          {p.category}
+                        </span>
+                      )}
+                      {p.publish_date ? (
+                        <span className="font-mono text-[10px] text-ink-faint ml-auto shrink-0">
+                          {format(new Date(p.publish_date), 'MMM d')}
+                        </span>
+                      ) : (
+                        <span className="font-mono text-[10px] text-plum ml-auto shrink-0 uppercase tracking-wide">
+                          no date
+                        </span>
                       )}
                     </div>
+                    <div className={`font-medium text-[15px] leading-snug ${isStaging ? 'text-ink-soft' : ''}`}>
+                      {p.title}
+                    </div>
+                    {p.notes && <div className="text-xs text-ink-mute mt-1 line-clamp-2">{p.notes}</div>}
+
+                    {isStaging && p.source_meta?.missing && (
+                      <div className="mt-2 text-[10px] text-plum font-mono uppercase tracking-wide">
+                        Missing: {p.source_meta.missing}
+                      </div>
+                    )}
+
+                    <div className="mt-2 flex items-center gap-1.5 text-[10px] text-ink-faint font-mono uppercase tracking-wide">
+                      {p.source === 'email' && <><Mail size={10} className="inline mr-1" />From email</>}
+                      {p.source_meta?.confidence != null && (
+                        <span className="ml-1">· {(p.source_meta.confidence * 100).toFixed(0)}% confident</span>
+                      )}
+                    </div>
+
                     {peopleLine && (
-                      <div className="mt-2 text-[10px] text-ink-mute font-mono">
+                      <div className="mt-1.5 text-[10px] text-ink-mute font-mono truncate">
                         {peopleLine}
+                      </div>
+                    )}
+
+                    {isStaging && (
+                      <div className="mt-2.5 text-[10px] uppercase tracking-[0.12em] font-semibold text-plum">
+                        → Click to complete the details
                       </div>
                     )}
                   </button>

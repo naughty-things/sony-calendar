@@ -6,6 +6,7 @@ import { getBrowserClient } from '@/lib/supabase/client';
 import { X, Trash2, Sparkles, Mail, Briefcase, Building2, FileText, Check, Loader2, Pen, Type } from 'lucide-react';
 import { Tape } from './ui/Tape';
 import { NameInput } from './ui/NameInput';
+import { useIsMobile } from '@/lib/useIsMobile';
 
 const ALL_STATUSES: PostStatus[] = STATUS_ORDER;
 
@@ -99,14 +100,17 @@ export function PostModal({
   }
 
   const showEmail = post?.source === 'email' && post?.source_meta;
+  const isMobile = useIsMobile();
 
   return (
-    <div className="fixed inset-0 z-50 bg-ink/40 flex items-center justify-center p-4 backdrop-blur-sm" onClick={onClose}>
+    <div className="fixed inset-0 z-50 bg-ink/40 flex items-center justify-center p-0 sm:p-4 backdrop-blur-sm" onClick={onClose}>
       <div
         onClick={e => e.stopPropagation()}
-        className="sheet bg-paper text-ink w-full max-w-3xl max-h-[90vh] overflow-hidden flex flex-col rounded-sm border border-rule shadow-2xl">
+        className={`sheet bg-paper text-ink w-full max-w-3xl max-h-[90vh] overflow-hidden flex flex-col border-rule shadow-2xl ${
+          isMobile ? 'h-screen max-h-screen rounded-none' : 'rounded-sm border'
+        }`}>
         {/* ─── Header ─── */}
-        <div className="px-7 py-4 rule-b border-rule-soft flex items-start justify-between gap-4">
+        <div className="px-4 sm:px-7 py-4 rule-b border-rule-soft flex items-start justify-between gap-4">
           <div className="min-w-0 flex-1">
             <div className="flex items-center gap-2 text-[10px] uppercase tracking-[0.16em] text-ink-mute font-mono">
               {post ? 'Edit' : 'New'} post
@@ -131,7 +135,7 @@ export function PostModal({
         {/* ─── Body — split: form + (optional) email peek ─── */}
         <div className={`flex-1 overflow-y-auto ${showEmail ? 'grid md:grid-cols-[1.4fr_1fr]' : ''}`}>
           {/* FORM */}
-          <div className="p-7 space-y-5">
+          <div className="p-4 sm:p-7 space-y-5">
             <Field label="Title">
               <input
                 ref={firstFieldRef}
@@ -280,7 +284,7 @@ export function PostModal({
 
           {/* EMAIL PEEK (right side, when source=email) */}
           {showEmail && (
-            <div className="bg-paper-deep border-l border-rule-soft p-7 space-y-4">
+            <div className="bg-paper-deep border-l border-rule-soft p-4 sm:p-7 space-y-4">
               <div>
                 <div className="text-[10px] uppercase tracking-[0.16em] text-ink-mute font-mono mb-1.5">From email</div>
                 <div className="font-display text-lg tracking-editorial leading-tight">

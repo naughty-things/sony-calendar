@@ -1,5 +1,5 @@
 import './globals.css';
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import { Fraunces, Inter_Tight, JetBrains_Mono } from 'next/font/google';
 import { startSelfPing } from '@/lib/inbound/selfPing';
 
@@ -31,7 +31,22 @@ const mono = JetBrains_Mono({
 
 export const metadata: Metadata = {
   title: 'SONY — Content Calendar',
-  description: 'Production calendar for SONY social. Email in, calendar out.'
+  description: 'Production calendar for SONY social. Email in, calendar out.',
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: 'default',
+    title: 'SONY Calendar'
+  },
+  formatDetection: { telephone: false }
+};
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
+  viewportFit: 'cover',
+  themeColor: '#F4F1EA'
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

@@ -2,6 +2,14 @@
 export default {
   content: ['./src/**/*.{js,ts,jsx,tsx,mdx}'],
   theme: {
+    screens: {
+      xs: '420px',
+      sm: '640px',
+      md: '768px',
+      lg: '1024px',
+      xl: '1280px',
+      '2xl': '1536px'
+    },
     extend: {
       colors: {
         paper:    { DEFAULT: '#F4F1EA', deep: '#EBE6D9', warm: '#FAF8F2' },

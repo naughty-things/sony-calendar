@@ -5,6 +5,7 @@ import { isSameDay, format, isToday } from 'date-fns';
 import { PostWithPeople, STATUS_COLOR } from '@/lib/types';
 import { Holiday } from '@/lib/holidays';
 import { PlatformChip } from './ui/PlatformChip';
+import { useIsMobile } from '@/lib/useIsMobile';
 
 export function WeekKanban({
   days, posts, onOpenPost, onMovePost, arrivedIds, holidays = {}
@@ -16,8 +17,9 @@ export function WeekKanban({
   arrivedIds?: Set<string>;
   holidays?: Record<string, Holiday>;
 }) {
+  const isMobile = useIsMobile();
   return (
-    <div className="grid grid-cols-7 gap-2">
+    <div className={isMobile ? 'space-y-2' : 'grid grid-cols-7 gap-2'}>
       {days.map(d => (
         <WeekColumn
           key={d.toISOString()}
@@ -27,6 +29,7 @@ export function WeekKanban({
           onMovePost={onMovePost}
           arrivedIds={arrivedIds}
           holiday={holidays[format(d, 'yyyy-MM-dd')] ?? null}
+          isMobile={isMobile}
         />
       ))}
     </div>
@@ -34,7 +37,7 @@ export function WeekKanban({
 }
 
 function WeekColumn({
-  d, posts, onOpenPost, onMovePost, arrivedIds, holiday
+  d, posts, onOpenPost, onMovePost, arrivedIds, holiday, isMobile
 }: {
   d: Date;
   posts: PostWithPeople[];
@@ -42,6 +45,7 @@ function WeekColumn({
   onMovePost?: (postId: string, newDate: string) => Promise<void> | void;
   arrivedIds?: Set<string>;
   holiday: Holiday | null;
+  isMobile?: boolean;
 }) {
   const items = posts.filter(p => p.publish_date && isSameDay(new Date(p.publish_date), d));
   const isCurrent = isToday(d);
@@ -65,22 +69,29 @@ function WeekColumn({
         const postId = e.dataTransfer.getData('application/x-post-id');
         if (postId && onMovePost) onMovePost(postId, dropDate);
       }}
-      className={`flex flex-col min-h-[520px] ${dragOver ? 'ring-2 ring-accent rounded-sm bg-accent/10' : ''}`}>
+      className={`${isMobile ? 'rounded-sm border bg-paper-warm' : 'flex flex-col min-h-[520px]'} ${dragOver ? 'ring-2 ring-accent bg-accent/10' : ''} ${
+        isCurrent && isMobile ? 'border-accent border-2 -m-px' : isMobile ? 'border-rule-soft' : ''
+      }`}>
       {/* Day header — editorial */}
-      <div className={`px-3 pt-3 pb-2 rule-b border-rule-soft ${isCurrent ? 'bg-paper-warm' : ''} ${holiday ? 'bg-holiday-tint' : isSunday ? 'bg-holiday-tint/40' : ''}`}>
-        <div className="flex items-baseline justify-between">
+      <div className={`${isMobile ? 'px-3 py-2.5' : 'px-3 pt-3 pb-2 rule-b border-rule-soft'} ${
+        isCurrent ? (isMobile ? '' : 'bg-paper-warm') : ''
+      } ${holiday ? (isMobile ? 'bg-holiday-tint/60' : 'bg-holiday-tint') : isSunday ? (isMobile ? 'bg-holiday-tint/30' : 'bg-holiday-tint/40') : ''} ${isMobile ? 'border-b border-rule-soft' : ''}`}>
+        <div className="flex items-baseline justify-between gap-2">
           <span className={`text-[10px] uppercase tracking-[0.18em] font-mono ${isCurrent ? 'text-accent-deep font-semibold' : dayClassRed ? 'text-holiday font-semibold' : 'text-ink-faint'}`}>
             {format(d, 'EEE')}
+            {isCurrent && <span className="ml-1.5 text-accent-deep">· today</span>}
           </span>
           {items.length > 0 && (
             <span className="text-[10px] font-mono text-ink-mute">{items.length}</span>
           )}
         </div>
-        <div className={`numeral text-[48px] leading-[0.85] mt-1.5 ${dayClassRed ? 'text-holiday' : ''}`}>
-          {format(d, 'd')}
-        </div>
-        <div className="text-[10px] font-mono text-ink-faint uppercase tracking-wide mt-0.5">
-          {format(d, 'MMM')}
+        <div className="flex items-baseline gap-2 mt-1">
+          <span className={`numeral ${isMobile ? 'text-[32px]' : 'text-[48px]'} leading-[0.85] ${dayClassRed ? 'text-holiday' : ''}`}>
+            {format(d, 'd')}
+          </span>
+          <span className="text-[10px] font-mono text-ink-faint uppercase tracking-wide">
+            {format(d, 'MMM')}
+          </span>
         </div>
         {holiday && (
           <div className="text-[10px] font-mono text-holiday font-semibold mt-1 truncate" title={holiday.name}>
@@ -90,12 +101,12 @@ function WeekColumn({
       </div>
 
       {/* Cards */}
-      <div className="flex-1 px-2 py-2 space-y-2">
+      <div className={`${isMobile ? 'px-2.5 py-2' : 'flex-1 px-2 py-2'} space-y-2`}>
         {items.length === 0 && (
           <button
             onClick={() => onOpenPost({ publish_date: format(d, 'yyyy-MM-dd') } as any)}
-            className="w-full h-16 border border-dashed border-rule-soft rounded-sm text-[10px] uppercase tracking-[0.14em] text-ink-faint font-mono hover:border-ink-mute hover:text-ink-mute transition flex items-center justify-center">
-            + drop
+            className="w-full h-12 sm:h-16 border border-dashed border-rule-soft rounded-sm text-[10px] uppercase tracking-[0.14em] text-ink-faint font-mono hover:border-ink-mute hover:text-ink-mute transition flex items-center justify-center">
+            + tap to add
           </button>
         )}
         {items.map(p => (
