@@ -13,8 +13,16 @@ import { Tape } from './ui/Tape';
 import { Toast, ToastItem } from './ui/Toast';
 import { useIsMobile } from '@/lib/useIsMobile';
 import { useAuth } from '@/lib/auth/AuthProvider';
+import { USERS, usernameToEmail } from '@/lib/auth/config';
 import { useRouter, usePathname } from 'next/navigation';
 import { LogIn, LogOut, User as UserIcon } from 'lucide-react';
+
+/** Look up a friendly display name for the signed-in user. */
+function adminDisplayName(email?: string | null): string {
+  if (!email) return '';
+  const match = USERS.find(u => u.email === email);
+  return match ? match.displayName : email;
+}
 
 type View = 'month' | 'week';
 type StatusFilter = PostStatus | 'all';
@@ -389,7 +397,7 @@ export function Calendar() {
                     className="flex items-center gap-1.5 text-sm px-2 py-1.5 border border-rule-soft rounded-sm hover:border-ink transition text-ink-soft">
                     <UserIcon size={13} />
                     <span className="hidden md:inline text-[11px] font-mono text-ink-faint max-w-[140px] truncate">
-                      {user?.email}
+                      {adminDisplayName(user?.email)}
                     </span>
                   </button>
                   {userMenuOpen && (
@@ -398,7 +406,7 @@ export function Calendar() {
                       <div className="absolute right-0 top-full mt-1.5 z-40 bg-paper-warm border border-rule rounded-sm shadow-lg w-56 py-1.5">
                         <div className="px-3 py-2 border-b border-rule-soft">
                           <div className="text-[10px] uppercase tracking-[0.14em] text-ink-faint font-mono">Signed in as</div>
-                          <div className="text-sm text-ink mt-0.5 truncate">{user?.email}</div>
+                          <div className="text-sm text-ink mt-0.5 truncate">{adminDisplayName(user?.email)}</div>
                         </div>
                         <button
                           onClick={async () => { setUserMenuOpen(false); await signOut(); }}

@@ -2,8 +2,9 @@
 
 import { Suspense, useEffect, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { LogIn, Loader2, Mail, Lock, Eye, EyeOff } from 'lucide-react';
+import { LogIn, Loader2, User, Lock, Eye, EyeOff } from 'lucide-react';
 import { useAuth } from '@/lib/auth/AuthProvider';
+import { usernameToEmail } from '@/lib/auth/config';
 
 export default function LoginPage() {
   return (
@@ -27,7 +28,7 @@ function LoginInner() {
   const params = useSearchParams();
   const nextPath = params.get('next') || '/';
 
-  const [email, setEmail] = useState('');
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [showPwd, setShowPwd] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -41,8 +42,13 @@ function LoginInner() {
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
     setError(null);
+    const email = usernameToEmail(username);
+    if (!email) {
+      setError('Unknown username.');
+      return;
+    }
     setBusy(true);
-    const { error } = await signIn(email.trim(), password);
+    const { error } = await signIn(email, password);
     setBusy(false);
     if (error) {
       setError(error);
@@ -75,17 +81,17 @@ function LoginInner() {
             </p>
           </div>
 
-          <Field label="Email">
+          <Field label="Username">
             <div className="relative">
-              <Mail size={13} className="absolute left-3 top-1/2 -translate-y-1/2 text-ink-faint" />
+              <User size={13} className="absolute left-3 top-1/2 -translate-y-1/2 text-ink-faint" />
               <input
-                type="email"
-                autoComplete="email"
+                type="text"
+                autoComplete="username"
                 required
                 autoFocus
-                value={email}
-                onChange={e => setEmail(e.target.value)}
-                placeholder="sam.lee@naughtythings.com.hk"
+                value={username}
+                onChange={e => setUsername(e.target.value)}
+                placeholder="admin"
                 className="w-full pl-8 pr-3 py-2.5 text-sm bg-paper border border-rule-soft rounded-sm focus:border-ink focus:outline-none placeholder:text-ink-faint transition" />
             </div>
           </Field>
@@ -119,7 +125,7 @@ function LoginInner() {
 
           <button
             type="submit"
-            disabled={busy || !email || !password}
+            disabled={busy || !username || !password}
             className="w-full flex items-center justify-center gap-2 text-sm font-semibold py-2.5 bg-ink text-paper rounded-sm hover:bg-accent hover:text-ink transition disabled:opacity-50 disabled:cursor-not-allowed">
             {busy ? <Loader2 size={14} className="animate-spin" /> : <LogIn size={14} />}
             {busy ? 'Signing in…' : 'Sign in'}
