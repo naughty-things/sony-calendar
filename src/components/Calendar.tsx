@@ -4,7 +4,7 @@ import { useEffect, useMemo, useState, useCallback, useRef } from 'react';
 import { addDays, addMonths, eachDayOfInterval, endOfMonth, endOfWeek, format, isSameDay, isSameMonth, isSameWeek, startOfMonth, startOfWeek, subMonths } from 'date-fns';
 import { Holiday, getHolidaysInRange, getHoliday } from '@/lib/holidays';
 import { getBrowserClient } from '@/lib/supabase/client';
-import { PostWithPeople, PostStatus, Person, STATUS_COLOR, STATUS_LABEL, STATUS_ORDER, STATUS_DOT, PLATFORM_GLYPH, CATEGORY_GLYPH, CATEGORIES } from '@/lib/types';
+import { PostWithPeople, PostStatus, Person, STATUS_COLOR, STATUS_LABEL, STATUS_ORDER, STATUS_DOT, PLATFORM_GLYPH, CATEGORY_GLYPH, CATEGORIES, CATEGORY_LABEL, postCategories } from '@/lib/types';
 import { PlatformChip } from './ui/PlatformChip';
 import { ChevronLeft, ChevronRight, Plus, Search, Sparkles, Filter, Mail, Loader2, Command } from 'lucide-react';
 import { PostModal } from './PostModal';
@@ -26,6 +26,10 @@ function adminDisplayName(email?: string | null): string {
 
 type View = 'month' | 'week';
 type StatusFilter = PostStatus | 'all';
+/* Multi-select category filter. Empty Set means "no category filter active"
+   (show posts regardless of category, including ones with no category).
+   'NONE' is a sentinel for "posts with no category at all". */
+type CategoryFilter = Set<string>;
 
 export function Calendar() {
   const [view, setView] = useState<View>('month');
@@ -36,6 +40,7 @@ export function Calendar() {
   const [editing, setEditing] = useState<PostWithPeople | null>(null);
   const [creating, setCreating] = useState<{ date?: string } | null>(null);
   const [statusFilter, setStatusFilter] = useState<StatusFilter>('all');
+  const [categoryFilter, setCategoryFilter] = useState<CategoryFilter>(new Set());
   const [search, setSearch] = useState('');
   const [showReviewInbox, setShowReviewInbox] = useState(false);
   const [lastIngestAt, setLastIngestAt] = useState<string | null>(null);
@@ -121,7 +126,7 @@ export function Calendar() {
         newOnes.forEach((x: PostWithPeople) => {
           seenPostIds.current.add(x.id);
           setArrivedIds(prev => new Set(prev).add(x.id));
-          if (x.source === 'email' && x.status === 'needs_review') {
+          if (x.source === 'email' && x.status === 'client_review') {
             setToasts(t => [...t, {
               id: 'arr-' + x.id,
               title: 'New from email',
@@ -245,27 +250,41 @@ export function Calendar() {
     const q = search.trim().toLowerCase();
     return posts.filter(p => {
       if (statusFilter !== 'all' && p.status !== statusFilter) return false;
+      // Multi-select category filter: empty set = no filter (pass everything).
+      // Posts match if ANY of their categories overlap with the active set,
+      // OR if their category is empty and the sentinel 'NONE' is active.
+      if (categoryFilter.size > 0) {
+        const cats = postCategories(p);
+        const noneActive = categoryFilter.has('NONE');
+        if (cats.length === 0) {
+          if (!noneActive) return false;
+        } else {
+          if (!cats.some(c => categoryFilter.has(c))) return false;
+        }
+      }
       if (q && !p.title?.toLowerCase().includes(q) && !p.notes?.toLowerCase().includes(q) && !(Array.isArray(p.platform) ? p.platform.join(' ').toLowerCase() : (p.platform || '').toLowerCase()).includes(q)) return false;
       return true;
     });
-  }, [posts, statusFilter, search]);
+  }, [posts, statusFilter, categoryFilter, search]);
 
-  /* Posts that are scheduled to a date — i.e. everything except staging */
+  /* Posts that are scheduled to a date — i.e. everything with a publish_date */
   const datedPosts = useMemo(
-    () => filteredPosts.filter(p => p.status !== 'staging' && p.publish_date),
+    () => filteredPosts.filter(p => p.publish_date),
     [filteredPosts]
   );
 
   const reviewQueue = useMemo(
-    () => posts.filter(p => p.status === 'needs_review' || p.status === 'client_review')
+    () => posts.filter(p => p.status === 'client_review')
       .sort((a, b) => (b.updated_at || '').localeCompare(a.updated_at || '')),
     [posts]
   );
 
+  /* "Inbox" now means client_review only — staging was retired on 2026-06-17.
+     Kept `stagingQueue` returning an empty array for now so the Inbox button
+     doesn't crash; can be wired up to a different concept later. */
   const stagingQueue = useMemo(
-    () => posts.filter(p => p.status === 'staging')
-      .sort((a, b) => (b.updated_at || '').localeCompare(a.updated_at || '')),
-    [posts]
+    () => [] as PostWithPeople[],
+    []
   );
 
   const postsOn = useCallback((date: Date) => {
@@ -277,6 +296,30 @@ export function Calendar() {
     STATUS_ORDER.forEach(s => { c[s] = posts.filter(p => p.status === s).length; });
     return c;
   }, [posts]);
+
+  /* Per-category counts across all posts (not affected by other filters —
+     these answer "how many HE posts exist total?", which is what the chip
+     badges need). Posts with multiple categories contribute to each of their
+     buckets. */
+  const categoryCounts = useMemo(() => {
+    const c: Record<string, number> = { NONE: 0 };
+    CATEGORIES.forEach(k => { c[k] = 0; });
+    for (const p of posts) {
+      const cats = postCategories(p);
+      if (cats.length === 0) c.NONE++;
+      else for (const cat of cats) c[cat] = (c[cat] || 0) + 1;
+    }
+    return c;
+  }, [posts]);
+
+  function toggleCategory(cat: string) {
+    setCategoryFilter(prev => {
+      const next = new Set(prev);
+      if (next.has(cat)) next.delete(cat);
+      else next.add(cat);
+      return next;
+    });
+  }
 
   const liveRel = useMemo(() => {
     if (!lastIngestAt) return null;
@@ -504,6 +547,66 @@ export function Calendar() {
               </>
             )}
           </div>
+
+          {/* Category filter strip — multi-select. Empty = no filter.
+              Sits on its own line under the status strip. */}
+          <div className={`mt-2 ${isMobile ? '-mx-4 px-4 overflow-x-auto no-scrollbar' : 'flex items-center gap-1 flex-wrap justify-end pb-1'}`}>
+            {isMobile ? (
+              <div className="flex items-center gap-1 pb-1 min-w-max">
+                <span className="text-[10px] uppercase tracking-[0.14em] text-ink-faint font-mono mr-1">cat</span>
+                {categoryFilter.size > 0 && (
+                  <FilterChip
+                    label="clear"
+                    onClick={() => setCategoryFilter(new Set())} />
+                )}
+                {CATEGORIES.map(c => {
+                  const n = categoryCounts[c] || 0;
+                  if (n === 0 && !categoryFilter.has(c)) return null;
+                  return (
+                    <FilterChip
+                      key={c}
+                      label={`${c} · ${n}`}
+                      active={categoryFilter.has(c)}
+                      onClick={() => toggleCategory(c)} />
+                  );
+                })}
+                {(categoryCounts.NONE > 0 || categoryFilter.has('NONE')) && (
+                  <FilterChip
+                    label={`none · ${categoryCounts.NONE}`}
+                    active={categoryFilter.has('NONE')}
+                    onClick={() => toggleCategory('NONE')} />
+                )}
+              </div>
+            ) : (
+              <>
+                <span className="text-[10px] uppercase tracking-[0.14em] text-ink-faint font-mono mr-1">cat</span>
+                {categoryFilter.size > 0 && (
+                  <FilterChip
+                    label="clear"
+                    onClick={() => setCategoryFilter(new Set())} />
+                )}
+                {CATEGORIES.map(c => {
+                  const n = categoryCounts[c] || 0;
+                  if (n === 0 && !categoryFilter.has(c)) return null;
+                  return (
+                    <FilterChip
+                      key={c}
+                      label={`${c} · ${n}`}
+                      title={CATEGORY_LABEL[c]}
+                      active={categoryFilter.has(c)}
+                      onClick={() => toggleCategory(c)} />
+                  );
+                })}
+                {(categoryCounts.NONE > 0 || categoryFilter.has('NONE')) && (
+                  <FilterChip
+                    label={`none · ${categoryCounts.NONE}`}
+                    title="Posts with no category set"
+                    active={categoryFilter.has('NONE')}
+                    onClick={() => toggleCategory('NONE')} />
+                )}
+              </>
+            )}
+          </div>
         </div>
         <div className="rule-t rule-soft" />
       </header>
@@ -599,10 +702,11 @@ export function Calendar() {
 /* ─────────────────────────────────────────
    Small UI atoms
    ───────────────────────────────────────── */
-function FilterChip({ label, color, active, onClick }: { label: string; color?: string; active: boolean; onClick: () => void }) {
+function FilterChip({ label, color, active = false, onClick, title }: { label: string; color?: string; active?: boolean; onClick: () => void; title?: string }) {
   return (
     <button
       onClick={onClick}
+      title={title}
       className={`flex items-center gap-1.5 text-[11px] font-mono px-2 py-1 rounded-sm border transition ${
         active ? 'bg-ink text-paper border-ink' : 'border-rule-soft text-ink-soft hover:border-ink-mute hover:text-ink'
       }`}>
@@ -760,9 +864,7 @@ function DayCell({
 }
 
 function PostChip({ p, onOpen, highlight, draggable = true }: { p: PostWithPeople; onOpen: (p: PostWithPeople) => void; highlight?: boolean; draggable?: boolean }) {
-  const cat = p.category && (CATEGORIES as readonly string[]).includes(p.category)
-    ? p.category
-    : null;
+  const cats = postCategories(p);
   // Normalize platform to an array — handle legacy string and new array shapes
   const platforms: string[] = Array.isArray(p.platform)
     ? p.platform
@@ -786,9 +888,9 @@ function PostChip({ p, onOpen, highlight, draggable = true }: { p: PostWithPeopl
       ) : (
         <span className="font-mono text-[8px] font-bold leading-tight bg-ink/30 text-paper px-1 py-0.5 rounded-sm shrink-0 mt-[1px]">··</span>
       )}
-      {cat && (
+      {cats.length > 0 && (
         <span className="font-mono text-[8px] font-bold leading-tight bg-paper/70 text-ink px-1 py-0.5 rounded-sm shrink-0 mt-[1px]">
-          {CATEGORY_GLYPH[cat as keyof typeof CATEGORY_GLYPH]}
+          {cats.map(c => CATEGORY_GLYPH[c as keyof typeof CATEGORY_GLYPH] || c).join('·')}
         </span>
       )}
       <span className="text-[11px] leading-[1.25] font-medium line-clamp-2 flex-1 min-w-0">
@@ -1017,7 +1119,9 @@ function ReviewInbox({
           <ul>
             {items.map(p => {
               const peopleLine = [p.designer, p.copy_writer, p.internal_pic, p.client_pic].filter(Boolean).join(' · ');
-              const isStaging = p.status === 'staging';
+              /* isStaging retired on 2026-06-17 — kept as a const for the inbox
+                 template that still references it. No post will hit this branch. */
+              const isStaging = false;
               return (
                 <li key={p.id} className="rule-b border-rule-soft">
                   <button
@@ -1031,9 +1135,9 @@ function ReviewInbox({
                       ) : (
                         <Tape status={p.status} size="xs" />
                       )}
-                      {p.category && (
+                      {postCategories(p).length > 0 && (
                         <span className="font-mono text-[9px] uppercase tracking-wide text-ink-mute">
-                          {p.category}
+                          {postCategories(p).join(' · ')}
                         </span>
                       )}
                       {p.publish_date ? (

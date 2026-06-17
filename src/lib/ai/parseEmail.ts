@@ -14,7 +14,7 @@ import { getMinimax, MINIMAX_CHAT_MODEL } from './client';
 const PostSchema = z.object({
   publish_date: z.string().nullable(),          // YYYY-MM-DD
   platform: z.array(z.string()).nullable(),     // IG, FB, Other
-  category: z.string().nullable(),                // PA / HE / MO / DI / EC / INZONE / OTHER
+  category: z.array(z.string()).nullable(),      // PA / HE / MO / DI / EC / INZONE / OTHER (multi-value; a post can be e.g. ['HE','INZONE'])
   title: z.string().nullable(),
   notes: z.string().nullable(),
   designer: z.string().nullable(),
@@ -49,10 +49,11 @@ For EACH post, extract:
   today. If a post has no clear date, return null. Don't invent dates.
 - platform: array of strings. Use codes: IG, FB, Other. A post can be
   cross-posted — e.g. "IG + FB" → ["IG","FB"]. If unknown, null.
-- category: SONY product category if discernible. Codes: PA (pro audio),
-  HE (headphones), MO (mobile / Xperia), DI (digital imaging — cameras,
-  lenses), EC (consumer electronics), INZONE (gaming line), OTHER.
-  If nothing matches, null.
+- category: ARRAY of strings (a post can span multiple SONY product lines,
+  e.g. an INZONE headphone launch would be ["HE","INZONE"]). Codes: PA
+  (personal audio), HE (headphones), MO (mobile / Xperia), DI (digital
+  imaging — cameras, lenses), EC (e-commerce), INZONE (gaming line),
+  OTHER. Always return [] if nothing matches.
 - title: short, human-readable. e.g. "1000X Series (WF, WH – Pink & Sand
   stone, XP) Usage scenario Differentiation Social Post à WFM6". If the
   email is a table, the title usually lives in the "Content" column.
@@ -88,7 +89,7 @@ Also extract:
 Return ONLY a JSON object matching this exact shape. No prose, no markdown
 fences:
 {
-  "posts": [ { "publish_date": "YYYY-MM-DD"|null, "platform": ["IG"]|null, "category": "HE"|null, "title": "...", "notes": "...", "designer": null, "copy_writer": null, "internal_pic": null, "client_pic": null, "mentioned_internal": [], "mentioned_client": [], "confidence": 0.0-1.0 } ],
+  "posts": [ { "publish_date": "YYYY-MM-DD"|null, "platform": ["IG"]|null, "category": ["HE","INZONE"]|null, "title": "...", "notes": "...", "designer": null, "copy_writer": null, "internal_pic": null, "client_pic": null, "mentioned_internal": [], "mentioned_client": [], "confidence": 0.0-1.0 } ],
   "email_summary": "..."|null
 }
 
@@ -97,7 +98,7 @@ Examples:
 1) Single-post email:
   Subject: "Sony WH-1000XM6 launch — 18 Jun, IG"
   Body: brief paragraph, no table
-  → { "posts": [ { "publish_date": "2026-06-18", "platform": ["IG"], "category": "HE", "title": "WH-1000XM6 launch post", "notes": null, ..., "confidence": 0.95 } ], "email_summary": null }
+  → { "posts": [ { "publish_date": "2026-06-18", "platform": ["IG"], "category": ["HE"], "title": "WH-1000XM6 launch post", "notes": null, ..., "confidence": 0.95 } ], "email_summary": null }
 
 2) Table-style email with 3 rows:
   Body:
@@ -105,7 +106,7 @@ Examples:
     1 Jul              | XP Noise cancelling post | bit.ly/4xg7mU1 | Approved, plz schedule
     8 Jul              | XP Design - tech video | bit.ly/49U7Bdo | Approved, plz schedule
     15 Jul             | 1000X Series Usage scenario Differentiation à WFM6 | TBS | Plz help prepare
-  → { "posts": [ { "publish_date": "2026-07-01", ... }, { "publish_date": "2026-07-08", ... }, { "publish_date": "2026-07-15", ... } ], "email_summary": "Sony PE team sent the July 2026 social planning grid; 3 posts scheduled/planned." }
+  → { "posts": [ { "publish_date": "2026-07-01", "category": ["MO"], ... }, { "publish_date": "2026-07-08", "category": ["MO"], ... }, { "publish_date": "2026-07-15", "category": ["HE","MO"], ... } ], "email_summary": "Sony PE team sent the July 2026 social planning grid; 3 posts scheduled/planned." }
 
 3) Irrelevant email (out-of-office reply, calendar invite, thank-you note):
   → { "posts": [], "email_summary": "Out-of-office auto-reply from Charis (on leave 24 Jun – 7 Jul)." }

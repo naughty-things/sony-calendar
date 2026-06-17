@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
-import { Post, PostStatus, PostWithPeople, STATUS_LABEL, STATUS_ORDER, CATEGORIES, CATEGORY_LABEL, PLATFORMS, PLATFORM_GLYPH } from '@/lib/types';
+import { Post, PostStatus, PostWithPeople, STATUS_LABEL, STATUS_ORDER, CATEGORIES, CATEGORY_LABEL, CATEGORY_GLYPH, PLATFORMS, PLATFORM_GLYPH } from '@/lib/types';
 import { getBrowserClient } from '@/lib/supabase/client';
 import { X, Trash2, Sparkles, Mail, Briefcase, Building2, FileText, Check, Loader2, Pen, Type } from 'lucide-react';
 import { Tape } from './ui/Tape';
@@ -9,6 +9,16 @@ import { NameInput } from './ui/NameInput';
 import { useIsMobile } from '@/lib/useIsMobile';
 
 const ALL_STATUSES: PostStatus[] = STATUS_ORDER;
+
+/** Normalize whatever shape `post.category` arrives in (string | string[] | null)
+ *  into a string[]. The DB column is text[] post-migration, but legacy rows and
+ *  optimistic-update payloads can still look scalar. */
+function postCategories(post: { category?: string[] | string | null } | null | undefined): string[] {
+  if (!post || post.category == null) return [];
+  if (Array.isArray(post.category)) return post.category.filter(Boolean) as string[];
+  if (typeof post.category === 'string' && post.category) return [post.category];
+  return [];
+}
 
 export type RecentNames = {
   designer: string[];
@@ -29,9 +39,9 @@ export function PostModal({
   const supabase = getBrowserClient();
   const [title, setTitle] = useState(post?.title ?? '');
   const [platform, setPlatform] = useState<string[]>(Array.isArray(post?.platform) ? post!.platform! : (post?.platform ? [post.platform] : ['IG']));
-  const [category, setCategory] = useState<string>(post?.category ?? '');
+  const [category, setCategory] = useState<string[]>(postCategories(post));
   const [publishDate, setPublishDate] = useState<string>(post?.publish_date ?? initialDate ?? new Date().toISOString().slice(0, 10));
-  const [status, setStatus] = useState<PostStatus>(post?.status ?? 'draft');
+  const [status, setStatus] = useState<PostStatus>(post?.status ?? 'in_progress');
   const [designer, setDesigner] = useState<string>(post?.designer ?? '');
   const [copyWriter, setCopyWriter] = useState<string>(post?.copy_writer ?? '');
   const [internalPic, setInternalPic] = useState<string>(post?.internal_pic ?? '');
@@ -57,19 +67,13 @@ export function PostModal({
       alert('You need to sign in to save changes.');
       return;
     }
-    // If a staging post gets a real date + title, promote it out of staging
-    // to needs_review automatically.
-    let finalStatus = status;
-    if (status === 'staging' && publishDate && title) {
-      finalStatus = 'needs_review';
-    }
     const trim = (s: string) => s.trim() || null;
     const payload: Partial<Post> = {
       title: title || '(untitled)',
       platform: platform.length > 0 ? platform : null,
-      category: category || null,
+      category: category.length > 0 ? category : null,
       publish_date: publishDate || null,
-      status: finalStatus,
+      status,
       designer: trim(designer),
       copy_writer: trim(copyWriter),
       internal_pic: trim(internalPic),
@@ -194,13 +198,33 @@ export function PostModal({
                   })}
                 </div>
               </Field>
-              <Field label="Category">
-                <select value={category} onChange={e => setCategory(e.target.value)} className={inputCls}>
-                  <option value="">— none —</option>
-                  {CATEGORIES.map(c => (
-                    <option key={c} value={c}>{c} — {CATEGORY_LABEL[c]}</option>
-                  ))}
-                </select>
+              <Field label="Categories (multi-select)">
+                <div className="flex flex-wrap gap-1">
+                  {CATEGORIES.map(c => {
+                    const active = category.includes(c);
+                    return (
+                      <button
+                        key={c}
+                        type="button"
+                        onClick={() => setCategory(active ? category.filter(x => x !== c) : [...category, c])}
+                        title={CATEGORY_LABEL[c]}
+                        className={`px-1.5 py-0.5 rounded-sm border transition flex items-center gap-1.5 ${
+                          active
+                            ? 'bg-ink border-ink text-paper'
+                            : 'bg-transparent border-rule-soft hover:border-ink-mute text-ink-soft'
+                        }`}>
+                        <span className="text-[10px] font-semibold uppercase tracking-wide">
+                          {CATEGORY_GLYPH[c]}
+                        </span>
+                      </button>
+                    );
+                  })}
+                </div>
+                {category.length > 0 && (
+                  <div className="mt-1.5 text-[10px] uppercase tracking-[0.14em] text-ink-mute font-mono">
+                    {category.map(c => (CATEGORY_LABEL as Record<string, string>)[c] || c).join(' · ')}
+                  </div>
+                )}
               </Field>
             </div>
             <div className="grid grid-cols-1 gap-4">

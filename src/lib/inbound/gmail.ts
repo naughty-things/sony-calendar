@@ -288,15 +288,21 @@ export async function pollGmail(): Promise<PollResult> {
           //    - full brief (date + title) → calendar chip with status=needs_review
           //    - partial brief            → staging zone (publish_date=NULL, status=staging)
           //      so a human can fill in the gaps and promote to the calendar
+          /* Status on insert (post 2026-06-17 enum tightening):
+               - full brief (date + title)  -> client_review (was 'needs_review')
+               - partial brief              -> in_progress (was 'staging', which no longer exists)
+            */
           const { data: post, error: postErr } = await admin
             .from('posts')
             .insert({
               client_id: clientRow.id,
               title: item.title || subject || '(untitled)',
               platform: item.platform || null,
-              category: item.category || null,
+              category: Array.isArray(item.category) && item.category.length > 0
+                ? item.category
+                : null,
               publish_date: item.publish_date || null,
-              status: hasDate && hasTitle ? 'needs_review' : 'staging',
+              status: hasDate && hasTitle ? 'client_review' : 'in_progress',
               designer: item.designer || null,
               copy_writer: item.copy_writer || null,
               internal_pic: item.internal_pic || null,
