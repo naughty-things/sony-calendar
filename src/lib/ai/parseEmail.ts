@@ -138,5 +138,22 @@ export async function parseEmail(input: {
   // Strip accidental code fences
   const cleaned = text.replace(/^```(?:json)?\s*/i, '').replace(/```\s*$/i, '').trim();
   const obj = JSON.parse(cleaned);
+
+  // Guard against the LEGACY single-post shape (the parser used to expect
+  // { title, publish_date, ... } at the top level). The new shape always
+  // has a `posts` array. If a future model regression or a stale prompt
+  // returns the legacy shape, we surface a loud, specific error instead
+  // of silently creating a staging post with the email subject as the
+  // title. This is a defensive check — ParseResultSchema.parse() would
+  // also reject it, but with a generic ZodError that's harder to debug
+  // in the email_ingests.error column.
+  if (!Array.isArray((obj as any)?.posts)) {
+    throw new Error(
+      `parseEmail: model returned legacy single-post shape (no "posts" array). ` +
+      `Top-level keys: ${Object.keys(obj || {}).join(', ')}. ` +
+      `This usually means the system prompt was bypassed or the model regressed.`
+    );
+  }
+
   return ParseResultSchema.parse(obj);
 }

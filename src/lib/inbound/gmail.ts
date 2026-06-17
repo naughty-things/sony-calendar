@@ -261,6 +261,30 @@ export async function pollGmail(): Promise<PollResult> {
           const hasTitle = !!item.title;
           if (!(hasDate && hasTitle)) allHaveDateAndTitle = false;
 
+          // Defensive: if a row has NO date AND the title matches the email
+          // subject (after stripping common reply/forward prefixes), this
+          // is almost certainly a parser regression (the model returned a
+          // single fake post with the subject as the title, instead of an
+          // array of real posts from a planning table). Skip it rather
+          // than creating a confusing staging post that looks like a real
+          // brief but isn't. The real posts from this email — if any —
+          // will have proper titles and dates. This is the safety net
+          // for the 2026-06-16 incident where one Jul 2026 planning email
+          // produced 5 real posts + 1 orphan staging post titled
+          // "Sony PE Social Post Planning Jul 2026".
+          const stripPrefix = (s: string) => s.replace(/^\s*(re|fwd|fw)\s*:\s*/i, '').trim();
+          const titleIsSubject =
+            !!item.title && !!subject &&
+            stripPrefix(item.title).toLowerCase() === stripPrefix(subject).toLowerCase();
+          if (!hasDate && titleIsSubject) {
+            console.warn(
+              `[inbound] skipping suspicious row: title matches email subject ` +
+              `and date is null (gmail_id=${id}, row=${i}, total=${ai.posts.length}, ` +
+              `subject=${JSON.stringify(subject)})`
+            );
+            continue;
+          }
+
           //    - full brief (date + title) → calendar chip with status=needs_review
           //    - partial brief            → staging zone (publish_date=NULL, status=staging)
           //      so a human can fill in the gaps and promote to the calendar
