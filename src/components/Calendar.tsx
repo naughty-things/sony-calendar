@@ -444,8 +444,8 @@ export function Calendar() {
                 aria-label="Previous">
                 <ChevronLeft size={18} />
               </button>
-              <h1 className="font-display text-[36px] sm:text-[68px] leading-[0.9] tracking-editorial font-light text-ink min-w-0 truncate">
-                <span className="italic">{format(cursor, view === 'month' ? 'LLLL' : 'MMM')}</span>
+              <h1 className="font-display text-[36px] sm:text-[68px] leading-[1.15] tracking-editorial font-light text-ink shrink-0 whitespace-nowrap">
+                <span className="italic" style={{ lineHeight: 1.25 }}>{format(cursor, view === 'month' ? 'LLLL' : 'MMM')}</span>
                 <span className="ml-2 sm:ml-3 font-mono not-italic text-ink-mute text-[24px] sm:text-[44px] align-[0.05em]">
                   {format(cursor, view === 'month' ? 'yyyy' : 'yyyy')}
                 </span>
