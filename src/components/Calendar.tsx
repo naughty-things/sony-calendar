@@ -479,9 +479,11 @@ export function Calendar() {
             </div>
           )}
 
-          {/* Date nav row */}
+          {/* Date nav row + status filter (single row on desktop, stacked on mobile)
+              Desktop: date heading on the left, status filter (All / Client review / Posted) on the right.
+              Category filter lives on its own row below, on the LEFT under the month/year. */}
           <div className="mt-4 flex items-end justify-between gap-3 sm:gap-4">
-            <div className="flex items-end gap-2 sm:gap-3 min-w-0 flex-1">
+            <div className="flex items-end gap-2 sm:gap-3 min-w-0">
               <button onClick={() => setCursor(view === 'month' ? subMonths(cursor, 1) : addDays(cursor, -7))}
                 className="p-1.5 -ml-1 rounded-sm hover:bg-paper-deep text-ink-soft shrink-0"
                 aria-label="Previous">
@@ -503,12 +505,11 @@ export function Calendar() {
                 today
               </button>
             </div>
-          </div>
 
-          {/* Status filter strip — desktop inline, mobile horizontally scrollable */}
-          <div className={`mt-3 sm:mt-4 ${isMobile ? '-mx-4 px-4 overflow-x-auto no-scrollbar' : 'flex items-center gap-1.5 flex-wrap justify-end pb-1.5'}`}>
-            {isMobile ? (
-              <div className="flex items-center gap-1.5 pb-1 min-w-max">
+            {/* Status filter — right side on desktop (one row with date nav).
+                On mobile it scrolls horizontally on its own line. */}
+            {!isMobile ? (
+              <div className="flex items-center gap-1.5 flex-wrap justify-end pb-1.5 shrink-0">
                 <FilterChip
                   label={`All · ${counts.all}`}
                   active={statusFilter === 'all'}
@@ -527,30 +528,33 @@ export function Calendar() {
                 })}
               </div>
             ) : (
-              <>
-                <FilterChip
-                  label={`All · ${counts.all}`}
-                  active={statusFilter === 'all'}
-                  onClick={() => setStatusFilter('all')} />
-                {STATUS_ORDER.map(s => {
-                  const n = counts[s] || 0;
-                  if (n === 0 && statusFilter !== s) return null;
-                  return (
-                    <FilterChip
-                      key={s}
-                      label={`${STATUS_LABEL[s]} · ${n}`}
-                      color={STATUS_DOT[s]}
-                      active={statusFilter === s}
-                      onClick={() => setStatusFilter(s)} />
-                  );
-                })}
-              </>
+              <div className="-mx-4 px-4 overflow-x-auto no-scrollbar flex-1 min-w-0">
+                <div className="flex items-center gap-1.5 pb-1 min-w-max">
+                  <FilterChip
+                    label={`All · ${counts.all}`}
+                    active={statusFilter === 'all'}
+                    onClick={() => setStatusFilter('all')} />
+                  {STATUS_ORDER.map(s => {
+                    const n = counts[s] || 0;
+                    if (n === 0 && statusFilter !== s) return null;
+                    return (
+                      <FilterChip
+                        key={s}
+                        label={`${STATUS_LABEL[s]} · ${n}`}
+                        color={STATUS_DOT[s]}
+                        active={statusFilter === s}
+                        onClick={() => setStatusFilter(s)} />
+                    );
+                  })}
+                </div>
+              </div>
             )}
           </div>
 
           {/* Category filter strip — multi-select. Empty = no filter.
-              Sits on its own line under the status strip. */}
-          <div className={`mt-2 ${isMobile ? '-mx-4 px-4 overflow-x-auto no-scrollbar' : 'flex items-center gap-1 flex-wrap justify-end pb-1'}`}>
+              Desktop: sits on the LEFT, just under the month/year.
+              Mobile: stacked under status, scrolls horizontally. */}
+          <div className={`${isMobile ? 'mt-3 -mx-4 px-4 overflow-x-auto no-scrollbar' : 'mt-2 flex items-center gap-1 flex-wrap justify-start pb-1'}`}>
             {isMobile ? (
               <div className="flex items-center gap-1 pb-1 min-w-max">
                 <span className="text-[10px] uppercase tracking-[0.14em] text-ink-faint font-mono mr-1">cat</span>
