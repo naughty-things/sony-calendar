@@ -25,7 +25,7 @@ export const STATUS_LABEL: Record<PostStatus, string> = {
 export const STATUS_COLOR: Record<PostStatus, string> = {
   in_progress:   'bg-[#D5E3F0] text-[#1E3A5F]',     // steel blue
   client_review: 'bg-[#F0D2DC] text-[#7A1A37]',     // dusty pink
-  approved:      'bg-[#CDE9D0] text-[#1F4429]',     // soft forest
+  approved:      'bg-[#FFD66B] text-[#5A3A00]',     // SONY orange (matches accent palette)
   posted:        'bg-[#A8D5B5] text-[#15331F]'      // forest
 };
 
@@ -61,7 +61,7 @@ export const CATEGORY_GLYPH: Record<Category, string> = {
 export const STATUS_DOT: Record<PostStatus, string> = {
   in_progress:   'bg-steel',
   client_review: 'bg-magenta',
-  approved:      'bg-emerald-700',
+  approved:      'bg-accent',
   posted:        'bg-forest'
 };
 
