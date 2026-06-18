@@ -479,9 +479,7 @@ export function Calendar() {
             </div>
           )}
 
-          {/* Date nav row + status filter (single row on desktop, stacked on mobile)
-              Desktop: date heading on the left, status filter (All / Client review / Posted) on the right.
-              Category filter lives on its own row below, on the LEFT under the month/year. */}
+          {/* Date nav row — desktop, just the heading and arrows. */}
           <div className="mt-4 flex items-end justify-between gap-3 sm:gap-4">
             <div className="flex items-end gap-2 sm:gap-3 min-w-0">
               <button onClick={() => setCursor(view === 'month' ? subMonths(cursor, 1) : addDays(cursor, -7))}
@@ -505,31 +503,97 @@ export function Calendar() {
                 today
               </button>
             </div>
+          </div>
 
-            {/* Status filter — right side on desktop (one row with date nav).
-                On mobile it scrolls horizontally on its own line. */}
-            {!isMobile ? (
-              <div className="flex items-center gap-1.5 flex-wrap justify-end pb-1.5 shrink-0">
-                <FilterChip
-                  label={`All · ${counts.all}`}
-                  active={statusFilter === 'all'}
-                  onClick={() => setStatusFilter('all')} />
-                {STATUS_ORDER.map(s => {
-                  const n = counts[s] || 0;
-                  if (n === 0 && statusFilter !== s) return null;
-                  return (
+          {/* Category (left) + Status (right) filter row.
+              Desktop: single row under the month/year, cat on left, status on right.
+              Mobile: stacked, each on its own scrollable strip. */}
+          <div className={`${isMobile ? 'mt-3' : 'mt-2 flex items-center justify-between gap-3 sm:gap-4 pb-1.5 flex-wrap'}`}>
+            {isMobile ? (
+              <>
+                {/* Category strip — scrolls horizontally on mobile */}
+                <div className="-mx-4 px-4 overflow-x-auto no-scrollbar">
+                  <div className="flex items-center gap-1 pb-2 min-w-max">
+                    <span className="text-[10px] uppercase tracking-[0.14em] text-ink-faint font-mono mr-1">cat</span>
+                    {categoryFilter.size > 0 && (
+                      <FilterChip
+                        label="clear"
+                        onClick={() => setCategoryFilter(new Set())} />
+                    )}
+                    {CATEGORIES.map(c => {
+                      const n = categoryCounts[c] || 0;
+                      if (n === 0 && !categoryFilter.has(c)) return null;
+                      return (
+                        <FilterChip
+                          key={c}
+                          label={`${c} · ${n}`}
+                          active={categoryFilter.has(c)}
+                          onClick={() => toggleCategory(c)} />
+                      );
+                    })}
+                    {(categoryCounts.NONE > 0 || categoryFilter.has('NONE')) && (
+                      <FilterChip
+                        label={`none · ${categoryCounts.NONE}`}
+                        active={categoryFilter.has('NONE')}
+                        onClick={() => toggleCategory('NONE')} />
+                    )}
+                  </div>
+                </div>
+                {/* Status strip — scrolls horizontally on mobile */}
+                <div className="-mx-4 px-4 overflow-x-auto no-scrollbar">
+                  <div className="flex items-center gap-1.5 pb-1 min-w-max">
                     <FilterChip
-                      key={s}
-                      label={`${STATUS_LABEL[s]} · ${n}`}
-                      color={STATUS_DOT[s]}
-                      active={statusFilter === s}
-                      onClick={() => setStatusFilter(s)} />
-                  );
-                })}
-              </div>
+                      label={`All · ${counts.all}`}
+                      active={statusFilter === 'all'}
+                      onClick={() => setStatusFilter('all')} />
+                    {STATUS_ORDER.map(s => {
+                      const n = counts[s] || 0;
+                      if (n === 0 && statusFilter !== s) return null;
+                      return (
+                        <FilterChip
+                          key={s}
+                          label={`${STATUS_LABEL[s]} · ${n}`}
+                          color={STATUS_DOT[s]}
+                          active={statusFilter === s}
+                          onClick={() => setStatusFilter(s)} />
+                      );
+                    })}
+                  </div>
+                </div>
+              </>
             ) : (
-              <div className="-mx-4 px-4 overflow-x-auto no-scrollbar flex-1 min-w-0">
-                <div className="flex items-center gap-1.5 pb-1 min-w-max">
+              <>
+                {/* Category on left */}
+                <div className="flex items-center gap-1 flex-wrap min-w-0">
+                  <span className="text-[10px] uppercase tracking-[0.14em] text-ink-faint font-mono mr-1">cat</span>
+                  {categoryFilter.size > 0 && (
+                    <FilterChip
+                      label="clear"
+                      onClick={() => setCategoryFilter(new Set())} />
+                  )}
+                  {CATEGORIES.map(c => {
+                    const n = categoryCounts[c] || 0;
+                    if (n === 0 && !categoryFilter.has(c)) return null;
+                    return (
+                      <FilterChip
+                        key={c}
+                        label={`${c} · ${n}`}
+                        title={CATEGORY_LABEL[c]}
+                        active={categoryFilter.has(c)}
+                        onClick={() => toggleCategory(c)} />
+                    );
+                  })}
+                  {(categoryCounts.NONE > 0 || categoryFilter.has('NONE')) && (
+                    <FilterChip
+                      label={`none · ${categoryCounts.NONE}`}
+                      title="Posts with no category set"
+                      active={categoryFilter.has('NONE')}
+                      onClick={() => toggleCategory('NONE')} />
+                  )}
+                </div>
+
+                {/* Status on right */}
+                <div className="flex items-center gap-1.5 flex-wrap justify-end shrink-0">
                   <FilterChip
                     label={`All · ${counts.all}`}
                     active={statusFilter === 'all'}
@@ -547,67 +611,6 @@ export function Calendar() {
                     );
                   })}
                 </div>
-              </div>
-            )}
-          </div>
-
-          {/* Category filter strip — multi-select. Empty = no filter.
-              Desktop: sits on the LEFT, just under the month/year.
-              Mobile: stacked under status, scrolls horizontally. */}
-          <div className={`${isMobile ? 'mt-3 -mx-4 px-4 overflow-x-auto no-scrollbar' : 'mt-2 flex items-center gap-1 flex-wrap justify-start pb-1'}`}>
-            {isMobile ? (
-              <div className="flex items-center gap-1 pb-1 min-w-max">
-                <span className="text-[10px] uppercase tracking-[0.14em] text-ink-faint font-mono mr-1">cat</span>
-                {categoryFilter.size > 0 && (
-                  <FilterChip
-                    label="clear"
-                    onClick={() => setCategoryFilter(new Set())} />
-                )}
-                {CATEGORIES.map(c => {
-                  const n = categoryCounts[c] || 0;
-                  if (n === 0 && !categoryFilter.has(c)) return null;
-                  return (
-                    <FilterChip
-                      key={c}
-                      label={`${c} · ${n}`}
-                      active={categoryFilter.has(c)}
-                      onClick={() => toggleCategory(c)} />
-                  );
-                })}
-                {(categoryCounts.NONE > 0 || categoryFilter.has('NONE')) && (
-                  <FilterChip
-                    label={`none · ${categoryCounts.NONE}`}
-                    active={categoryFilter.has('NONE')}
-                    onClick={() => toggleCategory('NONE')} />
-                )}
-              </div>
-            ) : (
-              <>
-                <span className="text-[10px] uppercase tracking-[0.14em] text-ink-faint font-mono mr-1">cat</span>
-                {categoryFilter.size > 0 && (
-                  <FilterChip
-                    label="clear"
-                    onClick={() => setCategoryFilter(new Set())} />
-                )}
-                {CATEGORIES.map(c => {
-                  const n = categoryCounts[c] || 0;
-                  if (n === 0 && !categoryFilter.has(c)) return null;
-                  return (
-                    <FilterChip
-                      key={c}
-                      label={`${c} · ${n}`}
-                      title={CATEGORY_LABEL[c]}
-                      active={categoryFilter.has(c)}
-                      onClick={() => toggleCategory(c)} />
-                  );
-                })}
-                {(categoryCounts.NONE > 0 || categoryFilter.has('NONE')) && (
-                  <FilterChip
-                    label={`none · ${categoryCounts.NONE}`}
-                    title="Posts with no category set"
-                    active={categoryFilter.has('NONE')}
-                    onClick={() => toggleCategory('NONE')} />
-                )}
               </>
             )}
           </div>
