@@ -10,6 +10,7 @@
 
 import { z } from 'zod';
 import { getMinimax, MINIMAX_CHAT_MODEL } from './client';
+import { htmlTablesToMarkdown } from './htmlTable';
 
 const PostSchema = z.object({
   publish_date: z.string().nullable(),          // YYYY-MM-DD
@@ -132,6 +133,11 @@ CRITICAL — DATE EXTRACTION (this has bitten us before):
     If only "Request Date" is filled in, request_date is set and
     target_launch_date is null (and publish_date should also be null
     because the launch date is genuinely unknown).
+1b. The body you receive will have its tables converted to markdown
+    with rowspan/colspan properly expanded (Request Date cells that
+    span N rows will appear N times in the rendered table). Trust the
+    rendered column alignment — if Request Date shows the same value
+    for multiple rows, that's correct, not a parsing bug.
 2. When a row contains MULTIPLE dates in close proximity (e.g. "16 Jun
    … Jul 8,13,15,22"), do NOT just grab the first date. Identify which
    date sits in the "Target Launch Date" column and use that. The other
@@ -184,35 +190,36 @@ Examples:
   → { "posts": [ { "publish_date": "2026-07-01", "target_launch_date": "2026-07-01", "request_date": null, "category": ["MO"], ..., "confidence": 0.95, "parse_warnings": [] }, { "publish_date": "2026-07-08", "target_launch_date": "2026-07-08", "request_date": null, "category": ["MO"], ..., "confidence": 0.95, "parse_warnings": [] }, { "publish_date": "2026-07-15", "target_launch_date": "2026-07-15", "request_date": null, "category": ["HE","MO"], ..., "confidence": 0.90, "parse_warnings": [] } ], "email_summary": "Sony PE team sent the July 2026 social planning grid; 3 posts scheduled/planned.", "detected_table": true }
 
 3) Table-style email where Request Date AND Target Launch Date BOTH exist
-   but only some rows have Target Launch Date filled in (this is the SA01
-   bug case, expanded to show the Request Date column):
+   for every post (this is the SA01 bug case after we fixed the rowspan
+   alignment). The body table is laid out with a single "Request Date"
+   cell that spans all 5 rows (rowspan="5") and a "Target Launch Date"
+   column with one date per row:
   Body:
     Post | Request Date | Target Launch Date | Cate. | Format | Content Focus | Promotion/Message
-    1    | 10 Jun       | 16 Jun             | My Sony Studio | FBIG Wall Post | SA01   | Classroom Jul 8,13,15,22 ...
-    2    | 19 Jun       |                    | My Sony Studio | FBIG Wall Post | SA02A  | Jul 9,21 19:00-20:30
-    3    | 23 Jun       |                    | My Sony Studio | FBIG Wall Post | Teens  | Option 1: 17 Jul ...
-    4    | 29 Jun       |                    | My Sony Studio | FBIG Wall Post | Idol   | 18 Sat (TBC) ...
-    5    | 6 Jul        |                    | My Sony Studio | FBIG Wall Post | Portrait | 26 Jul (Sun) ...
+    1    | 10 Jun       | 16 Jun             | My Sony Studio | FBIG Wall Post | SA01     | Classroom Jul 8,13,15,22 ...
+    2    | 10 Jun       | 19 Jun             | My Sony Studio | FBIG Wall Post | SA02A    | Jul 9,21 19:00-20:30
+    3    | 10 Jun       | 23 Jun             | My Sony Studio | FBIG Wall Post | Teens    | Option 1: 17 Jul ...
+    4    | 10 Jun       | 29 Jun             | My Sony Studio | FBIG Wall Post | Idol     | 18 Sat (TBC) ...
+    5    | 10 Jun       | 6 Jul              | My Sony Studio | FBIG Wall Post | Portrait | 26 Jul (Sun) ...
   → { "posts": [
-      { "publish_date": "2026-06-16", "target_launch_date": "2026-06-16", "request_date": "2026-06-10", "platform": ["IG","FB"], "category": ["DI"], "title": "My Sony Studio SA01 Workshop (Classroom + Outdoor)", "notes": "Request Date: 10 Jun. Target Launch Date: 16 Jun. Classroom Jul 8,13,15,22 19:00-20:45 @ Sony Store TST; Outdoor Jul 25 14:00-16:00 @ Hong Kong Park. Cost $1,280.", "confidence": 0.85, "parse_warnings": ["Row contains both '16 Jun' (Target Launch Date) and 'Jul 8,13,15,22' (workshop dates); used '16 Jun' from the Target Launch Date column. Verify."] },
-      { "publish_date": null, "target_launch_date": null, "request_date": "2026-06-19", "title": "My Sony Studio SA02A Workshop", "notes": "Request Date: 19 Jun (copy delivery deadline). Target Launch Date column empty. Workshop Jul 9,21 19:00-20:30.", "confidence": 0.55, "parse_warnings": ["Target Launch Date column is empty for post #2; request_date captured (19 Jun) as a copy delivery deadline. Publish date should land before workshop Jul 9 — please assign."] },
-      { "publish_date": null, "target_launch_date": null, "request_date": "2026-06-23", "title": "My Sony Studio Teens Workshop", "notes": "Request Date: 23 Jun. Target Launch Date column empty. Workshop options: 17 Jul or 24 Jul.", "confidence": 0.55, "parse_warnings": ["Target Launch Date column is empty for post #3; request_date captured (23 Jun). Workshop is 17 Jul or 24 Jul — please pick a publish date."] },
-      { "publish_date": null, "target_launch_date": null, "request_date": "2026-06-29", "title": "My Sony Studio Idol Chasing Workshop feat. 陳柏宇", "notes": "Request Date: 29 Jun (copy deadline). Hard deadline: 'share the post content by 16 Jun' for Sony Music review. Workshop: 18 Sat (TBC).", "confidence": 0.55, "parse_warnings": ["Target Launch Date column is empty; request_date captured (29 Jun). Workshop 18 Sat (TBC). Note: hard deadline 'share content by 16 Jun' appears in body — may affect timing."] },
-      { "publish_date": null, "target_launch_date": null, "request_date": "2026-07-06", "title": "My Sony Studio Portrait Workshop feat. a7rm6", "notes": "Request Date: 6 Jul. Target Launch Date column empty. Workshop: 26 Jul (Sun).", "confidence": 0.55, "parse_warnings": ["Target Launch Date column is empty; request_date captured (6 Jul). Workshop 26 Jul — please assign publish date."] }
-    ], "email_summary": "Jennifer Chan (Sony) shared July My Sony Studio workshop social posts; 5 posts total. Request Date / Target Launch Date columns visible.", "detected_table": true }
+      { "publish_date": "2026-06-16", "target_launch_date": "2026-06-16", "request_date": "2026-06-10", "platform": ["IG","FB"], "category": ["DI"], "title": "My Sony Studio SA01 Workshop (Classroom + Outdoor)", "notes": "Request Date: 10 Jun (single cell spanning all 5 rows). Target Launch Date: 16 Jun. Classroom Jul 8,13,15,22 19:00-20:45 @ Sony Store TST; Outdoor Jul 25 14:00-16:00 @ Hong Kong Park. Cost $1,280.", "confidence": 0.95, "parse_warnings": ["Row contains both '16 Jun' (Target Launch Date) and 'Jul 8,13,15,22' (workshop dates); used '16 Jun' from the Target Launch Date column."] },
+      { "publish_date": "2026-06-19", "target_launch_date": "2026-06-19", "request_date": "2026-06-10", "title": "My Sony Studio SA02A Workshop", "notes": "Request Date: 10 Jun (inherited from rowspan=5 cell). Target Launch Date: 19 Jun. Workshop Jul 9,21 19:00-20:30.", "confidence": 0.95, "parse_warnings": [] },
+      { "publish_date": "2026-06-23", "target_launch_date": "2026-06-23", "request_date": "2026-06-10", "title": "My Sony Studio Teens Workshop", "notes": "Request Date: 10 Jun. Target Launch Date: 23 Jun. Workshop options: 17 Jul or 24 Jul.", "confidence": 0.9, "parse_warnings": [] },
+      { "publish_date": "2026-06-29", "target_launch_date": "2026-06-29", "request_date": "2026-06-10", "title": "My Sony Studio Idol Chasing Workshop feat. 陳柏宇", "notes": "Request Date: 10 Jun. Target Launch Date: 29 Jun. Hard deadline 'share the post content by 16 Jun' for Sony Music review (earlier than launch). Workshop: 18 Sat (TBC).", "confidence": 0.9, "parse_warnings": ["Hard deadline 'share the post content by 16 Jun' for Sony Music review is earlier than Target Launch Date (29 Jun) — note for scheduling."] },
+      { "publish_date": "2026-07-06", "target_launch_date": "2026-07-06", "request_date": "2026-06-10", "title": "My Sony Studio Portrait Workshop feat. a7rm6", "notes": "Request Date: 10 Jun. Target Launch Date: 6 Jul. Workshop: 26 Jul (Sun).", "confidence": 0.9, "parse_warnings": [] }
+    ], "email_summary": "Jennifer Chan (Sony) shared July My Sony Studio workshop social posts; 5 posts total. Request Date / Target Launch Date columns visible (Request Date spans all 5 rows via HTML rowspan).", "detected_table": true }
 
-  KEY POINTS:
-  - For post 1, BOTH target_launch_date AND request_date are filled in;
-    use target_launch_date (16 Jun) as publish_date.
-  - For posts 2-5, target_launch_date is empty BUT request_date is filled
-    in (19 Jun / 23 Jun / 29 Jun / 6 Jul). Capture request_date
-    separately so the human reviewer can see it; do NOT silently use it
-    as publish_date.
-  - publish_date stays null when target_launch_date is empty, even when
-    request_date is filled.
-  - For post 4, the body also says "share the post content by 16 Jun" —
-    this is a HARD DEADLINE for Sony Music review and should be
-    captured in notes. It's not the launch date either.
+  KEY POINTS (after the rowspan fix):
+  - The "Request Date" cell uses rowspan="5" — ONE cell applies to all
+    5 posts. Every row should have the SAME request_date (10 Jun here).
+  - The "Target Launch Date" column has ONE cell per row with the
+    actual per-post launch date. Use this for publish_date.
+  - When the rendered table (in the body you'll receive) shows the
+    Request Date column populated for every row, that's the system
+    having correctly expanded the rowspan. Trust it.
+  - If you ever see a table where the Request Date is the same value
+    across multiple rows but Target Launch Date varies per row, that's
+    the rowspan pattern. The same Request Date applies to all rows.
 
   WHY 2026-06-16 NOT 2026-07-16: The "Target Launch Date" column header
   explicitly labels the second date as the post launch date. The "Jul"
@@ -350,11 +357,36 @@ export async function parseEmail(input: {
 }): Promise<ParseResult> {
   const minimax = getMinimax();
 
-  // Pre-process: detect if the body looks like a planning table.
-  // If so, prepend a short hint to the body so the model has stronger
-  // signal that "Target Launch Date" column matters.
-  const table = detectTable(input.body);
+  // Pre-process: detect if the body has a planning table. We do this in
+  // two layers:
+  //
+  // (a) If the body looks like raw HTML (Gmail sometimes falls back to
+  //     the HTML part when text/plain is a tiny placeholder), run the
+  //     rowspan/colspan-aware HTML→markdown converter on any <table>
+  //     blocks. Plain-text Gmail rendering strips <table> structure
+  //     and the AI loses column alignment — esp. when one cell uses
+  //     rowspan="N" to label multiple rows with the same value (e.g.
+  //     "Request Date: 10 Jun" applied to all 5 posts in Jennifer's
+  //     MSS table).
+  //
+  // (b) Even after conversion, prepend a hint so the model knows to
+  //     look at the "Target Launch Date" column for publish_date.
   let body = input.body;
+  const isHtml = /<table[\s>]/i.test(body);
+  if (isHtml) {
+    const tables = htmlTablesToMarkdown(body);
+    if (tables.length > 0) {
+      // Replace each HTML <table>...</table> with the markdown table,
+      // processed in reverse order so earlier indexes stay valid.
+      let next = body;
+      for (let i = tables.length - 1; i >= 0; i--) {
+        const t = tables[i];
+        next = next.slice(0, t.startIndex) + '\n' + t.md + '\n' + next.slice(t.endIndex);
+      }
+      body = next;
+    }
+  }
+  const table = detectTable(body);
   if (table) {
     const headersHint = table.headers.join(' | ');
     body =
@@ -364,7 +396,7 @@ export async function parseEmail(input: {
       `the social-post go-live date. Other dates in the row (workshop ` +
       `dates, request dates) are NOT the launch date.\n\n` +
       `---\n\n` +
-      input.body;
+      body;
   }
 
   const msg = await minimax.messages.create({

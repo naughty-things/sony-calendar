@@ -10,6 +10,7 @@ import { google, gmail_v1 } from 'googleapis';
 import { JWT } from 'google-auth-library';
 import { createAdminClient } from '@/lib/supabase/server';
 import { parseEmail } from '@/lib/ai/parseEmail';
+import { htmlTablesToMarkdown } from '@/lib/ai/htmlTable';
 
 const APP_STATE_KEY = 'gmail_…_history_id';
 const SCOPES = ['https://www.googleapis.com/auth/gmail.readonly'];
@@ -161,14 +162,48 @@ function bodyFromPayload(payload: gmail_v1.Schema$MessagePart | undefined): stri
   }
   walk(payload, 0);
 
+  const plain = candidates.filter(c => c.mime === 'text/plain');
+  const html = candidates.filter(c => c.mime === 'text/html');
+
   // Prefer text/plain over text/html; among ties, prefer the smallest
   // (usually the brief, not the full HTML with quotes/signatures).
-  const plain = candidates.filter(c => c.mime === 'text/plain');
   if (plain.length > 0) {
     plain.sort((a, b) => a.data.length - b.data.length);
-    return Buffer.from(plain[0].data, 'base64').toString('utf8');
+    const plainText = Buffer.from(plain[0].data, 'base64').toString('utf8');
+
+    // SONU's heuristic: if the plain-text body contains a table-like
+    // structure (rows of column-data separated by blank lines, like
+    // the MSS Workshop email forward) AND the email also has an HTML
+    // part, PREFER the HTML-converted version. The plain-text Gmail
+    // rendering strips <table>/<tr>/<td> and especially loses
+    // rowspan information — when a cell uses rowspan="5" to label
+    // multiple rows with the same value (e.g. "Request Date: 10 Jun"
+    // applied to all 5 posts in Jennifer's MSS table), the AI then
+    // misaligns column headers and reads the wrong date for each row.
+    //
+    // We detect a "table-like" plain-text body by looking for the
+    // pattern of asterisk-wrapped headers followed by numbered rows
+    // (*Post*, *Request Date*, *Target Launch Date*, ... then 1 / 10 Jun
+    // / 16 Jun / ...).
+    const looksLikeGmailTable = /\*(Post|Request Date|Target Launch|Cate)/i.test(plainText);
+    if (looksLikeGmailTable && html.length > 0) {
+      // Fall back to HTML + table conversion
+      html.sort((a, b) => a.data.length - b.data.length);
+      const htmlText = Buffer.from(html[0].data, 'base64').toString('utf8');
+      const tables = htmlTablesToMarkdown(htmlText);
+      if (tables.length > 0) {
+        let next = htmlText;
+        for (let i = tables.length - 1; i >= 0; i--) {
+          const t = tables[i];
+          next = next.slice(0, t.startIndex) + '\n' + t.md + '\n' + next.slice(t.endIndex);
+        }
+        // Strip remaining HTML for cleanliness
+        return stripHtml(next).trim();
+      }
+    }
+
+    return plainText;
   }
-  const html = candidates.filter(c => c.mime === 'text/html');
   if (html.length > 0) {
     html.sort((a, b) => a.data.length - b.data.length);
     return Buffer.from(html[0].data, 'base64').toString('utf8');
@@ -186,6 +221,25 @@ function bodyFromPayload(payload: gmail_v1.Schema$MessagePart | undefined): stri
     );
   }
   return '';
+}
+
+function stripHtml(html: string): string {
+  return html
+    .replace(/<style[^>]*>[\s\S]*?<\/style>/gi, '')
+    .replace(/<script[^>]*>[\s\S]*?<\/script>/gi, '')
+    .replace(/<head[^>]*>[\s\S]*?<\/head>/gi, '')
+    .replace(/<br\s*\/?>/gi, '\n')
+    .replace(/<\/p>/gi, '\n\n')
+    .replace(/<p[^>]*>/gi, '')
+    .replace(/<[^>]+>/g, '')
+    .replace(/&nbsp;/g, ' ')
+    .replace(/&amp;/g, '&')
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
+    .replace(/&quot;/g, '"')
+    .replace(/[ \t]+/g, ' ')
+    .replace(/\n{3,}/g, '\n\n')
+    .trim();
 }
 
 export async function pollGmail(): Promise<PollResult> {
