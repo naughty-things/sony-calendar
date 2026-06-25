@@ -155,6 +155,54 @@ export async function pollGmail(): Promise<PollResult> {
     const gmail = google.gmail({ version: 'v1', auth });
     const admin = createAdminClient();
 
+    // Orphan recovery: if the previous poll's process was killed between
+    // inserting into email_ingests (status=pending) and the AI parse +
+    // post insert, the row is left as 'pending' forever. The dedupe check
+    // on gmail_id will then skip the same message on every subsequent
+    // poll, so the post never gets created. This block finds any pending
+    // row older than 5 minutes, deletes it (frees the gmail_id for
+    // re-processing), and rewinds the history pointer to just before
+    // the orphan's historyId so the next history.list call picks it
+    // back up. After re-fetch, the message goes through the full
+    // parse-and-insert path; if it fails again, the row gets a final
+    // status of 'error' with the actual error message, so it's no
+    // longer silent. Added 2026-06-25 after the 2026-06-24 02:50 UTC
+    // Raymond Kwan "Sony DI CX64130" email got stuck in pending for
+    // ~20 hours because the Railway worker restarted mid-parse.
+    const STALE_PENDING_MS = 5 * 60 * 1000;
+    const staleBefore = new Date(Date.now() - STALE_PENDING_MS).toISOString();
+    const { data: staleRows } = await admin
+      .from('email_ingests')
+      .select('id, raw_payload')
+      .eq('status', 'pending')
+      .lt('received_at', staleBefore);
+    if (staleRows && staleRows.length > 0) {
+      let oldestHistoryId: string | null = null;
+      const idsToDelete: string[] = [];
+      for (const row of staleRows) {
+        idsToDelete.push(row.id);
+        const h = (row.raw_payload as any)?.historyId;
+        if (h) {
+          const asNum = Number(h);
+          if (!Number.isNaN(asNum) && (oldestHistoryId === null || asNum < Number(oldestHistoryId))) {
+            oldestHistoryId = String(asNum - 1); // rewind to just before
+          }
+        }
+      }
+      await admin
+        .from('email_ingests')
+        .delete()
+        .in('id', idsToDelete);
+      // eslint-disable-next-line no-console
+      console.warn(
+        `[inbound] orphan recovery: deleted ${idsToDelete.length} stale pending row(s)` +
+        (oldestHistoryId ? `, rewinding historyId to ${oldestHistoryId}` : '')
+      );
+      if (oldestHistoryId) {
+        await setHistoryId(admin, oldestHistoryId);
+      }
+    }
+
     const startHistoryId = await getHistoryId(admin);
     let newestHistoryId: string | null = startHistoryId;
     let profileHistoryId: string | null = null;
