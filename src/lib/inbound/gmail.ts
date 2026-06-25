@@ -348,6 +348,7 @@ export async function pollGmail(): Promise<PollResult> {
         const createdPostIds: string[] = [];
         let lastError: string | null = null;
         let allHaveDateAndTitle = true;
+        let allRowsRoutedToReview = true; // optimistic: starts true, becomes false if any row is routed to in_progress
         let primaryPostId: string | null = null;
 
         for (let i = 0; i < ai.posts.length; i++) {
@@ -380,13 +381,25 @@ export async function pollGmail(): Promise<PollResult> {
             continue;
           }
 
-          //    - full brief (date + title) → calendar chip with status=needs_review
-          //    - partial brief            → staging zone (publish_date=NULL, status=staging)
+          //    - full brief (date + title) → calendar chip with status=client_review
+          //    - partial brief            → staging zone (publish_date=NULL, status=in_progress)
           //      so a human can fill in the gaps and promote to the calendar
-          /* Status on insert (post 2026-06-17 enum tightening):
-               - full brief (date + title)  -> client_review (was 'needs_review')
-               - partial brief              -> in_progress (was 'staging', which no longer exists)
+          /* Routing logic (2026-06-25 update):
+               - AI confidence < 0.7 OR parse_warnings non-empty  → in_progress (staging)
+                 (the human reviewer should double-check before approving)
+               - otherwise, full brief (date + title)             → client_review
+               - missing date or title                            → in_progress
+             We used to route ALL 'has date + has title' rows to client_review,
+             but the SA01 Jun/Jul confusion bug taught us that even a "complete"
+             row can be wrong. Now we lean on the AI's own confidence + any
+             warnings it surfaced.
             */
+          const itemConfidence = typeof item.confidence === 'number' ? item.confidence : 0.5;
+          const itemWarnings = Array.isArray(item.parse_warnings) ? item.parse_warnings : [];
+          const highConfidence = itemConfidence >= 0.7 && itemWarnings.length === 0;
+          const fullBrief = hasDate && hasTitle;
+          const postStatus = highConfidence && fullBrief ? 'client_review' : 'in_progress';
+
           const { data: post, error: postErr } = await admin
             .from('posts')
             .insert({
@@ -397,7 +410,7 @@ export async function pollGmail(): Promise<PollResult> {
                 ? item.category
                 : null,
               publish_date: item.publish_date || null,
-              status: hasDate && hasTitle ? 'client_review' : 'in_progress',
+              status: postStatus,
               designer: item.designer || null,
               copy_writer: item.copy_writer || null,
               internal_pic: item.internal_pic || null,
@@ -413,12 +426,21 @@ export async function pollGmail(): Promise<PollResult> {
                 total_rows: ai.posts.length,
                 mentioned_internal: item.mentioned_internal,
                 mentioned_client: item.mentioned_client,
-                confidence: item.confidence,
+                confidence: itemConfidence,
+                parse_warnings: itemWarnings,
                 missing: !hasDate && !hasTitle
                   ? 'date and title'
                   : !hasDate
                   ? 'publish date'
-                  : 'title'
+                  : 'title',
+                routed_to: postStatus,
+                routed_reason: !fullBrief
+                  ? 'incomplete brief (missing date or title)'
+                  : !highConfidence
+                  ? itemWarnings.length > 0
+                    ? `low confidence (${itemConfidence}) or has ${itemWarnings.length} parse warning(s); routed to staging for human review`
+                    : `low confidence (${itemConfidence}); routed to staging`
+                  : 'full brief, high confidence, no warnings'
               }
             })
             .select()
@@ -431,19 +453,30 @@ export async function pollGmail(): Promise<PollResult> {
           }
           createdPostIds.push(post.id);
           if (!primaryPostId) primaryPostId = post.id;
+          // Track per-row status so we can summarize the ingest correctly
+          // (a mix of client_review and in_progress rows is still 'rejected'
+          // from the ingest's perspective, because humans need to look at
+          // the in_progress ones).
+          if (postStatus === 'client_review') {
+            allRowsRoutedToReview = allRowsRoutedToReview;
+          } else {
+            allRowsRoutedToReview = false;
+          }
         }
 
         // Tag the ingest
-        // - all rows had full data         → 'created'  (auto-placed on calendar)
-        // - some rows missing date/title   → 'rejected' (mixed; humans need to review)
-        // - no rows inserted at all        → 'error'    (parse succeeded, insert failed)
+        // - all rows full brief + high confidence        → 'created'  (auto-placed)
+        // - some rows missing/low-confidence (in_progress) → 'rejected' (mixed; humans to review)
+        // - no rows inserted at all                       → 'error'    (parse ok, insert failed)
         const status = createdPostIds.length === 0
           ? 'error'
-          : (allHaveDateAndTitle ? 'created' : 'rejected');
+          : (allHaveDateAndTitle && allRowsRoutedToReview ? 'created' : 'rejected');
         const errMsg = createdPostIds.length === 0
           ? (lastError || `Parsed ${ai.posts.length} post(s) but none inserted`)
           : (!allHaveDateAndTitle
               ? `Parsed ${ai.posts.length} post(s); some missing date/title (in staging)`
+              : !allRowsRoutedToReview
+              ? `Parsed ${ai.posts.length} post(s); some had low confidence or warnings (in staging for human review)`
               : null);
 
         await admin
