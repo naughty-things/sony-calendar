@@ -279,12 +279,15 @@ export function Calendar() {
     [posts]
   );
 
-  /* "Inbox" now means client_review only — staging was retired on 2026-06-17.
-     Kept `stagingQueue` returning an empty array for now so the Inbox button
-     doesn't crash; can be wired up to a different concept later. */
+  /* 'staging' status (re-introduced 2026-06-25 after a brief retirement
+     on 2026-06-17) — a post lands here when the email parser couldn't
+     pin down a publish_date (e.g. "Target Launch Date: Within this week"
+     instead of an exact date). PIC opens the modal, fills in the date,
+     and the status auto-transitions to in_progress. */
   const stagingQueue = useMemo(
-    () => [] as PostWithPeople[],
-    []
+    () => posts.filter(p => p.status === 'staging')
+      .sort((a, b) => (b.updated_at || '').localeCompare(a.updated_at || '')),
+    [posts]
   );
 
   const postsOn = useCallback((date: Date) => {
@@ -1078,7 +1081,7 @@ function ReviewInbox({
             <div>
               <div className="text-[10px] uppercase tracking-[0.16em] text-ink-mute font-mono">Inbox</div>
               <h2 className="font-display text-2xl tracking-editorial mt-0.5">
-                {tab === 'review' ? 'Awaiting review' : 'Staging'}
+                {tab === 'review' ? 'Awaiting review' : 'Needs launch date'}
               </h2>
             </div>
             <button onClick={onClose} className="text-ink-mute hover:text-ink text-xl leading-none">×</button>
@@ -1118,7 +1121,7 @@ function ReviewInbox({
               ) : (
                 <>
                   <div className="font-display italic text-3xl text-ink-faint">Staging is clear</div>
-                  <div className="text-sm text-ink-mute mt-2">Every forwarded email has all the info it needs.</div>
+                  <div className="text-sm text-ink-mute mt-2">Every forwarded email has a launch date. PIC doesn't need to assign anything.</div>
                 </>
               )}
             </div>
@@ -1126,9 +1129,10 @@ function ReviewInbox({
           <ul>
             {items.map(p => {
               const peopleLine = [p.designer, p.copy_writer, p.internal_pic, p.client_pic].filter(Boolean).join(' · ');
-              /* isStaging retired on 2026-06-17 — kept as a const for the inbox
-                 template that still references it. No post will hit this branch. */
-              const isStaging = false;
+              /* isStaging re-introduced 2026-06-25 — flags posts in the 'staging'
+                 tab (missing publish_date). The pink 'Needs details'
+                 badge tells PIC at a glance which posts need attention. */
+              const isStaging = p.status === 'staging';
               return (
                 <li key={p.id} className="rule-b border-rule-soft">
                   <button

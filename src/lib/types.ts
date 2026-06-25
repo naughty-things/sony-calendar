@@ -1,12 +1,18 @@
 export type PostStatus =
+  | 'staging'
   | 'in_progress'
   | 'client_review'
   | 'approved'
   | 'posted';
 
-/* Restricted to the 4 stages Sam wants — every other stage was a synonym
-   or a leftover from the old pipeline. See migration 2026-06-17. */
+/* 'staging' is the pre-in_progress state added 2026-06-25. A post lands
+   in staging when the email parser couldn't pin down a publish_date
+   (e.g. the email said "Target Launch Date: Within this week" instead
+   of an exact date). PIC then opens the modal, fills in the date, and
+   the status auto-transitions to in_progress. See migration
+   2026-06-25-staging-status.sql for the matching DB change. */
 export const STATUS_ORDER: PostStatus[] = [
+  'staging',
   'in_progress',
   'client_review',
   'approved',
@@ -14,6 +20,7 @@ export const STATUS_ORDER: PostStatus[] = [
 ];
 
 export const STATUS_LABEL: Record<PostStatus, string> = {
+  staging:       'Staging',
   in_progress:   'In progress',
   client_review: 'Client review',
   approved:      'Approved',
@@ -23,6 +30,7 @@ export const STATUS_LABEL: Record<PostStatus, string> = {
 /* Tape palette — like colored paper tape on a production board.
    Strong, saturated colors, no pastels. */
 export const STATUS_COLOR: Record<PostStatus, string> = {
+  staging:       'bg-[#E6D8E8] text-[#4A1E50]',     // dusty plum
   in_progress:   'bg-[#D5E3F0] text-[#1E3A5F]',     // steel blue
   client_review: 'bg-[#F0D2DC] text-[#7A1A37]',     // dusty pink
   approved:      'bg-[#FFD66B] text-[#5A3A00]',     // SONY orange (matches accent palette)
@@ -59,6 +67,7 @@ export const CATEGORY_GLYPH: Record<Category, string> = {
 };
 
 export const STATUS_DOT: Record<PostStatus, string> = {
+  staging:       'bg-plum',
   in_progress:   'bg-steel',
   client_review: 'bg-magenta',
   approved:      'bg-accent',

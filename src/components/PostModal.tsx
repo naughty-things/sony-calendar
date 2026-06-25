@@ -74,6 +74,21 @@ export function PostModal({
       return;
     }
     const trim = (s: string) => s.trim() || null;
+    /* Auto-transition: if this post was in 'staging' (missing a launch date)
+       and the user just filled in publish_date, promote it to in_progress so
+       it shows up on the calendar grid. If they cleared publish_date on a
+       post that's not in staging, demote it to staging so PIC knows it
+       needs attention. The user can still explicitly pick any status they
+       want via the status tape — this only runs when the current status
+       matches the auto-transition trigger. */
+    let effectiveStatus = status;
+    if (post?.status === 'staging' && publishDate) {
+      effectiveStatus = 'in_progress';
+    } else if (post?.status === 'in_progress' && !publishDate) {
+      effectiveStatus = 'staging';
+    } else if (post?.status === 'staging' && !publishDate) {
+      effectiveStatus = 'staging'; // no-op, just to be explicit
+    }
     const payload: Partial<Post> = {
       title: title || '(untitled)',
       platform: platform.length > 0 ? platform : null,
@@ -81,7 +96,7 @@ export function PostModal({
       publish_date: publishDate || null,
       target_launch_date: targetLaunchDate || null,
       request_date: requestDate || null,
-      status,
+      status: effectiveStatus,
       designer: trim(designer),
       copy_writer: trim(copyWriter),
       internal_pic: trim(internalPic),
@@ -161,6 +176,31 @@ export function PostModal({
         <div className={`flex-1 overflow-y-auto ${showEmail ? 'grid md:grid-cols-[1.4fr_1fr]' : ''}`}>
           {/* FORM */}
           <div className="p-4 sm:p-7 space-y-5">
+            {/* Staging hint — show only when this post is in the 'staging'
+                state (no publish_date yet). PIC sees a clear call-to-action
+                to assign a launch date. The status auto-transitions to
+                in_progress on save when publish_date is filled in. */}
+            {post?.status === 'staging' && (
+              <div className="px-3 py-2.5 rounded-sm border border-plum/30 bg-plum/5 text-sm flex items-start gap-2">
+                <span className="font-mono text-[10px] uppercase tracking-[0.12em] px-1.5 py-0.5 rounded-sm bg-plum text-paper shrink-0 mt-0.5">
+                  Staging
+                </span>
+                <div className="flex-1">
+                  <div className="text-ink">
+                    <span className="font-medium">This post needs a launch date.</span>{' '}
+                    <span className="text-ink-mute">
+                      Fill in the <span className="font-mono text-[11px]">Publish date</span> field below
+                      and save — the status will move to in_progress and the post will appear on the calendar.
+                    </span>
+                  </div>
+                  {post.source_meta?.routed_reason && (
+                    <div className="mt-1 text-[11px] text-ink-mute font-mono">
+                      {post.source_meta.routed_reason}
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
             <Field label="Title">
               <input
                 ref={firstFieldRef}
