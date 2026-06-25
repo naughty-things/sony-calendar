@@ -117,26 +117,73 @@ function header(headers: gmail_v1.Schema$MessagePartHeader[] | undefined, name: 
   return (headers || []).find(h => (h.name || '').toLowerCase() === name.toLowerCase())?.value || '';
 }
 
+/**
+ * Recursively extract the best text body from a Gmail message payload.
+ *
+ * Preference order:
+ *  1. text/plain at any depth
+ *  2. text/html at any depth (will be returned as-is, the AI tolerates HTML)
+ *  3. If the only meaningful content is a non-text part (PDF, image, doc),
+ *     return a synthetic placeholder so parseEmail doesn't get an empty
+ *     body. The placeholder mentions the filename + mime type so the AI
+ *     can create a post with notes='PDF brief: see email' and a human
+ *     can pick it up from staging. This fixes the 2026-06-25 incident
+ *     where Raymond Kwan's 'Sony DI CX64130' email had body=''
+ *     (multipart/mixed with a PDF attachment and empty text parts), so
+ *     parseEmail hung on an empty body and the row got stuck as
+ *     'pending' forever.
+ */
 function bodyFromPayload(payload: gmail_v1.Schema$MessagePart | undefined): string {
   if (!payload) return '';
-  // Prefer text/plain
-  if (payload.mimeType === 'text/plain' && payload.body?.data) {
-    return Buffer.from(payload.body.data, 'base64').toString('utf8');
-  }
-  // Recurse into parts
-  for (const part of payload.parts || []) {
-    if (part.mimeType === 'text/plain' && part.body?.data) {
-      return Buffer.from(part.body.data, 'base64').toString('utf8');
+
+  // Collect candidates by walking the part tree. We want the smallest
+  // text part that has actual content (so a 5KB plain-text brief wins
+  // over a 200KB HTML footer with the same content). Recurse into
+  // multipart/* containers.
+  type Candidate = { mime: string; data: string; depth: number };
+  const candidates: Candidate[] = [];
+  const nonTextParts: string[] = [];
+
+  function walk(p: gmail_v1.Schema$MessagePart | undefined, depth: number) {
+    if (!p) return;
+    const mt = (p.mimeType || '').toLowerCase();
+    if ((mt === 'text/plain' || mt === 'text/html') && p.body?.data) {
+      candidates.push({ mime: mt, data: p.body.data, depth });
+    } else if (
+      p.filename &&
+      p.body?.attachmentId &&
+      !mt.startsWith('multipart/')
+    ) {
+      // Real attachment (has filename + attachmentId, not a multipart container)
+      nonTextParts.push(`${p.filename} (${mt || 'unknown'})`);
     }
+    for (const child of p.parts || []) walk(child, depth + 1);
   }
-  // Fallback: text/html
-  for (const part of payload.parts || []) {
-    if (part.mimeType === 'text/html' && part.body?.data) {
-      return Buffer.from(part.body.data, 'base64').toString('utf8');
-    }
+  walk(payload, 0);
+
+  // Prefer text/plain over text/html; among ties, prefer the smallest
+  // (usually the brief, not the full HTML with quotes/signatures).
+  const plain = candidates.filter(c => c.mime === 'text/plain');
+  if (plain.length > 0) {
+    plain.sort((a, b) => a.data.length - b.data.length);
+    return Buffer.from(plain[0].data, 'base64').toString('utf8');
   }
-  if (payload.body?.data) {
-    return Buffer.from(payload.body.data, 'base64').toString('utf8');
+  const html = candidates.filter(c => c.mime === 'text/html');
+  if (html.length > 0) {
+    html.sort((a, b) => a.data.length - b.data.length);
+    return Buffer.from(html[0].data, 'base64').toString('utf8');
+  }
+
+  // No text body found. If there are attachments, return a placeholder
+  // so parseEmail can at least create a post with a note about the
+  // attachment. Otherwise return empty (parseEmail will mark it
+  // 'irrelevant').
+  if (nonTextParts.length > 0) {
+    return (
+      `[This email has no text body. The brief is in the following attachment(s): ` +
+      nonTextParts.join(', ') +
+      `. Please ask the human reviewer to open the attachment and fill in the post details manually.]`
+    );
   }
   return '';
 }
