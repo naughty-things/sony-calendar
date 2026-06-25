@@ -410,6 +410,12 @@ export async function pollGmail(): Promise<PollResult> {
                 ? item.category
                 : null,
               publish_date: item.publish_date || null,
+              // The two date columns from the planning table (Request Date
+              // = copy delivery deadline; Target Launch Date = column the
+              // client wrote in). Useful even when publish_date is null
+              // — gives the human reviewer the delivery deadline.
+              target_launch_date: item.target_launch_date || null,
+              request_date: item.request_date || null,
               status: postStatus,
               designer: item.designer || null,
               copy_writer: item.copy_writer || null,
@@ -428,6 +434,8 @@ export async function pollGmail(): Promise<PollResult> {
                 mentioned_client: item.mentioned_client,
                 confidence: itemConfidence,
                 parse_warnings: itemWarnings,
+                target_launch_date: item.target_launch_date || null,
+                request_date: item.request_date || null,
                 missing: !hasDate && !hasTitle
                   ? 'date and title'
                   : !hasDate

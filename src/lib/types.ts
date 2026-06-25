@@ -80,6 +80,14 @@ export type Post = {
   platform?: string[] | null;
   category?: string[] | null;  /* multi-value: ['HE','MO'] etc. */
   publish_date: string | null; // YYYY-MM-DD or null when in staging
+  // The "Target Launch Date" column from the email's planning table, if any.
+  // Mirrors publish_date but keeps the original column value separate for audit.
+  // When the planning table has BOTH Target Launch Date AND Request Date
+  // (Jennifer Chan's MSS Workshop pattern), we store both so the human
+  // reviewer can see the copy-delivery deadline vs the post go-live date.
+  target_launch_date?: string | null;
+  // The "Request Date" / "Copy Delivery Deadline" column, if any.
+  request_date?: string | null;
   status: PostStatus;
   /* Free-text names (replaces FKs to people).
      The system remembers every name ever typed in each field

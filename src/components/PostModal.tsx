@@ -41,6 +41,12 @@ export function PostModal({
   const [platform, setPlatform] = useState<string[]>(Array.isArray(post?.platform) ? post!.platform! : (post?.platform ? [post.platform] : ['IG']));
   const [category, setCategory] = useState<string[]>(postCategories(post));
   const [publishDate, setPublishDate] = useState<string>(post?.publish_date ?? initialDate ?? new Date().toISOString().slice(0, 10));
+  // The two date columns from the email's planning table (Request Date =
+  // copy delivery deadline, Target Launch Date = post go-live date).
+  // Mostly informational; the user edits publish_date which is what the
+  // calendar uses. Read-only-ish: they re-sync if the email gets reprocessed.
+  const [targetLaunchDate, setTargetLaunchDate] = useState<string>(post?.target_launch_date ?? '');
+  const [requestDate, setRequestDate] = useState<string>(post?.request_date ?? '');
   const [status, setStatus] = useState<PostStatus>(post?.status ?? 'in_progress');
   const [designer, setDesigner] = useState<string>(post?.designer ?? '');
   const [copyWriter, setCopyWriter] = useState<string>(post?.copy_writer ?? '');
@@ -73,6 +79,8 @@ export function PostModal({
       platform: platform.length > 0 ? platform : null,
       category: category.length > 0 ? category : null,
       publish_date: publishDate || null,
+      target_launch_date: targetLaunchDate || null,
+      request_date: requestDate || null,
       status,
       designer: trim(designer),
       copy_writer: trim(copyWriter),
@@ -231,6 +239,30 @@ export function PostModal({
               <Field label="Publish date">
                 <input type="date" value={publishDate} onChange={e => setPublishDate(e.target.value)} className={inputCls} />
               </Field>
+              {/* Show the planning-table date columns when the email
+                  surfaced them. These are mostly informational — the human
+                  reviewer uses them as reference when filling in
+                  publish_date. Hidden when both are empty. */}
+              {(targetLaunchDate || requestDate || post?.target_launch_date || post?.request_date) && (
+                <div className="grid grid-cols-2 gap-3 -mt-2">
+                  <Field label={
+                    <span className="flex items-center gap-1">
+                      <span className="text-[10px] text-ink-mute font-mono">Target Launch</span>
+                      <span className="text-[9px] text-ink-mute">from email</span>
+                    </span>
+                  }>
+                    <input type="date" value={targetLaunchDate} onChange={e => setTargetLaunchDate(e.target.value)} className={inputCls} />
+                  </Field>
+                  <Field label={
+                    <span className="flex items-center gap-1">
+                      <span className="text-[10px] text-ink-mute font-mono">Request Date</span>
+                      <span className="text-[9px] text-ink-mute">copy deadline</span>
+                    </span>
+                  }>
+                    <input type="date" value={requestDate} onChange={e => setRequestDate(e.target.value)} className={inputCls} />
+                  </Field>
+                </div>
+              )}
             </div>
 
             <Field label="Status">
@@ -336,6 +368,18 @@ export function PostModal({
               {post.source_meta.confidence != null && (
                 <div className="inline-flex items-center gap-2 text-[10px] font-mono uppercase tracking-wide bg-accent text-ink px-2 py-1 rounded-sm font-semibold">
                   AI {(post.source_meta.confidence * 100).toFixed(0)}% confident
+                </div>
+              )}
+              {post.source_meta.parse_warnings?.length > 0 && (
+                <div>
+                  <div className="text-[10px] uppercase tracking-[0.16em] text-ink-mute font-mono mb-1.5">
+                    ⚠ AI flagged these issues
+                  </div>
+                  <ul className="text-xs text-ink-soft leading-relaxed space-y-1 list-disc pl-5">
+                    {post.source_meta.parse_warnings.map((w: string, i: number) => (
+                      <li key={i}>{w}</li>
+                    ))}
+                  </ul>
                 </div>
               )}
               {post.source_meta.mentioned_internal?.length > 0 && (

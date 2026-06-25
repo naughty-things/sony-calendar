@@ -75,6 +75,8 @@ async function runTest(name, fixturePath) {
   for (let i = 0; i < parsed.posts.length; i++) {
     const p = parsed.posts[i];
     console.log(`  [${i}] ${p.publish_date || '(no date)'}  conf=${p.confidence}  ${(p.title||'').slice(0,60)}`);
+    if (p.target_launch_date) console.log(`      target_launch_date: ${p.target_launch_date}`);
+    if (p.request_date) console.log(`      request_date: ${p.request_date}`);
     if (p.parse_warnings && p.parse_warnings.length) {
       console.log(`      warnings: ${p.parse_warnings.join(' | ')}`);
     }

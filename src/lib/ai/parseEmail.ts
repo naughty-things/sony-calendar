@@ -13,6 +13,17 @@ import { getMinimax, MINIMAX_CHAT_MODEL } from './client';
 
 const PostSchema = z.object({
   publish_date: z.string().nullable(),          // YYYY-MM-DD
+  // The "Target Launch Date" column from the planning table, if present.
+  // This is the column Jennifer / Sony fills in when she knows when the
+  // post goes live. May be null when the column is empty for that row.
+  target_launch_date: z.string().nullable(),
+  // The "Request Date" / "Copy Delivery Deadline" column from the planning
+  // table, if present. This is when the client needs the creative copy
+  // delivered (NOT when the post goes live). May be null when not
+  // applicable. The human reviewer should ensure publish_date falls on
+  // or before this date (or as close to it as the workshop timing
+  // allows). Sam sometimes wants both surfaced in the calendar UI.
+  request_date: z.string().nullable(),
   platform: z.array(z.string()).nullable(),     // IG, FB, Other
   category: z.array(z.string()).nullable(),      // PA / HE / MO / DI / EC / INZONE / OTHER (multi-value; a post can be e.g. ['HE','INZONE'])
   title: z.string().nullable(),
@@ -111,6 +122,16 @@ CRITICAL — DATE EXTRACTION (this has bitten us before):
    workshop/event date. In a planning table, look for a column literally
    titled "Target Launch Date" or "Post Date" or "Launch Date". The
    "Date" column by itself is usually the workshop date.
+1a. Planning tables OFTEN have BOTH a "Request Date" / "Copy Delivery"
+    column AND a "Target Launch Date" column. Extract BOTH separately:
+    - target_launch_date = the "Target Launch Date" column value
+      (the actual post go-live date — used for publish_date when set)
+    - request_date       = the "Request Date" / "Copy Delivery" column
+      value (when the client needs the creative copy delivered)
+    If only "Target Launch Date" is filled in, request_date can be null.
+    If only "Request Date" is filled in, request_date is set and
+    target_launch_date is null (and publish_date should also be null
+    because the launch date is genuinely unknown).
 2. When a row contains MULTIPLE dates in close proximity (e.g. "16 Jun
    … Jul 8,13,15,22"), do NOT just grab the first date. Identify which
    date sits in the "Target Launch Date" column and use that. The other
@@ -142,7 +163,7 @@ Also extract:
 Return ONLY a JSON object matching this exact shape. No prose, no markdown
 fences:
 {
-  "posts": [ { "publish_date": "YYYY-MM-DD"|null, "platform": ["IG"]|null, "category": ["HE","INZONE"]|null, "title": "...", "notes": "...", "designer": null, "copy_writer": null, "internal_pic": null, "client_pic": null, "mentioned_internal": [], "mentioned_client": [], "confidence": 0.0-1.0, "parse_warnings": ["..."] } ],
+  "posts": [ { "publish_date": "YYYY-MM-DD"|null, "target_launch_date": "YYYY-MM-DD"|null, "request_date": "YYYY-MM-DD"|null, "platform": ["IG"]|null, "category": ["HE","INZONE"]|null, "title": "...", "notes": "...", "designer": null, "copy_writer": null, "internal_pic": null, "client_pic": null, "mentioned_internal": [], "mentioned_client": [], "confidence": 0.0-1.0, "parse_warnings": ["..."] } ],
   "email_summary": "..."|null,
   "detected_table": true|false
 }
@@ -160,14 +181,38 @@ Examples:
     1 Jul              | XP Noise cancelling post | bit.ly/4xg7mU1 | Approved, plz schedule
     8 Jul              | XP Design - tech video | bit.ly/49U7Bdo | Approved, plz schedule
     15 Jul             | 1000X Series Usage scenario Differentiation à WFM6 | TBS | Plz help prepare
-  → { "posts": [ { "publish_date": "2026-07-01", "category": ["MO"], ..., "confidence": 0.95, "parse_warnings": [] }, { "publish_date": "2026-07-08", "category": ["MO"], ..., "confidence": 0.95, "parse_warnings": [] }, { "publish_date": "2026-07-15", "category": ["HE","MO"], ..., "confidence": 0.90, "parse_warnings": [] } ], "email_summary": "Sony PE team sent the July 2026 social planning grid; 3 posts scheduled/planned.", "detected_table": true }
+  → { "posts": [ { "publish_date": "2026-07-01", "target_launch_date": "2026-07-01", "request_date": null, "category": ["MO"], ..., "confidence": 0.95, "parse_warnings": [] }, { "publish_date": "2026-07-08", "target_launch_date": "2026-07-08", "request_date": null, "category": ["MO"], ..., "confidence": 0.95, "parse_warnings": [] }, { "publish_date": "2026-07-15", "target_launch_date": "2026-07-15", "request_date": null, "category": ["HE","MO"], ..., "confidence": 0.90, "parse_warnings": [] } ], "email_summary": "Sony PE team sent the July 2026 social planning grid; 3 posts scheduled/planned.", "detected_table": true }
 
-3) Table-style email where one row is ambiguous (this is the SA01 bug):
+3) Table-style email where Request Date AND Target Launch Date BOTH exist
+   but only some rows have Target Launch Date filled in (this is the SA01
+   bug case, expanded to show the Request Date column):
   Body:
     Post | Request Date | Target Launch Date | Cate. | Format | Content Focus | Promotion/Message
-    1    | 10 Jun       | 16 Jun             | My Sony Studio | FBIG Wall Post | SA01 | Classroom Jul 8,13,15,22 19:00-20:45 @Sony Store TST
-                                                                                                    Outdoor Jul 25 14:00-16:00 @香港公園
-  → { "posts": [ { "publish_date": "2026-06-16", "platform": ["IG","FB"], "category": ["DI"], "title": "My Sony Studio SA01 Workshop (Classroom + Outdoor)", "notes": "Classroom Jul 8,13,15,22 19:00-20:45 @ Sony Store TST; Outdoor Jul 25 14:00-16:00 @ Hong Kong Park. Cost $1,280.", ..., "confidence": 0.85, "parse_warnings": ["Row contains both '16 Jun' (Target Launch Date) and 'Jul 8,13,15,22' (workshop dates); used '16 Jun' from the Target Launch Date column. Verify."] } ], "email_summary": "Jennifer Chan (Sony) shared July My Sony Studio workshop social posts; 5 posts total.", "detected_table": true }
+    1    | 10 Jun       | 16 Jun             | My Sony Studio | FBIG Wall Post | SA01   | Classroom Jul 8,13,15,22 ...
+    2    | 19 Jun       |                    | My Sony Studio | FBIG Wall Post | SA02A  | Jul 9,21 19:00-20:30
+    3    | 23 Jun       |                    | My Sony Studio | FBIG Wall Post | Teens  | Option 1: 17 Jul ...
+    4    | 29 Jun       |                    | My Sony Studio | FBIG Wall Post | Idol   | 18 Sat (TBC) ...
+    5    | 6 Jul        |                    | My Sony Studio | FBIG Wall Post | Portrait | 26 Jul (Sun) ...
+  → { "posts": [
+      { "publish_date": "2026-06-16", "target_launch_date": "2026-06-16", "request_date": "2026-06-10", "platform": ["IG","FB"], "category": ["DI"], "title": "My Sony Studio SA01 Workshop (Classroom + Outdoor)", "notes": "Request Date: 10 Jun. Target Launch Date: 16 Jun. Classroom Jul 8,13,15,22 19:00-20:45 @ Sony Store TST; Outdoor Jul 25 14:00-16:00 @ Hong Kong Park. Cost $1,280.", "confidence": 0.85, "parse_warnings": ["Row contains both '16 Jun' (Target Launch Date) and 'Jul 8,13,15,22' (workshop dates); used '16 Jun' from the Target Launch Date column. Verify."] },
+      { "publish_date": null, "target_launch_date": null, "request_date": "2026-06-19", "title": "My Sony Studio SA02A Workshop", "notes": "Request Date: 19 Jun (copy delivery deadline). Target Launch Date column empty. Workshop Jul 9,21 19:00-20:30.", "confidence": 0.55, "parse_warnings": ["Target Launch Date column is empty for post #2; request_date captured (19 Jun) as a copy delivery deadline. Publish date should land before workshop Jul 9 — please assign."] },
+      { "publish_date": null, "target_launch_date": null, "request_date": "2026-06-23", "title": "My Sony Studio Teens Workshop", "notes": "Request Date: 23 Jun. Target Launch Date column empty. Workshop options: 17 Jul or 24 Jul.", "confidence": 0.55, "parse_warnings": ["Target Launch Date column is empty for post #3; request_date captured (23 Jun). Workshop is 17 Jul or 24 Jul — please pick a publish date."] },
+      { "publish_date": null, "target_launch_date": null, "request_date": "2026-06-29", "title": "My Sony Studio Idol Chasing Workshop feat. 陳柏宇", "notes": "Request Date: 29 Jun (copy deadline). Hard deadline: 'share the post content by 16 Jun' for Sony Music review. Workshop: 18 Sat (TBC).", "confidence": 0.55, "parse_warnings": ["Target Launch Date column is empty; request_date captured (29 Jun). Workshop 18 Sat (TBC). Note: hard deadline 'share content by 16 Jun' appears in body — may affect timing."] },
+      { "publish_date": null, "target_launch_date": null, "request_date": "2026-07-06", "title": "My Sony Studio Portrait Workshop feat. a7rm6", "notes": "Request Date: 6 Jul. Target Launch Date column empty. Workshop: 26 Jul (Sun).", "confidence": 0.55, "parse_warnings": ["Target Launch Date column is empty; request_date captured (6 Jul). Workshop 26 Jul — please assign publish date."] }
+    ], "email_summary": "Jennifer Chan (Sony) shared July My Sony Studio workshop social posts; 5 posts total. Request Date / Target Launch Date columns visible.", "detected_table": true }
+
+  KEY POINTS:
+  - For post 1, BOTH target_launch_date AND request_date are filled in;
+    use target_launch_date (16 Jun) as publish_date.
+  - For posts 2-5, target_launch_date is empty BUT request_date is filled
+    in (19 Jun / 23 Jun / 29 Jun / 6 Jul). Capture request_date
+    separately so the human reviewer can see it; do NOT silently use it
+    as publish_date.
+  - publish_date stays null when target_launch_date is empty, even when
+    request_date is filled.
+  - For post 4, the body also says "share the post content by 16 Jun" —
+    this is a HARD DEADLINE for Sony Music review and should be
+    captured in notes. It's not the launch date either.
 
   WHY 2026-06-16 NOT 2026-07-16: The "Target Launch Date" column header
   explicitly labels the second date as the post launch date. The "Jul"
@@ -359,9 +404,28 @@ export async function parseEmail(input: {
   }
 
   // Pre-populate parse_warnings if missing (older model responses may
-  // omit the field).
+  // omit the field). Also pre-populate target_launch_date / request_date
+  // for backward compat with older prompts that didn't extract them.
   for (const post of (obj as any).posts) {
     if (!Array.isArray(post.parse_warnings)) post.parse_warnings = [];
+    if (typeof post.target_launch_date === 'undefined') {
+      // If the model didn't separate target_launch_date from publish_date,
+      // backfill it from publish_date (the legacy assumption).
+      post.target_launch_date = post.publish_date || null;
+    }
+    if (typeof post.request_date === 'undefined') {
+      post.request_date = null;
+    }
+    // If publish_date is null but target_launch_date is set, default
+    // publish_date to target_launch_date. The "Target Launch Date"
+    // column IS the post launch date — if the AI captured it as
+    // target_launch_date but somehow forgot to set publish_date, we
+    // assume they're the same. (The poller's routing logic also falls
+    // back to this when target_launch_date is set, but it's cleaner to
+    // make publish_date the source of truth.)
+    if (!post.publish_date && post.target_launch_date) {
+      post.publish_date = post.target_launch_date;
+    }
   }
   if (typeof (obj as any).detected_table !== 'boolean') {
     (obj as any).detected_table = !!table;
