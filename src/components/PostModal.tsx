@@ -40,7 +40,15 @@ export function PostModal({
   const [title, setTitle] = useState(post?.title ?? '');
   const [platform, setPlatform] = useState<string[]>(Array.isArray(post?.platform) ? post!.platform! : (post?.platform ? [post.platform] : ['IG']));
   const [category, setCategory] = useState<string[]>(postCategories(post));
-  const [publishDate, setPublishDate] = useState<string>(post?.publish_date ?? initialDate ?? new Date().toISOString().slice(0, 10));
+  /* For 'staging' posts (missing publish_date), default to empty string so
+   the date input shows empty — PIC has to consciously pick a date, not
+   accidentally save with today's date as default. */
+  const stagingPost = post?.status === 'staging' && !post?.publish_date;
+  const [publishDate, setPublishDate] = useState<string>(
+    post?.publish_date
+      ?? initialDate
+      ?? (stagingPost ? '' : new Date().toISOString().slice(0, 10))
+  );
   // The two date columns from the email's planning table (Request Date =
   // copy delivery deadline, Target Launch Date = post go-live date).
   // Mostly informational; the user edits publish_date which is what the
@@ -276,8 +284,13 @@ export function PostModal({
               </Field>
             </div>
             <div className="grid grid-cols-1 gap-4">
-              <Field label="Publish date">
-                <input type="date" value={publishDate} onChange={e => setPublishDate(e.target.value)} className={inputCls} />
+              <Field label="Publish date" required={stagingPost}>
+                <input
+                  type="date"
+                  value={publishDate}
+                  onChange={e => setPublishDate(e.target.value)}
+                  className={`${inputCls} ${stagingPost && !publishDate ? 'border-plum ring-1 ring-plum/30 bg-plum/5' : ''}`}
+                />
               </Field>
               {/* Show the planning-table date columns when the email
                   surfaced them. These are mostly informational — the human
@@ -480,10 +493,13 @@ export function PostModal({
 
 const inputCls = 'w-full bg-transparent border-b border-rule-soft focus:border-ink focus:outline-none px-0 py-1.5 text-sm transition placeholder:text-ink-faint';
 
-function Field({ label, children }: { label: React.ReactNode; children: React.ReactNode }) {
+function Field({ label, children, required }: { label: React.ReactNode; children: React.ReactNode; required?: boolean }) {
   return (
     <label className="block">
-      <div className="text-[10px] uppercase tracking-[0.16em] text-ink-mute font-mono font-semibold mb-1.5">{label}</div>
+      <div className="text-[10px] uppercase tracking-[0.16em] text-ink-mute font-mono font-semibold mb-1.5">
+        {label}
+        {required && <span className="text-plum ml-1" title="Required for staging posts">*</span>}
+      </div>
       {children}
     </label>
   );
