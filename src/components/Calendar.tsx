@@ -279,6 +279,20 @@ export function Calendar() {
     return c;
   }, [posts]);
 
+  /** Posts scheduled for the currently-viewed month (used for the quota card) */
+  const monthStats = useMemo(() => {
+    const y = cursor.getFullYear();
+    const m = cursor.getMonth();
+    const inMonth = posts.filter(p => {
+      if (!p.publish_date) return false;
+      const d = new Date(p.publish_date);
+      return d.getFullYear() === y && d.getMonth() === m;
+    });
+    const done = inMonth.filter(p => p.status === 'posted' || p.status === 'approved').length;
+    const planned = inMonth.length;
+    return { done, planned };
+  }, [posts, cursor]);
+
   const categoryCounts = useMemo(() => {
     const c: Record<string, number> = { NONE: 0 };
     CATEGORIES.forEach(k => { c[k] = 0; });
@@ -486,6 +500,8 @@ export function Calendar() {
                 Today
               </button>
             </div>
+
+            <MonthQuota done={monthStats.done} planned={monthStats.planned} target={35} monthLabel={format(cursor, 'MMM yyyy')} />
           </div>
 
           {/* Filter row */}
@@ -700,6 +716,63 @@ function Kbd({ children }: { children: React.ReactNode }) {
     <kbd className="font-mono text-[10px] px-1.5 py-0.5 bg-surface-muted text-text-soft rounded border border-edge">
       {children}
     </kbd>
+  );
+}
+
+/* ─────────────────────────────────────────
+   Month quota card — sits inline with the big month title
+   Shows 35 target vs current month count (done / planned)
+   ───────────────────────────────────────── */
+function MonthQuota({
+  done, planned, target = 35, monthLabel
+}: { done: number; planned: number; target?: number; monthLabel: string }) {
+  // Progress bar fills toward the target (35). If we exceed target, fill caps at 100%.
+  const pct = Math.min(100, Math.round((done / target) * 100));
+  // Color the bar based on how close to / over target
+  const barColor = done >= target
+    ? 'bg-forest'                      // done — green
+    : done >= target * 0.8
+    ? 'bg-accent'                      // close — amber
+    : 'bg-steel';                      // behind — blue
+  // Delta display: if done ≥ target, show "+N over target". Otherwise show "-N to go".
+  const remaining = Math.max(0, target - done);
+  const deltaText = done >= target
+    ? `+${done - target} over`
+    : `${remaining} to go`;
+  return (
+    <div className="bg-surface-muted border border-edge-strong rounded-lg shadow-soft px-3 sm:px-4 py-2 sm:py-2.5 shrink-0 self-end mb-1.5 min-w-[160px] sm:min-w-[200px]">
+      <div className="flex items-center justify-between gap-3">
+        <div className="flex items-baseline gap-1.5">
+          <span className="text-[10px] uppercase tracking-[0.16em] font-mono font-semibold text-text-mute">
+            Quota
+          </span>
+          <span className="font-mono text-[10px] text-text-faint">
+            · {monthLabel}
+          </span>
+        </div>
+        <div className="flex items-baseline gap-1">
+          <span className="numeral font-display text-[22px] sm:text-[26px] leading-none font-semibold text-ink">
+            {done}
+          </span>
+          <span className="font-mono text-[11px] sm:text-[12px] text-text-faint">
+            / {target}
+          </span>
+        </div>
+      </div>
+      <div className="mt-2 h-1.5 w-full bg-surface-muted rounded-full overflow-hidden">
+        <div
+          className={`h-full rounded-full ${barColor} transition-all duration-500 ease-out`}
+          style={{ width: `${pct}%` }} />
+      </div>
+      <div className="mt-1.5 flex items-center justify-between text-[10px] font-mono">
+        <span className="text-text-mute">
+          <span className="text-ink font-semibold">{planned}</span> planned
+        </span>
+        <span className={done >= target ? 'text-forest font-semibold' : 'text-text-mute'}>
+          {deltaText}
+        </span>
+      </div>
+    </div>
   );
 }
 
