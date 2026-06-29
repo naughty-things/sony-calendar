@@ -3,6 +3,7 @@ import type { Metadata, Viewport } from 'next';
 import { Fraunces, Inter_Tight, JetBrains_Mono } from 'next/font/google';
 import { startSelfPing } from '@/lib/inbound/selfPing';
 import { AuthProvider } from '@/lib/auth/AuthProvider';
+import { themeInitScript } from '@/lib/useTheme';
 
 if (typeof window === 'undefined') {
   startSelfPing();
@@ -11,7 +12,7 @@ if (typeof window === 'undefined') {
 const display = Fraunces({
   subsets: ['latin'],
   variable: '--font-display',
-  weight: ['300', '400', '500', '600'],
+  weight: ['400', '500', '600'],
   style: ['normal', 'italic'],
   display: 'swap'
 });
@@ -19,7 +20,7 @@ const display = Fraunces({
 const sans = Inter_Tight({
   subsets: ['latin'],
   variable: '--font-sans',
-  weight: ['300', '400', '500', '600', '700'],
+  weight: ['400', '500', '600', '700'],
   display: 'swap'
 });
 
@@ -47,13 +48,20 @@ export const viewport: Viewport = {
   maximumScale: 1,
   userScalable: false,
   viewportFit: 'cover',
-  themeColor: '#F4F1EA'
+  themeColor: [
+    { media: '(prefers-color-scheme: light)', color: '#F6F7F9' },
+    { media: '(prefers-color-scheme: dark)', color: '#0F1115' }
+  ]
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${display.variable} ${sans.variable} ${mono.variable}`}>
-      <body className="text-ink">
+    <html lang="en" className={`${display.variable} ${sans.variable} ${mono.variable}`} suppressHydrationWarning>
+      <head>
+        {/* No-flash theme init — runs before paint */}
+        <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
+      </head>
+      <body className="text-ink antialiased">
         <AuthProvider>{children}</AuthProvider>
       </body>
     </html>

@@ -69,27 +69,27 @@ function WeekColumn({
         const postId = e.dataTransfer.getData('application/x-post-id');
         if (postId && onMovePost) onMovePost(postId, dropDate);
       }}
-      className={`${isMobile ? 'rounded-sm border bg-paper-warm' : 'flex flex-col min-h-[520px]'} ${dragOver ? 'ring-2 ring-accent bg-accent/10' : ''} ${
-        isCurrent && isMobile ? 'border-accent border-2 -m-px' : isMobile ? 'border-rule-soft' : ''
-      }`}>
-      {/* Day header — editorial */}
-      <div className={`${isMobile ? 'px-3 py-2.5' : 'px-3 pt-3 pb-2 rule-b border-rule-soft'} ${
-        isCurrent ? (isMobile ? '' : 'bg-paper-warm') : ''
-      } ${holiday ? (isMobile ? 'bg-holiday-tint/60' : 'bg-holiday-tint') : isSunday ? (isMobile ? 'bg-holiday-tint/30' : 'bg-holiday-tint/40') : ''} ${isMobile ? 'border-b border-rule-soft' : ''}`}>
+      className={`${isMobile ? 'rounded-lg border bg-surface border-edge' : 'flex flex-col min-h-[520px] rounded-lg border border-edge bg-surface'} ${dragOver ? 'ring-2 ring-accent bg-accent/10' : ''} ${
+        isCurrent && isMobile ? 'border-accent border-2 -m-px' : ''
+      } ${!isMobile && holiday ? 'bg-holiday-tint/40' : ''}`}>
+      {/* Day header */}
+      <div className={`${isMobile ? 'px-3 py-2.5' : 'px-3 pt-3 pb-2.5 border-b border-edge'} ${
+        isCurrent && !isMobile ? 'bg-surface-muted' : ''
+      } ${isMobile ? 'border-b border-edge' : ''}`}>
         <div className="flex items-baseline justify-between gap-2">
-          <span className={`text-[10px] uppercase tracking-[0.18em] font-mono ${isCurrent ? 'text-accent-deep font-semibold' : dayClassRed ? 'text-holiday font-semibold' : 'text-ink-faint'}`}>
+          <span className={`text-[10px] uppercase tracking-[0.18em] font-mono font-semibold ${isCurrent ? 'text-accent-deep' : dayClassRed ? 'text-holiday' : 'text-text-faint'}`}>
             {format(d, 'EEE')}
             {isCurrent && <span className="ml-1.5 text-accent-deep">· today</span>}
           </span>
           {items.length > 0 && (
-            <span className="text-[10px] font-mono text-ink-mute">{items.length}</span>
+            <span className="text-[10px] font-mono text-text-mute px-1.5 py-0.5 bg-surface-muted rounded">{items.length}</span>
           )}
         </div>
         <div className="flex items-baseline gap-2 mt-1">
-          <span className={`numeral ${isMobile ? 'text-[32px]' : 'text-[48px]'} leading-[0.85] ${dayClassRed ? 'text-holiday' : ''}`}>
+          <span className={`numeral ${isMobile ? 'text-[30px]' : 'text-[40px]'} leading-[0.9] ${dayClassRed ? 'text-holiday' : ''}`}>
             {format(d, 'd')}
           </span>
-          <span className="text-[10px] font-mono text-ink-faint uppercase tracking-wide">
+          <span className="text-[10px] font-mono text-text-faint uppercase tracking-wide">
             {format(d, 'MMM')}
           </span>
         </div>
@@ -105,7 +105,7 @@ function WeekColumn({
         {items.length === 0 && (
           <button
             onClick={() => onOpenPost({ publish_date: format(d, 'yyyy-MM-dd') } as any)}
-            className="w-full h-12 sm:h-16 border border-dashed border-rule-soft rounded-sm text-[10px] uppercase tracking-[0.14em] text-ink-faint font-mono hover:border-ink-mute hover:text-ink-mute transition flex items-center justify-center">
+            className="w-full h-14 sm:h-20 border border-dashed border-edge rounded-md text-[10px] uppercase tracking-[0.14em] text-text-faint font-mono hover:border-edge-strong hover:text-text-mute hover:bg-surface-muted transition flex items-center justify-center">
             + tap to add
           </button>
         )}
@@ -118,6 +118,21 @@ function WeekColumn({
 }
 
 function Card({ p, onClick, highlight }: { p: PostWithPeople; onClick: () => void; highlight?: boolean }) {
+  // Status-tinted background so a glance at the week reveals what's where.
+  const statusBg: Record<string, string> = {
+    staging:       'bg-[#F6EFF8] dark:bg-[#2A1E32]',
+    in_progress:   'bg-[#ECF2FB] dark:bg-[#1B2638]',
+    client_review: 'bg-[#FBEDF1] dark:bg-[#321E26]',
+    approved:      'bg-accent-soft dark:bg-[#2E2510]',
+    posted:        'bg-[#ECF6EF] dark:bg-[#1B2A20]'
+  };
+  const statusBar: Record<string, string> = {
+    staging:       'before:bg-plum',
+    in_progress:   'before:bg-steel',
+    client_review: 'before:bg-magenta',
+    approved:      'before:bg-accent',
+    posted:        'before:bg-forest'
+  };
   return (
     <button
       draggable
@@ -126,7 +141,7 @@ function Card({ p, onClick, highlight }: { p: PostWithPeople; onClick: () => voi
         e.dataTransfer.effectAllowed = 'move';
       }}
       onClick={onClick}
-      className={`group/card w-full text-left bg-paper-warm border border-rule-soft rounded-sm p-2.5 hover:border-ink hover:shadow-sm transition cursor-grab active:cursor-grabbing ${highlight ? 'just-arrived' : ''}`}>
+      className={`group/card relative w-full text-left ${statusBg[p.status]} border border-edge/60 rounded-md pl-3 pr-2.5 py-2.5 hover:shadow-card transition cursor-grab active:cursor-grabbing before:content-[''] before:absolute before:left-0 before:top-2 before:bottom-2 before:w-[3px] before:rounded-full ${statusBar[p.status]} ${highlight ? 'just-arrived' : ''}`}>
       <div className="flex items-center justify-between mb-1.5 gap-1">
         <span className="flex items-center gap-0.5 flex-wrap">
           {(() => {
@@ -136,7 +151,7 @@ function Card({ p, onClick, highlight }: { p: PostWithPeople; onClick: () => voi
             ));
           })()}
         </span>
-        <span className={`text-[9px] px-1.5 py-0.5 rounded-sm font-semibold ${STATUS_COLOR[p.status]}`}>
+        <span className={STATUS_COLOR[p.status]}>
           {p.status.replace('_', ' ')}
         </span>
       </div>
@@ -144,7 +159,7 @@ function Card({ p, onClick, highlight }: { p: PostWithPeople; onClick: () => voi
         {p.title}
       </div>
       {([p.designer, p.copy_writer, p.internal_pic, p.client_pic].filter(Boolean).length > 0) && (
-        <div className="mt-2 pt-2 border-t border-rule-soft text-[10px] text-ink-mute font-mono leading-tight">
+        <div className="mt-2 pt-2 border-t border-edge/40 text-[10px] text-text-mute font-mono leading-tight">
           {[p.designer, p.copy_writer, p.internal_pic, p.client_pic].filter(Boolean).join(' · ')}
         </div>
       )}

@@ -27,14 +27,23 @@ export const STATUS_LABEL: Record<PostStatus, string> = {
   posted:        'Posted'
 };
 
-/* Tape palette — like colored paper tape on a production board.
-   Strong, saturated colors, no pastels. */
+/* Status palette — Monday.com friendly pastel pills.
+   Use these with the .pill class for the new rounded-full pill style. */
 export const STATUS_COLOR: Record<PostStatus, string> = {
-  staging:       'bg-[#E6D8E8] text-[#4A1E50]',     // dusty plum
-  in_progress:   'bg-[#D5E3F0] text-[#1E3A5F]',     // steel blue
-  client_review: 'bg-[#F0D2DC] text-[#7A1A37]',     // dusty pink
-  approved:      'bg-[#FFD66B] text-[#5A3A00]',     // SONY orange (matches accent palette)
-  posted:        'bg-[#A8D5B5] text-[#15331F]'      // forest
+  staging:       'pill pill-staging',
+  in_progress:   'pill pill-in_progress',
+  client_review: 'pill pill-client_review',
+  approved:      'pill pill-approved',
+  posted:        'pill pill-posted'
+};
+
+/* Compact dot color (for inline status indicators) */
+export const STATUS_DOT_COLOR: Record<PostStatus, string> = {
+  staging:       '#8B4FA8',
+  in_progress:   '#4A6FA5',
+  client_review: '#E5616B',
+  approved:      '#FFB000',
+  posted:        '#3E8E5A'
 };
 
 /* SONY product line categories. Codes map to full names for display.
@@ -66,12 +75,23 @@ export const CATEGORY_GLYPH: Record<Category, string> = {
   OTHER:  '··'
 };
 
+/* Tailwind class for the dot inside the pill — uses inline CSS var for dark mode. */
 export const STATUS_DOT: Record<PostStatus, string> = {
   staging:       'bg-plum',
   in_progress:   'bg-steel',
   client_review: 'bg-magenta',
   approved:      'bg-accent',
   posted:        'bg-forest'
+};
+
+/* Background-only pill classes (for chips that should be filled but
+   not show the dot or heavy weight). e.g. status badges on cards. */
+export const STATUS_BG: Record<PostStatus, string> = {
+  staging:       'bg-[#EEE4F1] text-[#6B2D85] dark:bg-[#3A2A45] dark:text-[#D9B8E8]',
+  in_progress:   'bg-[#DEE9F7] text-[#1F4A85] dark:bg-[#1E2E45] dark:text-[#A8C5EA]',
+  client_review: 'bg-[#FCE0EA] text-[#8E1F4A] dark:bg-[#3D212E] dark:text-[#F0B5C9]',
+  approved:      'bg-accent-soft text-accent-ink dark:bg-[#3A2F18] dark:text-[#FFD980]',
+  posted:        'bg-[#D9F0E0] text-[#1F5C36] dark:bg-[#1F3A28] dark:text-[#A6D9B6]'
 };
 
 export type Person = {

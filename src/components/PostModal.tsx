@@ -10,9 +10,6 @@ import { useIsMobile } from '@/lib/useIsMobile';
 
 const ALL_STATUSES: PostStatus[] = STATUS_ORDER;
 
-/** Normalize whatever shape `post.category` arrives in (string | string[] | null)
- *  into a string[]. The DB column is text[] post-migration, but legacy rows and
- *  optimistic-update payloads can still look scalar. */
 function postCategories(post: { category?: string[] | string | null } | null | undefined): string[] {
   if (!post || post.category == null) return [];
   if (Array.isArray(post.category)) return post.category.filter(Boolean) as string[];
@@ -40,19 +37,12 @@ export function PostModal({
   const [title, setTitle] = useState(post?.title ?? '');
   const [platform, setPlatform] = useState<string[]>(Array.isArray(post?.platform) ? post!.platform! : (post?.platform ? [post.platform] : ['IG']));
   const [category, setCategory] = useState<string[]>(postCategories(post));
-  /* For 'staging' posts (missing publish_date), default to empty string so
-   the date input shows empty — PIC has to consciously pick a date, not
-   accidentally save with today's date as default. */
   const stagingPost = post?.status === 'staging' && !post?.publish_date;
   const [publishDate, setPublishDate] = useState<string>(
     post?.publish_date
       ?? initialDate
       ?? (stagingPost ? '' : new Date().toISOString().slice(0, 10))
   );
-  // The two date columns from the email's planning table (Request Date =
-  // copy delivery deadline, Target Launch Date = post go-live date).
-  // Mostly informational; the user edits publish_date which is what the
-  // calendar uses. Read-only-ish: they re-sync if the email gets reprocessed.
   const [targetLaunchDate, setTargetLaunchDate] = useState<string>(post?.target_launch_date ?? '');
   const [requestDate, setRequestDate] = useState<string>(post?.request_date ?? '');
   const [status, setStatus] = useState<PostStatus>(post?.status ?? 'in_progress');
@@ -71,10 +61,20 @@ export function PostModal({
     setTimeout(() => firstFieldRef.current?.focus(), 100);
   }, []);
 
+  // ESC to close
+  useEffect(() => {
+    function onKey(e: KeyboardEvent) {
+      if (e.key === 'Escape') {
+        e.preventDefault();
+        onClose();
+      }
+    }
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [onClose]);
+
   async function save() {
     setSaving(true);
-    // Defense-in-depth: server-side RLS will reject this too, but bail
-    // early with a clear message if somehow reached without auth.
     const { data: sess } = await supabase.auth.getSession();
     if (!sess.session) {
       setSaving(false);
@@ -82,20 +82,13 @@ export function PostModal({
       return;
     }
     const trim = (s: string) => s.trim() || null;
-    /* Auto-transition: if this post was in 'staging' (missing a launch date)
-       and the user just filled in publish_date, promote it to in_progress so
-       it shows up on the calendar grid. If they cleared publish_date on a
-       post that's not in staging, demote it to staging so PIC knows it
-       needs attention. The user can still explicitly pick any status they
-       want via the status tape — this only runs when the current status
-       matches the auto-transition trigger. */
     let effectiveStatus = status;
     if (post?.status === 'staging' && publishDate) {
       effectiveStatus = 'in_progress';
     } else if (post?.status === 'in_progress' && !publishDate) {
       effectiveStatus = 'staging';
     } else if (post?.status === 'staging' && !publishDate) {
-      effectiveStatus = 'staging'; // no-op, just to be explicit
+      effectiveStatus = 'staging';
     }
     const payload: Partial<Post> = {
       title: title || '(untitled)',
@@ -151,58 +144,57 @@ export function PostModal({
   const isMobile = useIsMobile();
 
   return (
-    <div className="fixed inset-0 z-50 bg-ink/40 flex items-center justify-center p-0 sm:p-4 backdrop-blur-sm" onClick={onClose}>
+    <div className="fixed inset-0 z-50 bg-black/40 dark:bg-black/60 flex items-center justify-center p-0 sm:p-4 backdrop-blur-sm" onClick={onClose}>
       <div
         onClick={e => e.stopPropagation()}
-        className={`sheet bg-paper text-ink w-full max-w-3xl max-h-[90vh] overflow-hidden flex flex-col border-rule shadow-2xl ${
-          isMobile ? 'h-screen max-h-screen rounded-none' : 'rounded-sm border'
+        className={`sheet bg-surface text-ink w-full max-w-3xl max-h-[90vh] overflow-hidden flex flex-col border border-edge-strong shadow-pop ${
+          isMobile ? 'h-screen max-h-screen rounded-none' : 'rounded-xl border'
         }`}>
         {/* ─── Header ─── */}
-        <div className="px-4 sm:px-7 py-4 rule-b border-rule-soft flex items-start justify-between gap-4">
+        <div className="px-4 sm:px-6 py-4 border-b border-edge flex items-start justify-between gap-4">
           <div className="min-w-0 flex-1">
-            <div className="flex items-center gap-2 text-[10px] uppercase tracking-[0.16em] text-ink-mute font-mono">
+            <div className="flex items-center gap-2 text-[10px] uppercase tracking-[0.16em] text-text-mute font-mono font-semibold">
               {post ? 'Edit' : 'New'} post
               {post?.source === 'email' && (
-                <span className="ml-2 flex items-center gap-1 text-magenta">
+                <span className="ml-1 inline-flex items-center gap-1 text-magenta">
                   <Mail size={10} /> from email
                 </span>
               )}
             </div>
-            <h2 className="font-display text-2xl tracking-editorial mt-1 truncate">
-              {title || <span className="text-ink-faint italic">Untitled post</span>}
+            <h2 className="font-display text-[22px] tracking-tight font-medium mt-1 truncate text-ink">
+              {title || <span className="text-text-faint italic">Untitled post</span>}
             </h2>
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 shrink-0">
             <Tape status={status} size="md" />
-            <button onClick={onClose} className="p-1.5 -mr-1 text-ink-mute hover:text-ink">
+            <button
+              onClick={onClose}
+              aria-label="Close"
+              className="p-1.5 -mr-1 text-text-mute hover:text-ink hover:bg-surface-muted rounded-md transition">
               <X size={18} />
             </button>
           </div>
         </div>
 
-        {/* ─── Body — split: form + (optional) email peek ─── */}
+        {/* ─── Body ─── */}
         <div className={`flex-1 overflow-y-auto ${showEmail ? 'grid md:grid-cols-[1.4fr_1fr]' : ''}`}>
           {/* FORM */}
-          <div className="p-4 sm:p-7 space-y-5">
-            {/* Staging hint — show only when this post is in the 'staging'
-                state (no publish_date yet). PIC sees a clear call-to-action
-                to assign a launch date. The status auto-transitions to
-                in_progress on save when publish_date is filled in. */}
+          <div className="p-4 sm:p-6 space-y-5">
             {post?.status === 'staging' && (
-              <div className="px-3 py-2.5 rounded-sm border border-plum/30 bg-plum/5 text-sm flex items-start gap-2">
-                <span className="font-mono text-[10px] uppercase tracking-[0.12em] px-1.5 py-0.5 rounded-sm bg-plum text-paper shrink-0 mt-0.5">
+              <div className="px-3 py-2.5 rounded-md border border-plum/30 bg-plum/5 text-sm flex items-start gap-2.5">
+                <span className="font-mono text-[10px] uppercase tracking-[0.12em] px-2 py-0.5 rounded-full bg-plum text-white shrink-0 mt-0.5">
                   Staging
                 </span>
                 <div className="flex-1">
                   <div className="text-ink">
                     <span className="font-medium">This post needs a launch date.</span>{' '}
-                    <span className="text-ink-mute">
+                    <span className="text-text-mute">
                       Fill in the <span className="font-mono text-[11px]">Publish date</span> field below
                       and save — the status will move to in_progress and the post will appear on the calendar.
                     </span>
                   </div>
                   {post.source_meta?.routed_reason && (
-                    <div className="mt-1 text-[11px] text-ink-mute font-mono">
+                    <div className="mt-1 text-[11px] text-text-mute font-mono">
                       {post.source_meta.routed_reason}
                     </div>
                   )}
@@ -219,7 +211,7 @@ export function PostModal({
             </Field>
 
             <div className="grid grid-cols-2 gap-4">
-              <Field label="Platforms (multi-select)">
+              <Field label="Platforms">
                 <div className="flex flex-wrap gap-1.5">
                   {PLATFORMS.map(p => {
                     const active = platform.includes(p);
@@ -230,22 +222,22 @@ export function PostModal({
                         type="button"
                         onClick={() => setPlatform(active ? platform.filter(x => x !== p) : [...platform, p])}
                         title={p}
-                        className={`px-1.5 py-0.5 rounded-sm border transition flex items-center gap-1.5 ${
+                        className={`px-1.5 py-1 rounded-md border transition flex items-center gap-1.5 ${
                           active
-                            ? 'bg-ink border-ink'
-                            : 'bg-transparent border-rule-soft hover:border-ink-mute'
+                            ? 'bg-btn border-btn text-white shadow-soft'
+                            : 'bg-surface border-edge hover:border-edge-strong text-text-soft'
                         }`}>
                         {isLogo ? (
                           <img
                             src={p === 'IG' ? '/platforms/instagram.png' : '/platforms/facebook.png'}
                             alt={p}
-                            width={18}
-                            height={18}
-                            className="block shrink-0 rounded-[2px]"
-                            style={{ width: 18, height: 18 }}
+                            width={20}
+                            height={20}
+                            className="block shrink-0 rounded"
+                            style={{ width: 20, height: 20 }}
                           />
                         ) : (
-                          <span className={`text-[10px] font-semibold uppercase tracking-wide ${active ? 'text-paper' : 'text-ink-soft'}`}>
+                          <span className={`text-[11px] font-semibold uppercase tracking-wide ${active ? 'text-white' : 'text-text-soft'}`}>
                             {PLATFORM_GLYPH[p]}
                           </span>
                         )}
@@ -254,7 +246,7 @@ export function PostModal({
                   })}
                 </div>
               </Field>
-              <Field label="Categories (multi-select)">
+              <Field label="Categories">
                 <div className="flex flex-wrap gap-1">
                   {CATEGORIES.map(c => {
                     const active = category.includes(c);
@@ -264,12 +256,12 @@ export function PostModal({
                         type="button"
                         onClick={() => setCategory(active ? category.filter(x => x !== c) : [...category, c])}
                         title={CATEGORY_LABEL[c]}
-                        className={`px-1.5 py-0.5 rounded-sm border transition flex items-center gap-1.5 ${
+                        className={`min-w-[32px] px-1.5 py-1 rounded-md border transition flex items-center justify-center ${
                           active
-                            ? 'bg-ink border-ink text-paper'
-                            : 'bg-transparent border-rule-soft hover:border-ink-mute text-ink-soft'
+                            ? 'bg-btn border-btn text-white shadow-soft'
+                            : 'bg-surface border-edge hover:border-edge-strong text-text-soft'
                         }`}>
-                        <span className="text-[10px] font-semibold uppercase tracking-wide">
+                        <span className="text-[11px] font-semibold uppercase tracking-wide">
                           {CATEGORY_GLYPH[c]}
                         </span>
                       </button>
@@ -277,39 +269,36 @@ export function PostModal({
                   })}
                 </div>
                 {category.length > 0 && (
-                  <div className="mt-1.5 text-[10px] uppercase tracking-[0.14em] text-ink-mute font-mono">
+                  <div className="mt-1.5 text-[10px] uppercase tracking-[0.14em] text-text-mute font-mono">
                     {category.map(c => (CATEGORY_LABEL as Record<string, string>)[c] || c).join(' · ')}
                   </div>
                 )}
               </Field>
             </div>
+
             <div className="grid grid-cols-1 gap-4">
               <Field label="Publish date" required={stagingPost}>
                 <input
                   type="date"
                   value={publishDate}
                   onChange={e => setPublishDate(e.target.value)}
-                  className={`${inputCls} ${stagingPost && !publishDate ? 'border-plum ring-1 ring-plum/30 bg-plum/5' : ''}`}
+                  className={`${inputCls} ${stagingPost && !publishDate ? 'border-plum ring-2 ring-plum/30 bg-plum/5' : ''}`}
                 />
               </Field>
-              {/* Show the planning-table date columns when the email
-                  surfaced them. These are mostly informational — the human
-                  reviewer uses them as reference when filling in
-                  publish_date. Hidden when both are empty. */}
               {(targetLaunchDate || requestDate || post?.target_launch_date || post?.request_date) && (
                 <div className="grid grid-cols-2 gap-3 -mt-2">
                   <Field label={
-                    <span className="flex items-center gap-1">
-                      <span className="text-[10px] text-ink-mute font-mono">Target Launch</span>
-                      <span className="text-[9px] text-ink-mute">from email</span>
+                    <span className="flex items-center gap-1.5">
+                      <span className="text-[10px] text-text-mute font-mono">Target Launch</span>
+                      <span className="text-[9px] text-text-faint">from email</span>
                     </span>
                   }>
                     <input type="date" value={targetLaunchDate} onChange={e => setTargetLaunchDate(e.target.value)} className={inputCls} />
                   </Field>
                   <Field label={
-                    <span className="flex items-center gap-1">
-                      <span className="text-[10px] text-ink-mute font-mono">Request Date</span>
-                      <span className="text-[9px] text-ink-mute">copy deadline</span>
+                    <span className="flex items-center gap-1.5">
+                      <span className="text-[10px] text-text-mute font-mono">Request Date</span>
+                      <span className="text-[9px] text-text-faint">copy deadline</span>
                     </span>
                   }>
                     <input type="date" value={requestDate} onChange={e => setRequestDate(e.target.value)} className={inputCls} />
@@ -326,10 +315,10 @@ export function PostModal({
                     <button
                       key={s}
                       onClick={() => setStatus(s)}
-                      className={`text-[10px] px-2 py-1 rounded-sm border font-semibold uppercase tracking-wide transition ${
+                      className={`text-[11px] px-3 py-1.5 rounded-md border font-medium transition ${
                         active
-                          ? 'bg-ink text-paper border-ink'
-                          : 'bg-transparent text-ink-soft border-rule-soft hover:border-ink-mute'
+                          ? 'bg-btn text-btn-text border-ink shadow-soft'
+                          : 'bg-surface text-text-soft border-edge hover:border-edge-strong'
                       }`}>
                       {STATUS_LABEL[s]}
                     </button>
@@ -390,7 +379,7 @@ export function PostModal({
                   <button
                     onClick={runDraft}
                     disabled={drafting || !title}
-                    className="text-[10px] uppercase tracking-[0.14em] font-mono flex items-center gap-1.5 text-accent-deep hover:text-ink disabled:text-ink-faint font-semibold">
+                    className="text-[10px] uppercase tracking-[0.14em] font-mono flex items-center gap-1.5 text-accent-deep hover:text-ink disabled:text-text-faint font-semibold">
                     {drafting ? <><Loader2 size={11} className="animate-spin" /> drafting</> : <><Sparkles size={11} /> AI draft</>}
                   </button>
                 </div>
@@ -404,31 +393,31 @@ export function PostModal({
             </Field>
           </div>
 
-          {/* EMAIL PEEK (right side, when source=email) */}
+          {/* EMAIL PEEK */}
           {showEmail && (
-            <div className="bg-paper-deep border-l border-rule-soft p-4 sm:p-7 space-y-4">
+            <div className="bg-surface-muted border-l border-edge p-4 sm:p-6 space-y-4">
               <div>
-                <div className="text-[10px] uppercase tracking-[0.16em] text-ink-mute font-mono mb-1.5">From email</div>
-                <div className="font-display text-lg tracking-editorial leading-tight">
+                <div className="text-[10px] uppercase tracking-[0.16em] text-text-mute font-mono font-semibold mb-1.5">From email</div>
+                <div className="font-display text-lg tracking-tight leading-tight font-medium text-ink">
                   {post.source_meta.subject || '(no subject)'}
                 </div>
               </div>
               {post.source_meta.from && (
-                <div className="text-xs text-ink-soft font-mono">
-                  <span className="text-ink-mute">From:</span> {post.source_meta.from}
+                <div className="text-xs text-text-soft font-mono">
+                  <span className="text-text-mute">From:</span> {post.source_meta.from}
                 </div>
               )}
               {post.source_meta.confidence != null && (
-                <div className="inline-flex items-center gap-2 text-[10px] font-mono uppercase tracking-wide bg-accent text-ink px-2 py-1 rounded-sm font-semibold">
+                <div className="inline-flex items-center gap-2 text-[10px] font-mono uppercase tracking-wide bg-accent text-ink px-2.5 py-1 rounded-full font-semibold">
                   AI {(post.source_meta.confidence * 100).toFixed(0)}% confident
                 </div>
               )}
               {post.source_meta.parse_warnings?.length > 0 && (
                 <div>
-                  <div className="text-[10px] uppercase tracking-[0.16em] text-ink-mute font-mono mb-1.5">
+                  <div className="text-[10px] uppercase tracking-[0.16em] text-text-mute font-mono font-semibold mb-1.5">
                     ⚠ AI flagged these issues
                   </div>
-                  <ul className="text-xs text-ink-soft leading-relaxed space-y-1 list-disc pl-5">
+                  <ul className="text-xs text-text-soft leading-relaxed space-y-1 list-disc pl-5">
                     {post.source_meta.parse_warnings.map((w: string, i: number) => (
                       <li key={i}>{w}</li>
                     ))}
@@ -437,27 +426,27 @@ export function PostModal({
               )}
               {post.source_meta.mentioned_internal?.length > 0 && (
                 <div>
-                  <div className="text-[10px] uppercase tracking-[0.16em] text-ink-mute font-mono mb-1.5">Mentioned internal</div>
+                  <div className="text-[10px] uppercase tracking-[0.16em] text-text-mute font-mono font-semibold mb-1.5">Mentioned internal</div>
                   <div className="flex flex-wrap gap-1">
                     {post.source_meta.mentioned_internal.map((n: string, i: number) => (
-                      <span key={i} className="text-xs px-2 py-0.5 rounded-sm bg-steel/10 text-steel font-mono">{n}</span>
+                      <span key={i} className="tag-internal text-xs px-2 py-0.5 rounded-full font-mono">{n}</span>
                     ))}
                   </div>
                 </div>
               )}
               {post.source_meta.mentioned_client?.length > 0 && (
                 <div>
-                  <div className="text-[10px] uppercase tracking-[0.16em] text-ink-mute font-mono mb-1.5">Mentioned client</div>
+                  <div className="text-[10px] uppercase tracking-[0.16em] text-text-mute font-mono font-semibold mb-1.5">Mentioned client</div>
                   <div className="flex flex-wrap gap-1">
                     {post.source_meta.mentioned_client.map((n: string, i: number) => (
-                      <span key={i} className="text-xs px-2 py-0.5 rounded-sm bg-copper/15 text-copper font-mono">{n}</span>
+                      <span key={i} className="tag-client text-xs px-2 py-0.5 rounded-full font-mono">{n}</span>
                     ))}
                   </div>
                 </div>
               )}
-              <div className="pt-3 border-t border-rule-soft">
-                <div className="text-[10px] uppercase tracking-[0.16em] text-ink-mute font-mono mb-2">Original body</div>
-                <div className="text-xs text-ink-soft leading-relaxed font-mono whitespace-pre-wrap max-h-72 overflow-y-auto">
+              <div className="pt-3 border-t border-edge">
+                <div className="text-[10px] uppercase tracking-[0.16em] text-text-mute font-mono font-semibold mb-2">Original body</div>
+                <div className="text-xs text-text-soft leading-relaxed font-mono whitespace-pre-wrap max-h-72 overflow-y-auto">
                   {post.source_meta.body || post.notes || '(no body)'}
                 </div>
               </div>
@@ -466,21 +455,21 @@ export function PostModal({
         </div>
 
         {/* ─── Footer ─── */}
-        <div className="px-7 py-3.5 rule-t border-rule-soft flex items-center justify-between bg-paper-warm">
+        <div className="px-6 py-3.5 border-t border-edge flex items-center justify-between bg-surface-muted">
           {post?.id ? (
-            <button onClick={remove} className="text-rust hover:text-ink text-[11px] uppercase tracking-[0.14em] font-mono font-semibold flex items-center gap-1.5">
+            <button onClick={remove} className="text-magenta hover:text-ink text-[11px] uppercase tracking-[0.14em] font-mono font-semibold flex items-center gap-1.5 px-2 py-1 rounded-md hover:bg-surface transition">
               <Trash2 size={12} /> Delete
             </button>
           ) : <span />}
           <div className="flex items-center gap-2">
-            <button onClick={onClose} className="px-4 py-1.5 text-[11px] uppercase tracking-[0.14em] font-mono font-semibold text-ink-mute hover:text-ink">
+            <button onClick={onClose} className="px-4 py-1.5 text-[12px] font-medium text-text-soft hover:text-ink hover:bg-surface rounded-md transition">
               Cancel
             </button>
             <button
               onClick={save}
               disabled={saving || !title}
-              className="px-5 py-1.5 text-[11px] uppercase tracking-[0.14em] font-mono font-semibold bg-ink text-paper rounded-sm hover:bg-accent hover:text-ink transition flex items-center gap-1.5 disabled:opacity-30">
-              {saving ? <><Loader2 size={11} className="animate-spin" /> saving</>
+              className="px-5 py-1.5 text-[12px] font-semibold bg-btn text-btn-text rounded-md hover:bg-accent hover:text-ink transition flex items-center gap-1.5 disabled:opacity-40 disabled:cursor-not-allowed shadow-soft">
+              {saving ? <><Loader2 size={12} className="animate-spin" /> saving</>
                 : savedFlash ? <><Check size={12} /> saved</>
                 : <>Save</>}
             </button>
@@ -491,12 +480,12 @@ export function PostModal({
   );
 }
 
-const inputCls = 'w-full bg-transparent border-b border-rule-soft focus:border-ink focus:outline-none px-0 py-1.5 text-sm transition placeholder:text-ink-faint';
+const inputCls = 'w-full bg-transparent border-b border-edge focus:border-ink focus:outline-none px-0 py-1.5 text-sm transition placeholder:text-text-faint text-ink';
 
 function Field({ label, children, required }: { label: React.ReactNode; children: React.ReactNode; required?: boolean }) {
   return (
     <label className="block">
-      <div className="text-[10px] uppercase tracking-[0.16em] text-ink-mute font-mono font-semibold mb-1.5">
+      <div className="text-[10px] uppercase tracking-[0.16em] text-text-mute font-mono font-semibold mb-1.5">
         {label}
         {required && <span className="text-plum ml-1" title="Required for staging posts">*</span>}
       </div>

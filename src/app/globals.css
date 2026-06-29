@@ -3,56 +3,99 @@
 @tailwind utilities;
 
 /* ─────────────────────────────────────────
-   Design tokens
-   Editorial Production aesthetic
-   - Paper-grain noise + deep ink
-   - High-contrast palette
-   - Sharp, confident typography
+   Design tokens — Monday.com friendly
+   - White-first workspace
+   - Soft gray surfaces, generous rounding
+   - Real dark mode (.dark class on <html>)
    ───────────────────────────────────────── */
 :root {
-  /* Surfaces */
-  --paper:        #F4F1EA;  /* warm cream, the canvas */
-  --paper-deep:   #EBE6D9;  /* slight dent, for inset cards */
-  --ink:          #0B0B0E;  /* near-black, not pure black */
-  --ink-soft:     #1C1C22;
-  --ink-mute:     #4A4A52;
-  --rule:         #1A1A1E;  /* hairline rules */
-  --rule-soft:    #C7C0AE;  /* warm hairline on paper */
+  /* Surfaces (light) */
+  --bg-page:      #F6F7F9;
+  --bg-surface:   #FFFFFF;
+  --bg-muted:     #F0F1F4;
+  --bg-sunken:    #E9EAEE;
 
-  /* Accents */
-  --accent:       #FFB000;  /* SONY amber, used sparingly */
+  /* Text (light) */
+  --text:         #1F1F25;
+  --text-soft:    #3A3A42;
+  --text-mute:    #6B6B75;
+  --text-faint:   #9A9AA3;
+
+  /* Borders (light) */
+  --border:       #E4E5E9;
+  --border-strong:#CFD0D6;
+  --border-deep:  #1F1F25;
+
+  /* Brand */
+  --accent:       #FFB000;
   --accent-deep:  #E89B00;
-  --magenta:      #D8265A;  /* hot pink-magenta for email-from-ai */
-  --copper:       #C86A2C;  /* client-PIC pills */
-  --steel:        #2F4B6E;  /* internal-PIC pills */
-  --forest:       #2E5C3A;  /* posted/success */
-  --rust:         #A03A24;  /* blocked */
+  --accent-soft:  #FFF1D1;
+  --accent-ink:   #5A3A00;
+
+  /* Live status colors */
+  --live:         #3E8E5A;
+
+  /* Holiday */
+  --holiday:      #E5616B;
+  --holiday-tint: #FCE5E7;
+
+  /* Primary button — always high-contrast on its background */
+  --btn-primary:        #1F1F25;
+  --btn-primary-text:   #FFFFFF;
+  --btn-primary-hover:  var(--accent);
 
   color-scheme: light;
 }
 
+/* ── Dark theme ──────────────────────────── */
+.dark {
+  --bg-page:      #0F1115;
+  --bg-surface:   #161821;
+  --bg-muted:     #1C1F2A;
+  --bg-sunken:    #252836;
+
+  --text:         #ECECF0;
+  --text-soft:    #D0D0D9;
+  --text-mute:    #9098A6;
+  --text-faint:   #6B7280;
+
+  --border:       #2A2E3B;
+  --border-strong:#3A3F4D;
+  --border-deep:  #ECECF0;
+
+  --accent:       #FFC233;
+  --accent-deep:  #FFC233;
+  --accent-soft:  #2E2510;
+  --accent-ink:   #FFD980;
+
+  --live:         #5BB37A;
+
+  --holiday:      #F08088;
+  --holiday-tint: #2D1E22;
+
+  /* In dark mode, primary button inverts: light bg + dark text */
+  --btn-primary:        #ECECF0;
+  --btn-primary-text:   #1F1F25;
+  --btn-primary-hover:  var(--accent);
+
+  color-scheme: dark;
+}
+
 html, body {
-  background: var(--paper);
-  color: var(--ink);
-  font-family: var(--font-sans), ui-sans-serif, system-ui, -apple-system, sans-serif;
-  font-feature-settings: 'ss01', 'ss02', 'cv11';
+  background: var(--bg-page);
+  color: var(--text);
+  font-family: var(--font-sans), ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 }
 
-/* Paper grain — subtle, on top of cream, doesn't interfere with legibility */
-body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: 1;
-  opacity: 0.42;
-  mix-blend-mode: multiply;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.08  0 0 0 0 0.07  0 0 0 0 0.05  0 0 0 0.12 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-}
+/* Smooth theme transition */
+html { transition: background-color 200ms ease, color 200ms ease; }
 
-/* Typography — utility classes for the editorial feel */
+/* Disable the paper grain — clean white workspace */
+body::before { display: none; }
+
+/* Typography */
 .font-display {
   font-family: var(--font-display), 'Times New Roman', serif;
   font-feature-settings: 'ss01', 'liga';
@@ -62,63 +105,69 @@ body::before {
   font-family: var(--font-mono), 'SF Mono', ui-monospace, Menlo, monospace;
 }
 
-/* The big date numeral — distinctive, italic where the user wants emphasis */
+/* Editorial numerals — kept (distinctive), but tuned to be less heavy */
 .numeral {
   font-family: var(--font-display), serif;
-  font-weight: 400;
-  font-style: italic;
+  font-weight: 500;
   font-feature-settings: 'lnum', 'tnum';
-  letter-spacing: -0.04em;
-  line-height: 0.85;
+  letter-spacing: -0.03em;
+  line-height: 0.9;
 }
 
 /* Hairline rules */
-.rule-t { border-top: 1px solid var(--rule); }
-.rule-b { border-bottom: 1px solid var(--rule); }
-.rule-soft { border-color: var(--rule-soft); }
+.rule-t { border-top: 1px solid var(--border); }
+.rule-b { border-bottom: 1px solid var(--border); }
+.rule-soft { border-color: var(--border); }
 
-/* Status chips — like colored paper tape stuck to a board */
-.tape {
+/* ── Status pill ───────────────────────────
+   The new shape: rounded-full, light pastel bg, readable text.
+   Auto-adapts to dark via the .dark class. */
+.pill {
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  font-size: 10px;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
+  font-size: 11px;
   font-weight: 600;
-  padding: 2px 7px 3px;
-  border-radius: 2px;
-  position: relative;
+  letter-spacing: 0;
+  padding: 2px 8px;
+  border-radius: 999px;
   white-space: nowrap;
+  line-height: 1.4;
 }
+.pill-xs { font-size: 10px; padding: 1px 6px; }
+.pill-sm { font-size: 11px; padding: 2px 8px; }
+.pill-md { font-size: 12px; padding: 3px 10px; }
 
-/* Subtle rotated, slightly translucent tape look */
-.tape::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: inherit;
-  opacity: 0.85;
-  z-index: -1;
-  border-radius: inherit;
-}
+/* Status-specific (light defaults) */
+.pill-staging       { background: #EEE4F1; color: #6B2D85; }
+.pill-in_progress   { background: #DEE9F7; color: #1F4A85; }
+.pill-client_review { background: #FCE0EA; color: #8E1F4A; }
+.pill-approved      { background: #FFF1D1; color: #6B4900; }
+.pill-posted        { background: #D9F0E0; color: #1F5C36; }
+
+/* Dark overrides — use rgba so they look good on dark surfaces */
+.dark .pill-staging       { background: rgba(217, 184, 232, 0.18); color: #E5CDF0; }
+.dark .pill-in_progress   { background: rgba(168, 197, 234, 0.18); color: #B8D2EE; }
+.dark .pill-client_review { background: rgba(240, 181, 201, 0.18); color: #F2C2D2; }
+.dark .pill-approved      { background: rgba(255, 217, 128, 0.20); color: #FFE0A0; }
+.dark .pill-posted        { background: rgba(166, 217, 182, 0.18); color: #B8E0C5; }
 
 /* Subtle entrance animation for items */
 @keyframes ink-in {
   from { opacity: 0; transform: translateY(4px); }
   to   { opacity: 1; transform: none; }
 }
-.ink-in { animation: ink-in 0.5s cubic-bezier(0.2, 0.7, 0.2, 1) both; }
+.ink-in { animation: ink-in 0.4s cubic-bezier(0.2, 0.7, 0.2, 1) both; }
 
 /* Subtle pulse for "live" indicator */
 @keyframes live-pulse {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(46, 92, 58, 0.4); }
-  50%      { box-shadow: 0 0 0 6px rgba(46, 92, 58, 0); }
+  0%, 100% { box-shadow: 0 0 0 0 rgba(62, 142, 90, 0.5); }
+  50%      { box-shadow: 0 0 0 5px rgba(62, 142, 90, 0); }
 }
 .live-dot {
   width: 7px; height: 7px;
   border-radius: 50%;
-  background: var(--forest);
+  background: var(--live);
   display: inline-block;
   animation: live-pulse 1.6s ease-out infinite;
 }
@@ -126,44 +175,68 @@ body::before {
 /* Subtle attention pulse for newly-arrived items */
 @keyframes arrive {
   0%   { box-shadow: 0 0 0 0 rgba(255, 176, 0, 0.55); }
-  100% { box-shadow: 0 0 0 10px rgba(255, 176, 0, 0); }
+  100% { box-shadow: 0 0 0 12px rgba(255, 176, 0, 0); }
 }
 .just-arrived { animation: arrive 1.2s ease-out 2; }
 
-/* Modal: slide-in with conf */
+/* Modal: gentle slide-in */
 @keyframes sheet-in {
   from { opacity: 0; transform: translateY(8px) scale(0.99); }
   to   { opacity: 1; transform: none; }
 }
 .sheet { animation: sheet-in 0.22s cubic-bezier(0.2, 0.7, 0.2, 1) both; }
 
-/* Scrollbar — paper-tinted */
+/* Scrollbar — adapts to theme */
 ::-webkit-scrollbar { width: 10px; height: 10px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb {
-  background: var(--rule-soft);
+  background: var(--border-strong);
   border-radius: 5px;
-  border: 2px solid var(--paper);
+  border: 2px solid var(--bg-page);
 }
-::-webkit-scrollbar-thumb:hover { background: var(--ink-mute); }
+::-webkit-scrollbar-thumb:hover { background: var(--text-faint); }
 
-/* Focus rings — strong, with the accent */
+/* Focus rings — strong amber, with offset */
 *:focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 2px;
-  border-radius: 2px;
+  border-radius: 4px;
 }
 
 /* No tap highlight on iOS */
 button, a { -webkit-tap-highlight-color: transparent; }
 
-/* Hide horizontal scrollbar on mobile filter strip while keeping it scrollable */
+/* Hide horizontal scrollbar on mobile filter strip */
 .no-scrollbar {
   scrollbar-width: none;
   -ms-overflow-style: none;
 }
 .no-scrollbar::-webkit-scrollbar { display: none; }
 
-/* Safe area insets for iPhone notches in the bottom bar */
+/* Safe area insets for iPhone notches */
 .safe-bottom { padding-bottom: env(safe-area-inset-bottom); }
 .safe-top { padding-top: env(safe-area-inset-top); }
+
+/* ── Mention tag pills (internal / client) ───── */
+.tag-internal {
+  background: #DEE9F7;
+  color: #1F4A85;
+}
+.tag-client {
+  background: #FCE5D5;
+  color: #8E4A1F;
+}
+.dark .tag-internal {
+  background: rgba(168, 197, 234, 0.16);
+  color: #A8C5EA;
+}
+.dark .tag-client {
+  background: rgba(232, 168, 121, 0.18);
+  color: #F0B58A;
+}
+
+/* Reduce motion respect */
+@media (prefers-reduced-motion: reduce) {
+  .ink-in, .sheet, .just-arrived, .live-dot { animation: none !important; }
+  html { transition: none !important; }
+}

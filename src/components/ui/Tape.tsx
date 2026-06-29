@@ -1,12 +1,8 @@
 'use client';
 
-import { PostStatus, STATUS_LABEL, STATUS_COLOR, STATUS_DOT } from '@/lib/types';
-import { PostModal } from '../PostModal';
-import { useState } from 'react';
-import { ChevronRight } from 'lucide-react';
+import { PostStatus, STATUS_LABEL, STATUS_COLOR } from '@/lib/types';
 
-/* A "paper tape" status chip — distinctive, tactile-feeling.
-   Variant 'solid' for headers, 'dot' for inline use. */
+/* Monday-style rounded status pill. Adapts to dark via the .pill-* classes in globals.css. */
 export function Tape({
   status, size = 'sm', withDot = true
 }: {
@@ -14,12 +10,15 @@ export function Tape({
   size?: 'xs' | 'sm' | 'md';
   withDot?: boolean;
 }) {
-  const sz = size === 'xs' ? 'text-[9px] px-1.5 py-[1px]'
-            : size === 'md' ? 'text-[11px] px-2.5 py-1'
-            :                  'text-[10px] px-2 py-[2px]';
+  const sz = size === 'xs' ? 'pill-xs'
+            : size === 'md' ? 'pill-md'
+            :                  'pill-sm';
+  // STATUS_COLOR already returns "pill pill-staging" etc. so we just add the size modifier.
+  const base = STATUS_COLOR[status]; // "pill pill-staging"
+  const cls = base.replace('pill ', `pill ${sz} `);
   return (
-    <span className={`tape ${STATUS_COLOR[status]} ${sz} font-semibold tracking-wide`}>
-      {withDot && <span className={`w-1.5 h-1.5 rounded-full ${STATUS_DOT[status]}`} />}
+    <span className={cls}>
+      {withDot && <span className="w-1.5 h-1.5 rounded-full bg-current opacity-70" />}
       {STATUS_LABEL[status]}
     </span>
   );
