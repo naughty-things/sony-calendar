@@ -757,19 +757,6 @@ function MonthQuota({
   target?: number;
   monthLabel: string;
 }) {
-  // Progress bar fills toward the target (35). If we exceed target, fill caps at 100%.
-  const pct = Math.min(100, Math.round((count / target) * 100));
-  // Color the bar based on how close to / over target
-  const barColor = count >= target
-    ? 'bg-forest'                      // done — green
-    : count >= target * 0.8
-    ? 'bg-accent'                      // close — amber
-    : 'bg-steel';                      // behind — blue
-  // Delta display: if done ≥ target, show "+N over target". Otherwise show "-N to go".
-  const remaining = Math.max(0, target - count);
-  const deltaText = count >= target
-    ? `+${count - target} over`
-    : `${remaining} to go`;
   return (
     <div className="bg-surface-muted border border-edge-strong rounded-lg shadow-soft px-3 sm:px-4 py-2 sm:py-2.5 shrink-0 self-end mb-1.5 min-w-[160px] sm:min-w-[200px]">
       <div className="flex items-center justify-between gap-3">
@@ -790,31 +777,26 @@ function MonthQuota({
           </span>
         </div>
       </div>
-      <div className="mt-2 h-1.5 w-full bg-surface-muted rounded-full overflow-hidden">
-        <div
-          className={`h-full rounded-full ${barColor} transition-all duration-500 ease-out`}
-          style={{ width: `${pct}%` }} />
-      </div>
       {statusBreakdown ? (
-        <div className="mt-2 flex flex-wrap gap-1.5">
+        <div className="mt-2 space-y-1.5">
           {statusBreakdown.filter(item => item.count > 0).map(({ status, count: statusCount }) => (
-            <span
+            <div
               key={status}
-              className="inline-flex items-center gap-1.5 rounded-md border border-edge bg-surface px-2 py-1 text-[10px] font-mono text-text-soft">
-              <span className={`h-1.5 w-1.5 rounded-full ${STATUS_DOT[status]}`} />
+              className="flex items-center justify-between gap-3 rounded-md border border-edge bg-surface px-2.5 py-1.5 text-[10px] font-mono text-text-soft">
+              <span className="inline-flex items-center gap-1.5 min-w-0">
+                <span className={`h-1.5 w-1.5 rounded-full ${STATUS_DOT[status]}`} />
+                <span>{STATUS_LABEL[status]}</span>
+              </span>
               <span className="text-ink font-semibold">{statusCount}</span>
-              <span>{STATUS_LABEL[status]}</span>
-            </span>
+            </div>
           ))}
         </div>
       ) : (
-        <div className="mt-1.5 flex items-center justify-between text-[10px] font-mono">
+        <div className="mt-2 flex items-center justify-between text-[10px] font-mono">
           <span className="text-text-mute">
             <span className="text-ink font-semibold">{supportingCount}</span> {supportingLabel}
           </span>
-          <span className={count >= target ? 'text-forest font-semibold' : 'text-text-mute'}>
-            {deltaText}
-          </span>
+          <span className="text-text-mute">month total</span>
         </div>
       )}
     </div>
