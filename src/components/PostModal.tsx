@@ -43,6 +43,7 @@ export function PostModal({
       ?? initialDate
       ?? (stagingPost ? '' : new Date().toISOString().slice(0, 10))
   );
+  const [quotaMonth, setQuotaMonth] = useState<string>(post?.quota_month ? post.quota_month.slice(0, 7) : '');
   const [targetLaunchDate, setTargetLaunchDate] = useState<string>(post?.target_launch_date ?? '');
   const [requestDate, setRequestDate] = useState<string>(post?.request_date ?? '');
   const [status, setStatus] = useState<PostStatus>(post?.status ?? 'in_progress');
@@ -95,6 +96,7 @@ export function PostModal({
       platform: platform.length > 0 ? platform : null,
       category: category.length > 0 ? category : null,
       publish_date: publishDate || null,
+      quota_month: quotaMonth ? `${quotaMonth}-01` : null,
       target_launch_date: targetLaunchDate || null,
       request_date: requestDate || null,
       status: effectiveStatus,
@@ -277,14 +279,27 @@ export function PostModal({
             </div>
 
             <div className="grid grid-cols-1 gap-4">
-              <Field label="Publish date" required={stagingPost}>
-                <input
-                  type="date"
-                  value={publishDate}
-                  onChange={e => setPublishDate(e.target.value)}
-                  className={`${inputCls} ${stagingPost && !publishDate ? 'border-plum ring-2 ring-plum/30 bg-plum/5' : ''}`}
-                />
-              </Field>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <Field label="Publish date" required={stagingPost}>
+                  <input
+                    type="date"
+                    value={publishDate}
+                    onChange={e => setPublishDate(e.target.value)}
+                    className={`${inputCls} ${stagingPost && !publishDate ? 'border-plum ring-2 ring-plum/30 bg-plum/5' : ''}`}
+                  />
+                </Field>
+                <Field label="Quota month">
+                  <input
+                    type="month"
+                    value={quotaMonth}
+                    onChange={e => setQuotaMonth(e.target.value)}
+                    className={inputCls}
+                  />
+                  <div className="mt-1 text-[10px] font-mono text-text-faint">
+                    Leave blank to count this post in the publish-date month.
+                  </div>
+                </Field>
+              </div>
               {(targetLaunchDate || requestDate || post?.target_launch_date || post?.request_date) && (
                 <div className="grid grid-cols-2 gap-3 -mt-2">
                   <Field label={

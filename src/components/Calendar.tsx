@@ -284,8 +284,9 @@ export function Calendar() {
     const y = cursor.getFullYear();
     const m = cursor.getMonth();
     const inMonth = posts.filter(p => {
-      if (!p.publish_date) return false;
-      const d = new Date(p.publish_date);
+      const monthSource = p.quota_month || p.publish_date;
+      if (!monthSource) return false;
+      const d = new Date(monthSource);
       return d.getFullYear() === y && d.getMonth() === m;
     });
     const total = inMonth.length;

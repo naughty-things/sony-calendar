@@ -38,6 +38,7 @@ create table if not exists posts (
   platform text[],             -- IG / FB / Other (multi-platform post)
   category text[],             -- PA / HE / MO / DI / EC / INZONE / OTHER (SONY product line)
   publish_date date,           -- nullable while a post sits in staging
+  quota_month date,            -- optional manual month override for quota / summary counting
   target_launch_date date,
   request_date date,
   status text not null default 'in_progress'

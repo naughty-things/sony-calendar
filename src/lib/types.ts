@@ -109,6 +109,9 @@ export type Post = {
   platform?: string[] | null;
   category?: string[] | null;  /* multi-value: ['HE','MO'] etc. */
   publish_date: string | null; // YYYY-MM-DD or null when in staging
+  // Optional manual month override for quota / month-summary counting.
+  // Stored as the first day of the chosen month (YYYY-MM-01).
+  quota_month?: string | null;
   // The "Target Launch Date" column from the email's planning table, if any.
   // Mirrors publish_date but keeps the original column value separate for audit.
   // When the planning table has BOTH Target Launch Date AND Request Date
