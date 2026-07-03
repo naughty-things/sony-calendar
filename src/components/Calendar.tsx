@@ -291,7 +291,11 @@ export function Calendar() {
     const done = inMonth.filter(p => p.status === 'posted' || p.status === 'approved').length;
     const planned = inMonth.length;
     const total = inMonth.length;
-    return { done, planned, total };
+    const statusCounts = STATUS_ORDER.map(status => ({
+      status,
+      count: inMonth.filter(p => p.status === status).length
+    }));
+    return { done, planned, total, statusCounts };
   }, [posts, cursor]);
 
   const categoryCounts = useMemo(() => {
@@ -508,6 +512,7 @@ export function Calendar() {
                 count={monthStats.done}
                 supportingCount={monthStats.planned}
                 supportingLabel="planned"
+                statusBreakdown={monthStats.statusCounts}
                 target={35}
                 monthLabel={format(cursor, 'MMM yyyy')}
               />
@@ -742,12 +747,13 @@ function Kbd({ children }: { children: React.ReactNode }) {
    Shows 35 target vs current month count (done / planned)
    ───────────────────────────────────────── */
 function MonthQuota({
-  label, count, supportingCount, supportingLabel, target = 35, monthLabel
+  label, count, supportingCount, supportingLabel, statusBreakdown, target = 35, monthLabel
 }: {
   label: string;
   count: number;
   supportingCount: number;
   supportingLabel: string;
+  statusBreakdown?: Array<{ status: PostStatus; count: number }>;
   target?: number;
   monthLabel: string;
 }) {
@@ -789,14 +795,28 @@ function MonthQuota({
           className={`h-full rounded-full ${barColor} transition-all duration-500 ease-out`}
           style={{ width: `${pct}%` }} />
       </div>
-      <div className="mt-1.5 flex items-center justify-between text-[10px] font-mono">
-        <span className="text-text-mute">
-          <span className="text-ink font-semibold">{supportingCount}</span> {supportingLabel}
-        </span>
-        <span className={count >= target ? 'text-forest font-semibold' : 'text-text-mute'}>
-          {deltaText}
-        </span>
-      </div>
+      {statusBreakdown ? (
+        <div className="mt-2 flex flex-wrap gap-1.5">
+          {statusBreakdown.filter(item => item.count > 0).map(({ status, count: statusCount }) => (
+            <span
+              key={status}
+              className="inline-flex items-center gap-1.5 rounded-md border border-edge bg-surface px-2 py-1 text-[10px] font-mono text-text-soft">
+              <span className={`h-1.5 w-1.5 rounded-full ${STATUS_DOT[status]}`} />
+              <span className="text-ink font-semibold">{statusCount}</span>
+              <span>{STATUS_LABEL[status]}</span>
+            </span>
+          ))}
+        </div>
+      ) : (
+        <div className="mt-1.5 flex items-center justify-between text-[10px] font-mono">
+          <span className="text-text-mute">
+            <span className="text-ink font-semibold">{supportingCount}</span> {supportingLabel}
+          </span>
+          <span className={count >= target ? 'text-forest font-semibold' : 'text-text-mute'}>
+            {deltaText}
+          </span>
+        </div>
+      )}
     </div>
   );
 }
