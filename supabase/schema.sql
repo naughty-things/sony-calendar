@@ -36,10 +36,12 @@ create table if not exists posts (
   client_id uuid references clients(id) on delete cascade,
   title text not null,
   platform text[],             -- IG / FB / Other (multi-platform post)
-  category text,               -- PA / HE / MO / DI / EC / INZONE / OTHER (SONY product line)
-  publish_date date not null,
-  status text not null default 'draft'
-    check (status in ('draft','in_progress','needs_review','client_review','approved','scheduled','posted','blocked','archived')),
+  category text[],             -- PA / HE / MO / DI / EC / INZONE / OTHER (SONY product line)
+  publish_date date,           -- nullable while a post sits in staging
+  target_launch_date date,
+  request_date date,
+  status text not null default 'in_progress'
+    check (status in ('staging','in_progress','client_review','approved','posted')),
   /* Free-text names — every name ever typed becomes a future autocomplete option. */
   designer text,
   copy_writer text,
@@ -55,19 +57,20 @@ create table if not exists posts (
 );
 create index on posts(client_id, publish_date);
 create index on posts(status);
-create index on posts(client_id, category);
+create index on posts(client_id);
 create index on posts using gin (platform);
+create index if not exists posts_category_gin_idx on posts using gin (category);
 create index on posts(designer) where designer is not null;
 create index on posts(copy_writer) where copy_writer is not null;
 create index on posts(internal_pic) where internal_pic is not null;
 create index on posts(client_pic) where client_pic is not null;
 
+-- helper: app-wide moddatetime if not already installed
+create extension if not exists moddatetime;
+
 create trigger posts_updated_at
 before update on posts
 for each row execute function moddatetime(updated_at);
-
--- helper: app-wide moddatetime if not already installed
-create extension if not exists moddatetime;
 
 -- ─────────────────────────────────────────
 -- Email ingest log (audit trail for AI agent)

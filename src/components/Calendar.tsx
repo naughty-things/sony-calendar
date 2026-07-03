@@ -290,7 +290,8 @@ export function Calendar() {
     });
     const done = inMonth.filter(p => p.status === 'posted' || p.status === 'approved').length;
     const planned = inMonth.length;
-    return { done, planned };
+    const total = inMonth.length;
+    return { done, planned, total };
   }, [posts, cursor]);
 
   const categoryCounts = useMemo(() => {
@@ -501,7 +502,24 @@ export function Calendar() {
               </button>
             </div>
 
-            <MonthQuota done={monthStats.done} planned={monthStats.planned} target={35} monthLabel={format(cursor, 'MMM yyyy')} />
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-end gap-2 shrink-0">
+              <MonthQuota
+                label="Quota"
+                count={monthStats.done}
+                supportingCount={monthStats.planned}
+                supportingLabel="planned"
+                target={35}
+                monthLabel={format(cursor, 'MMM yyyy')}
+              />
+              <MonthQuota
+                label="All Posts"
+                count={monthStats.total}
+                supportingCount={monthStats.total}
+                supportingLabel="all statuses"
+                target={35}
+                monthLabel={format(cursor, 'MMM yyyy')}
+              />
+            </div>
           </div>
 
           {/* Filter row */}
@@ -724,27 +742,34 @@ function Kbd({ children }: { children: React.ReactNode }) {
    Shows 35 target vs current month count (done / planned)
    ───────────────────────────────────────── */
 function MonthQuota({
-  done, planned, target = 35, monthLabel
-}: { done: number; planned: number; target?: number; monthLabel: string }) {
+  label, count, supportingCount, supportingLabel, target = 35, monthLabel
+}: {
+  label: string;
+  count: number;
+  supportingCount: number;
+  supportingLabel: string;
+  target?: number;
+  monthLabel: string;
+}) {
   // Progress bar fills toward the target (35). If we exceed target, fill caps at 100%.
-  const pct = Math.min(100, Math.round((done / target) * 100));
+  const pct = Math.min(100, Math.round((count / target) * 100));
   // Color the bar based on how close to / over target
-  const barColor = done >= target
+  const barColor = count >= target
     ? 'bg-forest'                      // done — green
-    : done >= target * 0.8
+    : count >= target * 0.8
     ? 'bg-accent'                      // close — amber
     : 'bg-steel';                      // behind — blue
   // Delta display: if done ≥ target, show "+N over target". Otherwise show "-N to go".
-  const remaining = Math.max(0, target - done);
-  const deltaText = done >= target
-    ? `+${done - target} over`
+  const remaining = Math.max(0, target - count);
+  const deltaText = count >= target
+    ? `+${count - target} over`
     : `${remaining} to go`;
   return (
     <div className="bg-surface-muted border border-edge-strong rounded-lg shadow-soft px-3 sm:px-4 py-2 sm:py-2.5 shrink-0 self-end mb-1.5 min-w-[160px] sm:min-w-[200px]">
       <div className="flex items-center justify-between gap-3">
         <div className="flex items-baseline gap-1.5">
           <span className="text-[10px] uppercase tracking-[0.16em] font-mono font-semibold text-text-mute">
-            Quota
+            {label}
           </span>
           <span className="font-mono text-[10px] text-text-faint">
             · {monthLabel}
@@ -752,7 +777,7 @@ function MonthQuota({
         </div>
         <div className="flex items-baseline gap-1">
           <span className="numeral font-display text-[22px] sm:text-[26px] leading-none font-semibold text-ink">
-            {done}
+            {count}
           </span>
           <span className="font-mono text-[11px] sm:text-[12px] text-text-faint">
             / {target}
@@ -766,9 +791,9 @@ function MonthQuota({
       </div>
       <div className="mt-1.5 flex items-center justify-between text-[10px] font-mono">
         <span className="text-text-mute">
-          <span className="text-ink font-semibold">{planned}</span> planned
+          <span className="text-ink font-semibold">{supportingCount}</span> {supportingLabel}
         </span>
-        <span className={done >= target ? 'text-forest font-semibold' : 'text-text-mute'}>
+        <span className={count >= target ? 'text-forest font-semibold' : 'text-text-mute'}>
           {deltaText}
         </span>
       </div>

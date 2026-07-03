@@ -12,7 +12,8 @@ import { createAdminClient } from '@/lib/supabase/server';
 import { parseEmail } from '@/lib/ai/parseEmail';
 import { htmlTablesToMarkdown } from '@/lib/ai/htmlTable';
 
-const APP_STATE_KEY = 'gmail_…_history_id';
+const APP_STATE_KEY = 'gmail_last_history_id';
+const LEGACY_APP_STATE_KEYS = ['gmail_…_history_id', 'gmail_…y_id'] as const;
 const SCOPES = ['https://www.googleapis.com/auth/gmail.readonly'];
 
 export type PollResult = {
@@ -56,12 +57,16 @@ function getAuth(): JWT {
 }
 
 async function getHistoryId(admin: ReturnType<typeof createAdminClient>): Promise<string | null> {
+  const keys: string[] = [APP_STATE_KEY, ...LEGACY_APP_STATE_KEYS];
   const { data } = await admin
     .from('app_state')
-    .select('value')
-    .eq('key', APP_STATE_KEY)
-    .single();
-  return data?.value || null;
+    .select('key, value, updated_at')
+    .in('key', keys)
+    .order('updated_at', { ascending: false });
+  if (!data || data.length === 0) return null;
+
+  const canonical = data.find(row => row.key === APP_STATE_KEY);
+  return canonical?.value || data[0]?.value || null;
 }
 
 async function setHistoryId(admin: ReturnType<typeof createAdminClient>, id: string) {

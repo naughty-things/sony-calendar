@@ -1,5 +1,5 @@
 // POST /api/inbound/poll — called by the self-pinger every minute.
-// Connects to the Gmail IMAP mailbox, ingests new messages, returns counts.
+// Polls the Gmail API mailbox, ingests new messages, returns counts.
 
 import { NextRequest, NextResponse } from 'next/server';
 import { pollGmail } from '@/lib/inbound/gmail';

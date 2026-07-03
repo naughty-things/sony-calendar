@@ -2,7 +2,7 @@
 
 The AI agent lives at `agent@naughtythings.com.hk` (a Google Workspace
 shared mailbox). The app polls that inbox every minute and ingests
-new messages into the calendar as `needs_review` posts.
+new messages into the calendar as reviewable posts.
 
 We use a **Service Account with domain-wide delegation** instead of
 App Passwords, because App Passwords is disabled on the
@@ -126,14 +126,15 @@ Once Part 1–3 are done, send me:
 > - A direct DM to me
 > - Or a private GitHub Gist you can revoke later
 
-I'll plug them into `.env` (gitignored), deploy, and we'll run a real end-to-end test: I send an email to `agent@naughtythings.com.hk`, the poller picks it up within 60s, a `needs_review` chip appears on the calendar.
+I'll plug them into `.env` (gitignored), deploy, and we'll run a real end-to-end test: I send an email to `agent@naughtythings.com.hk`, the poller picks it up within 60s, and a new review item appears on the calendar.
 
 ---
 
 ## What the app does with the mail (recap)
 - Every 60s, calls `gmail.users.history.list` for new messages
 - For each new message, runs the AI parser
-- If the AI extracts a publish date and title → creates a `needs_review` post
+- If the AI extracts a strong brief → creates a `client_review` or `in_progress` post
+- If the brief is incomplete or low-confidence → creates a `staging` post for PIC triage
 - Otherwise → logs as `rejected` (you can review later; we can build a UI for rejected items)
 - **Never deletes or modifies the mailbox.** To re-ingest, lower the `history_id` in the `app_state` table.
 
