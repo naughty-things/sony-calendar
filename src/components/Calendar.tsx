@@ -279,7 +279,7 @@ export function Calendar() {
     return c;
   }, [posts]);
 
-  /** Posts scheduled for the currently-viewed month (used for the quota card) */
+  /** Posts scheduled for the currently-viewed month (used for the month summary card) */
   const monthStats = useMemo(() => {
     const y = cursor.getFullYear();
     const m = cursor.getMonth();
@@ -288,14 +288,8 @@ export function Calendar() {
       const d = new Date(p.publish_date);
       return d.getFullYear() === y && d.getMonth() === m;
     });
-    const done = inMonth.filter(p => p.status === 'posted' || p.status === 'approved').length;
-    const planned = inMonth.length;
     const total = inMonth.length;
-    const statusCounts = STATUS_ORDER.map(status => ({
-      status,
-      count: inMonth.filter(p => p.status === status).length
-    }));
-    return { done, planned, total, statusCounts };
+    return { total };
   }, [posts, cursor]);
 
   const categoryCounts = useMemo(() => {
@@ -507,15 +501,6 @@ export function Calendar() {
             </div>
 
             <div className="flex flex-col sm:flex-row items-stretch sm:items-end gap-2 shrink-0">
-              <MonthQuota
-                label="Quota"
-                count={monthStats.done}
-                supportingCount={monthStats.planned}
-                supportingLabel="planned"
-                statusBreakdown={monthStats.statusCounts}
-                target={35}
-                monthLabel={format(cursor, 'MMM yyyy')}
-              />
               <MonthQuota
                 label="All Posts"
                 count={monthStats.total}
@@ -743,17 +728,15 @@ function Kbd({ children }: { children: React.ReactNode }) {
 }
 
 /* ─────────────────────────────────────────
-   Month quota card — sits inline with the big month title
-   Shows 35 target vs current month count (done / planned)
+   Month summary card — sits inline with the big month title
    ───────────────────────────────────────── */
 function MonthQuota({
-  label, count, supportingCount, supportingLabel, statusBreakdown, target = 35, monthLabel
+  label, count, supportingCount, supportingLabel, target = 35, monthLabel
 }: {
   label: string;
   count: number;
   supportingCount: number;
   supportingLabel: string;
-  statusBreakdown?: Array<{ status: PostStatus; count: number }>;
   target?: number;
   monthLabel: string;
 }) {
@@ -777,28 +760,12 @@ function MonthQuota({
           </span>
         </div>
       </div>
-      {statusBreakdown ? (
-        <div className="mt-2 space-y-1.5">
-          {statusBreakdown.filter(item => item.count > 0).map(({ status, count: statusCount }) => (
-            <div
-              key={status}
-              className="flex items-center justify-between gap-3 rounded-md border border-edge bg-surface px-2.5 py-1.5 text-[10px] font-mono text-text-soft">
-              <span className="inline-flex items-center gap-1.5 min-w-0">
-                <span className={`h-1.5 w-1.5 rounded-full ${STATUS_DOT[status]}`} />
-                <span>{STATUS_LABEL[status]}</span>
-              </span>
-              <span className="text-ink font-semibold">{statusCount}</span>
-            </div>
-          ))}
-        </div>
-      ) : (
-        <div className="mt-2 flex items-center justify-between text-[10px] font-mono">
-          <span className="text-text-mute">
-            <span className="text-ink font-semibold">{supportingCount}</span> {supportingLabel}
-          </span>
-          <span className="text-text-mute">month total</span>
-        </div>
-      )}
+      <div className="mt-2 flex items-center justify-between text-[10px] font-mono">
+        <span className="text-text-mute">
+          <span className="text-ink font-semibold">{supportingCount}</span> {supportingLabel}
+        </span>
+        <span className="text-text-mute">month total</span>
+      </div>
     </div>
   );
 }
