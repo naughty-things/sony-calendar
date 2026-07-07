@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
-import { Post, PostStatus, PostWithPeople, STATUS_LABEL, STATUS_ORDER, CATEGORIES, CATEGORY_LABEL, CATEGORY_GLYPH, PLATFORMS, PLATFORM_GLYPH } from '@/lib/types';
+import { Post, PostStatus, PostWithPeople, STATUS_LABEL, STATUS_ORDER, CATEGORIES, CATEGORY_LABEL, CATEGORY_GLYPH, PLATFORMS, PLATFORM_GLYPH, normalizePlatforms } from '@/lib/types';
 import { getBrowserClient } from '@/lib/supabase/client';
 import { X, Trash2, Sparkles, Mail, Briefcase, Building2, FileText, Check, Loader2, Pen, Type } from 'lucide-react';
 import { Tape } from './ui/Tape';
@@ -35,7 +35,7 @@ export function PostModal({
 }) {
   const supabase = getBrowserClient();
   const [title, setTitle] = useState(post?.title ?? '');
-  const [platform, setPlatform] = useState<string[]>(Array.isArray(post?.platform) ? post!.platform! : (post?.platform ? [post.platform] : ['IG']));
+  const [platform, setPlatform] = useState<string[]>(normalizePlatforms(post?.platform, ['IG']));
   const [category, setCategory] = useState<string[]>(postCategories(post));
   const stagingPost = post?.status === 'staging' && !post?.publish_date;
   const [publishDate, setPublishDate] = useState<string>(
@@ -93,7 +93,7 @@ export function PostModal({
     }
     const payload: Partial<Post> = {
       title: title || '(untitled)',
-      platform: platform.length > 0 ? platform : null,
+      platform: normalizePlatforms(platform, ['IG']),
       category: category.length > 0 ? category : null,
       publish_date: publishDate || null,
       quota_month: quotaMonth ? `${quotaMonth}-01` : null,

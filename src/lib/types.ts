@@ -157,6 +157,53 @@ export const PLATFORM_GLYPH: Record<string, string> = {
 export const PLATFORMS = ['IG', 'FB', 'Other'] as const;
 export type Platform = typeof PLATFORMS[number];
 
+export function normalizePlatforms(
+  value: unknown,
+  fallback: Platform[] = []
+): Platform[] {
+  const raw = Array.isArray(value)
+    ? value
+    : typeof value === 'string'
+    ? [value]
+    : [];
+
+  const out = new Set<Platform>();
+
+  for (const entry of raw) {
+    if (typeof entry !== 'string') continue;
+    const text = entry.trim();
+    if (!text) continue;
+    const lower = text.toLowerCase();
+
+    if (
+      lower === 'ig' ||
+      lower === 'instagram' ||
+      lower === 'insta'
+    ) {
+      out.add('IG');
+      continue;
+    }
+
+    if (
+      lower === 'fb' ||
+      lower === 'facebook'
+    ) {
+      out.add('FB');
+      continue;
+    }
+
+    const hasIg = /\big\b|instagram|insta/.test(lower);
+    const hasFb = /\bfb\b|facebook/.test(lower);
+    if (hasIg) out.add('IG');
+    if (hasFb) out.add('FB');
+    if (hasIg || hasFb) continue;
+
+    out.add('Other');
+  }
+
+  return out.size > 0 ? Array.from(out) : [...fallback];
+}
+
 /* Helpers for category arrays — used by the multi-select UI and filter. */
 export function postCategories(post: Pick<Post, 'category'>): string[] {
   if (!post.category) return [];

@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { isSameDay, format, isToday } from 'date-fns';
-import { PostWithPeople, STATUS_COLOR } from '@/lib/types';
+import { PostWithPeople, STATUS_COLOR, normalizePlatforms } from '@/lib/types';
 import { Holiday } from '@/lib/holidays';
 import { PlatformChip } from './ui/PlatformChip';
 import { useIsMobile } from '@/lib/useIsMobile';
@@ -145,7 +145,7 @@ function Card({ p, onClick, highlight }: { p: PostWithPeople; onClick: () => voi
       <div className="flex items-center justify-between mb-1.5 gap-1">
         <span className="flex items-center gap-0.5 flex-wrap">
           {(() => {
-            const arr = Array.isArray(p.platform) ? p.platform : p.platform ? [p.platform] : ['Other'];
+            const arr = normalizePlatforms(p.platform, p.source === 'email' ? ['IG'] : ['Other']);
             return arr.map(pl => (
               <PlatformChip key={pl} platform={pl} size={18} />
             ));

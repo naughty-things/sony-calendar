@@ -4,7 +4,7 @@ import { useEffect, useMemo, useState, useCallback, useRef } from 'react';
 import { addDays, addMonths, eachDayOfInterval, endOfMonth, endOfWeek, format, isSameDay, isSameMonth, startOfMonth, startOfWeek, subMonths } from 'date-fns';
 import { Holiday, getHolidaysInRange } from '@/lib/holidays';
 import { getBrowserClient } from '@/lib/supabase/client';
-import { PostWithPeople, PostStatus, Person, STATUS_COLOR, STATUS_LABEL, STATUS_ORDER, STATUS_DOT, PLATFORM_GLYPH, CATEGORY_GLYPH, CATEGORIES, CATEGORY_LABEL, postCategories } from '@/lib/types';
+import { PostWithPeople, PostStatus, Person, STATUS_COLOR, STATUS_LABEL, STATUS_ORDER, STATUS_DOT, PLATFORM_GLYPH, CATEGORY_GLYPH, CATEGORIES, CATEGORY_LABEL, postCategories, normalizePlatforms } from '@/lib/types';
 import { PlatformChip } from './ui/PlatformChip';
 import { ChevronLeft, ChevronRight, Plus, Search, Mail, Loader2, Sun, Moon, ChevronDown } from 'lucide-react';
 import { PostModal } from './PostModal';
@@ -247,7 +247,7 @@ export function Calendar() {
           if (!cats.some(c => categoryFilter.has(c))) return false;
         }
       }
-      if (q && !p.title?.toLowerCase().includes(q) && !p.notes?.toLowerCase().includes(q) && !(Array.isArray(p.platform) ? p.platform.join(' ').toLowerCase() : (p.platform || '').toLowerCase()).includes(q)) return false;
+      if (q && !p.title?.toLowerCase().includes(q) && !p.notes?.toLowerCase().includes(q) && !normalizePlatforms(p.platform).join(' ').toLowerCase().includes(q)) return false;
       return true;
     });
   }, [posts, statusFilter, categoryFilter, search]);
@@ -906,11 +906,7 @@ function DayCell({
 
 function PostChip({ p, onOpen, highlight, draggable = true }: { p: PostWithPeople; onOpen: (p: PostWithPeople) => void; highlight?: boolean; draggable?: boolean }) {
   const cats = postCategories(p);
-  const platforms: string[] = Array.isArray(p.platform)
-    ? p.platform
-    : p.platform
-    ? [p.platform]
-    : [];
+  const platforms = normalizePlatforms(p.platform, p.source === 'email' ? ['IG'] : []);
   // Status-tinted left bar + subtle background — gives at-a-glance
   // status scanning in the month grid (was the original "paper tape" feel).
   const statusBar: Record<string, string> = {

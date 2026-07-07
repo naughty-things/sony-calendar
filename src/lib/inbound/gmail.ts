@@ -11,6 +11,7 @@ import { JWT } from 'google-auth-library';
 import { createAdminClient } from '@/lib/supabase/server';
 import { parseEmail } from '@/lib/ai/parseEmail';
 import { htmlTablesToMarkdown } from '@/lib/ai/htmlTable';
+import { normalizePlatforms } from '@/lib/types';
 
 const APP_STATE_KEY = 'gmail_last_history_id';
 const LEGACY_APP_STATE_KEYS = ['gmail_…_history_id', 'gmail_…y_id'] as const;
@@ -524,7 +525,7 @@ export async function pollGmail(): Promise<PollResult> {
             .insert({
               client_id: clientRow.id,
               title: item.title || subject || '(untitled)',
-              platform: item.platform || null,
+              platform: normalizePlatforms(item.platform, ['IG']),
               category: Array.isArray(item.category) && item.category.length > 0
                 ? item.category
                 : null,
