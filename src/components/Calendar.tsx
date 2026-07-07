@@ -868,7 +868,7 @@ function DayCell({
         const postId = e.dataTransfer.getData('application/x-post-id');
         if (postId) onMovePost(postId, format(d, 'yyyy-MM-dd'));
       }}
-      className={`group relative h-[148px] border-r border-b border-edge last:border-r-0 p-2.5 cursor-pointer transition flex flex-col overflow-hidden
+      className={`group relative min-h-[148px] border-r border-b border-edge last:border-r-0 p-2.5 cursor-pointer transition flex flex-col overflow-hidden
         ${inMonth ? '' : 'bg-surface-muted text-text-faint'}
         ${(isSunday && inMonth && !holiday) || holiday ? 'bg-holiday-tint/50' : ''}
         ${dragOver ? 'ring-2 ring-accent ring-inset bg-accent/10' : ''}
@@ -892,7 +892,7 @@ function DayCell({
         )}
       </div>
 
-      <div className="mt-2 flex-1 min-h-0 space-y-1 overflow-y-auto pr-1">
+      <div className={`mt-2 space-y-1 pr-1 ${items.length > 3 ? 'max-h-[108px] overflow-y-auto' : ''}`}>
         {items.map(p => (
           <PostChip key={p.id} p={p} onOpen={onOpenPost} highlight={arrivedIds.has(p.id)} draggable={!!isAdmin} />
         ))}
