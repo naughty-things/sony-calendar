@@ -75,19 +75,39 @@ async function setHistoryId(admin: ReturnType<typeof createAdminClient>, id: str
     .upsert({ key: APP_STATE_KEY, value: id, updated_at: new Date().toISOString() });
 }
 
+async function listRecentInboxMessageIds(
+  gmail: gmail_v1.Gmail,
+  maxResults: number
+): Promise<string[]> {
+  const res = await gmail.users.messages.list({
+    userId: 'me',
+    maxResults,
+    labelIds: ['INBOX']
+  });
+  return (res.data.messages || []).map(m => m.id!).filter(Boolean);
+}
+
+function isInvalidHistoryIdError(error: any): boolean {
+  const status = error?.response?.status;
+  const reason = error?.response?.data?.error?.errors?.[0]?.reason;
+  const message = String(error?.message || '');
+  const details = JSON.stringify(error?.response?.data || {});
+  return (
+    status === 404 ||
+    reason === 'notFound' ||
+    /history/i.test(message) ||
+    /history/i.test(details)
+  );
+}
+
 async function fetchNewMessageIds(
   gmail: gmail_v1.Gmail,
   startHistoryId: string | null
 ): Promise<{ ids: string[]; latestHistoryId: string | null }> {
   // First run (no historyId) → just grab the most recent 20 messages
   if (!startHistoryId) {
-    const res = await gmail.users.messages.list({
-      userId: 'me',
-      maxResults: 20,
-      labelIds: ['INBOX']
-    });
     return {
-      ids: (res.data.messages || []).map(m => m.id!).filter(Boolean),
+      ids: await listRecentInboxMessageIds(gmail, 20),
       latestHistoryId: null
     };
   }
@@ -321,7 +341,26 @@ export async function pollGmail(): Promise<PollResult> {
       throw new Error(`getProfile failed: ${e.message}`);
     }
 
-    const { ids, latestHistoryId } = await fetchNewMessageIds(gmail, startHistoryId);
+    let ids: string[] = [];
+    let latestHistoryId: string | null = null;
+    try {
+      const next = await fetchNewMessageIds(gmail, startHistoryId);
+      ids = next.ids;
+      latestHistoryId = next.latestHistoryId;
+    } catch (e: any) {
+      if (!startHistoryId || !isInvalidHistoryIdError(e)) {
+        throw new Error(`history.list failed: ${e.message}`);
+      }
+      // Gmail history ids eventually expire. When that happens, fall back
+      // to a recent inbox sweep so we recover the missed mail instead of
+      // getting stuck forever on the same stale pointer.
+      console.warn(
+        `[inbound] stale Gmail historyId ${startHistoryId}; ` +
+        'falling back to recent inbox resync'
+      );
+      ids = await listRecentInboxMessageIds(gmail, 50);
+      latestHistoryId = profileHistoryId;
+    }
     if (latestHistoryId) newestHistoryId = latestHistoryId;
 
     for (const id of ids) {
