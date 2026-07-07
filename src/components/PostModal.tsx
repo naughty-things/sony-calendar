@@ -54,6 +54,7 @@ export function PostModal({
   const [notes, setNotes] = useState(post?.notes ?? '');
   const [copyDraft, setCopyDraft] = useState(post?.copy_draft ?? '');
   const [saving, setSaving] = useState(false);
+  const [deleting, setDeleting] = useState(false);
   const [drafting, setDrafting] = useState(false);
   const [savedFlash, setSavedFlash] = useState(false);
   const firstFieldRef = useRef<HTMLInputElement>(null);
@@ -120,13 +121,39 @@ export function PostModal({
 
   async function remove() {
     if (!post?.id) return;
+    setDeleting(true);
     const { data: sess } = await supabase.auth.getSession();
     if (!sess.session) {
+      setDeleting(false);
       alert('You need to sign in to delete posts.');
       return;
     }
-    if (!confirm('Delete this post?')) return;
-    await supabase.from('posts').delete().eq('id', post.id);
+    if (!confirm('Delete this post?')) {
+      setDeleting(false);
+      return;
+    }
+
+    const { error: unlinkError } = await supabase
+      .from('email_ingests')
+      .update({ created_post_id: null })
+      .eq('created_post_id', post.id);
+    if (unlinkError) {
+      setDeleting(false);
+      alert(`Could not prepare delete: ${unlinkError.message}`);
+      return;
+    }
+
+    const { error: deleteError } = await supabase
+      .from('posts')
+      .delete()
+      .eq('id', post.id);
+    if (deleteError) {
+      setDeleting(false);
+      alert(`Could not delete post: ${deleteError.message}`);
+      return;
+    }
+
+    setDeleting(false);
     await onSaved();
   }
 
@@ -472,8 +499,12 @@ export function PostModal({
         {/* ─── Footer ─── */}
         <div className="px-6 py-3.5 border-t border-edge flex items-center justify-between bg-surface-muted">
           {post?.id ? (
-            <button onClick={remove} className="text-magenta hover:text-ink text-[11px] uppercase tracking-[0.14em] font-mono font-semibold flex items-center gap-1.5 px-2 py-1 rounded-md hover:bg-surface transition">
-              <Trash2 size={12} /> Delete
+            <button
+              type="button"
+              onClick={remove}
+              disabled={deleting}
+              className="text-magenta hover:text-ink text-[11px] uppercase tracking-[0.14em] font-mono font-semibold flex items-center gap-1.5 px-2 py-1 rounded-md hover:bg-surface transition disabled:opacity-40 disabled:cursor-not-allowed">
+              {deleting ? <><Loader2 size={12} className="animate-spin" /> deleting</> : <><Trash2 size={12} /> Delete</>}
             </button>
           ) : <span />}
           <div className="flex items-center gap-2">
