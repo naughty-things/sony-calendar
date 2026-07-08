@@ -382,28 +382,28 @@ export function PostModal({
             </Field>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <Field label={<><Pen size={11} className="inline mr-1" />Designer</>}>
-                <NameInput
-                  id="designer"
-                  value={designer}
-                  onChange={canEdit ? setDesigner : () => {}}
-                  suggestions={recentNames.designer}
-                  readOnly={!canEdit}
-                  disabled={!canEdit}
-                  placeholder="e.g. Sam Lee"
-                  className={inputCls} />
-              </Field>
-              <Field label={<><Type size={11} className="inline mr-1" />Copy writer</>}>
-                <NameInput
-                  id="copy-writer"
-                  value={copyWriter}
-                  onChange={canEdit ? setCopyWriter : () => {}}
-                  suggestions={recentNames.copy_writer}
-                  readOnly={!canEdit}
-                  disabled={!canEdit}
-                  placeholder="e.g. Cheri Cheung"
-                  className={inputCls} />
-              </Field>
+              {canEdit && (
+                <Field label={<><Pen size={11} className="inline mr-1" />Designer</>}>
+                  <NameInput
+                    id="designer"
+                    value={designer}
+                    onChange={setDesigner}
+                    suggestions={recentNames.designer}
+                    placeholder="e.g. Sam Lee"
+                    className={inputCls} />
+                </Field>
+              )}
+              {canEdit && (
+                <Field label={<><Type size={11} className="inline mr-1" />Copy writer</>}>
+                  <NameInput
+                    id="copy-writer"
+                    value={copyWriter}
+                    onChange={setCopyWriter}
+                    suggestions={recentNames.copy_writer}
+                    placeholder="e.g. Cheri Cheung"
+                    className={inputCls} />
+                </Field>
+              )}
               <Field label={<><Briefcase size={11} className="inline mr-1" />Internal PIC</>}>
                 <NameInput
                   id="internal-pic"
@@ -434,28 +434,27 @@ export function PostModal({
                 className={inputCls} />
             </Field>
 
-            <Field
-              label={
-                <div className="flex items-center justify-between w-full">
-                  <span><Sparkles size={11} className="inline mr-1" />Copy draft</span>
-                  {canEdit && (
+            {canEdit && (
+              <Field
+                label={
+                  <div className="flex items-center justify-between w-full">
+                    <span><Sparkles size={11} className="inline mr-1" />Copy draft</span>
                     <button
                       onClick={runDraft}
                       disabled={drafting || !title}
                       className="text-[10px] uppercase tracking-[0.14em] font-mono flex items-center gap-1.5 text-accent-deep hover:text-ink disabled:text-text-faint font-semibold">
                       {drafting ? <><Loader2 size={11} className="animate-spin" /> drafting</> : <><Sparkles size={11} /> AI draft</>}
                     </button>
-                  )}
-                </div>
-              }>
-              <textarea
-                value={copyDraft ?? ''}
-                onChange={e => setCopyDraft(e.target.value)}
-                readOnly={!canEdit}
-                rows={5}
-                className={inputCls}
-                placeholder="AI-drafted or hand-written copy…" />
-            </Field>
+                  </div>
+                }>
+                <textarea
+                  value={copyDraft ?? ''}
+                  onChange={e => setCopyDraft(e.target.value)}
+                  rows={5}
+                  className={inputCls}
+                  placeholder="AI-drafted or hand-written copy…" />
+              </Field>
+            )}
           </div>
 
           {/* EMAIL PEEK */}
