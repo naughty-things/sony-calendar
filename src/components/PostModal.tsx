@@ -337,8 +337,8 @@ export function PostModal({
                   </div>
                 </Field>
               </div>
-              {(targetLaunchDate || requestDate || post?.target_launch_date || post?.request_date) && (
-                <div className="grid grid-cols-2 gap-3 -mt-2">
+              {(targetLaunchDate || (canEdit && requestDate) || post?.target_launch_date || (canEdit && post?.request_date)) && (
+                <div className={`grid gap-3 -mt-2 ${canEdit ? 'grid-cols-2' : 'grid-cols-1'}`}>
                   <Field label={
                     <span className="flex items-center gap-1.5">
                       <span className="text-[10px] text-text-mute font-mono">Target Launch</span>
@@ -347,14 +347,16 @@ export function PostModal({
                   }>
                     <input type="date" value={targetLaunchDate} onChange={e => setTargetLaunchDate(e.target.value)} readOnly={!canEdit} disabled={!canEdit} className={inputCls} />
                   </Field>
-                  <Field label={
-                    <span className="flex items-center gap-1.5">
-                      <span className="text-[10px] text-text-mute font-mono">Request Date</span>
-                      <span className="text-[9px] text-text-faint">copy deadline</span>
-                    </span>
-                  }>
-                    <input type="date" value={requestDate} onChange={e => setRequestDate(e.target.value)} readOnly={!canEdit} disabled={!canEdit} className={inputCls} />
-                  </Field>
+                  {canEdit && (
+                    <Field label={
+                      <span className="flex items-center gap-1.5">
+                        <span className="text-[10px] text-text-mute font-mono">Request Date</span>
+                        <span className="text-[9px] text-text-faint">copy deadline</span>
+                      </span>
+                    }>
+                      <input type="date" value={requestDate} onChange={e => setRequestDate(e.target.value)} readOnly={!canEdit} disabled={!canEdit} className={inputCls} />
+                    </Field>
+                  )}
                 </div>
               )}
             </div>
