@@ -247,7 +247,24 @@ export function Calendar() {
           if (!cats.some(c => categoryFilter.has(c))) return false;
         }
       }
-      if (q && !p.title?.toLowerCase().includes(q) && !p.notes?.toLowerCase().includes(q) && !normalizePlatforms(p.platform).join(' ').toLowerCase().includes(q)) return false;
+      if (q) {
+        const cats = postCategories(p);
+        const haystack = [
+          p.title,
+          p.notes,
+          p.designer,
+          p.copy_writer,
+          p.internal_pic,
+          p.client_pic,
+          ...normalizePlatforms(p.platform),
+          ...cats,
+          ...cats.map(c => CATEGORY_LABEL[c as keyof typeof CATEGORY_LABEL] || c)
+        ]
+          .filter(Boolean)
+          .join(' ')
+          .toLowerCase();
+        if (!haystack.includes(q)) return false;
+      }
       return true;
     });
   }, [posts, statusFilter, categoryFilter, search]);
