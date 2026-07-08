@@ -26,7 +26,7 @@ const PostSchema = z.object({
   // allows). Sam sometimes wants both surfaced in the calendar UI.
   request_date: z.string().nullable(),
   platform: z.array(z.string()).nullable(),     // IG, FB, Other
-  category: z.array(z.string()).nullable(),      // PA / HE / MO / DI / EC / INZONE / OTHER (multi-value; a post can be e.g. ['HE','INZONE'])
+  category: z.array(z.string()).nullable(),      // PA / TV / MO / DI / EC / INZONE / OTHER (multi-value; a post can be e.g. ['PA','INZONE'])
   title: z.string().nullable(),
   notes: z.string().nullable(),
   designer: z.string().nullable(),
@@ -76,10 +76,10 @@ For EACH post, extract:
 - platform: array of strings. Use codes: IG, FB, Other. A post can be
   cross-posted — e.g. "IG + FB" → ["IG","FB"]. If unknown, null.
 - category: ARRAY of strings (a post can span multiple SONY product lines,
-  e.g. an INZONE headphone launch would be ["HE","INZONE"]). Codes: PA
-  (personal audio), HE (headphones), MO (mobile / Xperia), DI (digital
-  imaging — cameras, lenses), EC (e-commerce), INZONE (gaming line),
-  OTHER. Always return [] if nothing matches.
+  e.g. an INZONE headphone launch would be ["PA","INZONE"]). Codes: PA
+  (personal audio, including headphones), TV (television), MO (mobile /
+  Xperia), DI (digital imaging — cameras, lenses), EC (e-commerce),
+  INZONE (gaming line), OTHER. Always return [] if nothing matches.
 - title: short, human-readable. e.g. "1000X Series (WF, WH – Pink & Sand
   stone, XP) Usage scenario Differentiation Social Post à WFM6". If the
   email is a table, the title usually lives in the "Content" column.
@@ -169,7 +169,7 @@ Also extract:
 Return ONLY a JSON object matching this exact shape. No prose, no markdown
 fences:
 {
-  "posts": [ { "publish_date": "YYYY-MM-DD"|null, "target_launch_date": "YYYY-MM-DD"|null, "request_date": "YYYY-MM-DD"|null, "platform": ["IG"]|null, "category": ["HE","INZONE"]|null, "title": "...", "notes": "...", "designer": null, "copy_writer": null, "internal_pic": null, "client_pic": null, "mentioned_internal": [], "mentioned_client": [], "confidence": 0.0-1.0, "parse_warnings": ["..."] } ],
+  "posts": [ { "publish_date": "YYYY-MM-DD"|null, "target_launch_date": "YYYY-MM-DD"|null, "request_date": "YYYY-MM-DD"|null, "platform": ["IG"]|null, "category": ["PA","INZONE"]|null, "title": "...", "notes": "...", "designer": null, "copy_writer": null, "internal_pic": null, "client_pic": null, "mentioned_internal": [], "mentioned_client": [], "confidence": 0.0-1.0, "parse_warnings": ["..."] } ],
   "email_summary": "..."|null,
   "detected_table": true|false
 }
@@ -179,7 +179,7 @@ Examples:
 1) Single-post email:
   Subject: "Sony WH-1000XM6 launch — 18 Jun, IG"
   Body: brief paragraph, no table
-  → { "posts": [ { "publish_date": "2026-06-18", "platform": ["IG"], "category": ["HE"], "title": "WH-1000XM6 launch post", "notes": null, ..., "confidence": 0.95, "parse_warnings": [] } ], "email_summary": null, "detected_table": false }
+  → { "posts": [ { "publish_date": "2026-06-18", "platform": ["IG"], "category": ["PA"], "title": "WH-1000XM6 launch post", "notes": null, ..., "confidence": 0.95, "parse_warnings": [] } ], "email_summary": null, "detected_table": false }
 
 2) Table-style email with 3 rows (column "Target Launch Date" present):
   Body:
@@ -187,7 +187,7 @@ Examples:
     1 Jul              | XP Noise cancelling post | bit.ly/4xg7mU1 | Approved, plz schedule
     8 Jul              | XP Design - tech video | bit.ly/49U7Bdo | Approved, plz schedule
     15 Jul             | 1000X Series Usage scenario Differentiation à WFM6 | TBS | Plz help prepare
-  → { "posts": [ { "publish_date": "2026-07-01", "target_launch_date": "2026-07-01", "request_date": null, "category": ["MO"], ..., "confidence": 0.95, "parse_warnings": [] }, { "publish_date": "2026-07-08", "target_launch_date": "2026-07-08", "request_date": null, "category": ["MO"], ..., "confidence": 0.95, "parse_warnings": [] }, { "publish_date": "2026-07-15", "target_launch_date": "2026-07-15", "request_date": null, "category": ["HE","MO"], ..., "confidence": 0.90, "parse_warnings": [] } ], "email_summary": "Sony PE team sent the July 2026 social planning grid; 3 posts scheduled/planned.", "detected_table": true }
+  → { "posts": [ { "publish_date": "2026-07-01", "target_launch_date": "2026-07-01", "request_date": null, "category": ["MO"], ..., "confidence": 0.95, "parse_warnings": [] }, { "publish_date": "2026-07-08", "target_launch_date": "2026-07-08", "request_date": null, "category": ["MO"], ..., "confidence": 0.95, "parse_warnings": [] }, { "publish_date": "2026-07-15", "target_launch_date": "2026-07-15", "request_date": null, "category": ["PA","MO"], ..., "confidence": 0.90, "parse_warnings": [] } ], "email_summary": "Sony PE team sent the July 2026 social planning grid; 3 posts scheduled/planned.", "detected_table": true }
 
 3) Table-style email where Request Date AND Target Launch Date BOTH exist
    for every post (this is the SA01 bug case after we fixed the rowspan
@@ -350,6 +350,18 @@ function reviewDates(parsed: ParseResult, body: string): ParseResult {
   };
 }
 
+function normalizeParsedCategories(parsed: ParseResult): ParseResult {
+  return {
+    ...parsed,
+    posts: parsed.posts.map(post => ({
+      ...post,
+      category: Array.isArray(post.category)
+        ? post.category.map(value => value === 'HE' ? 'PA' : value)
+        : post.category
+    }))
+  };
+}
+
 export async function parseEmail(input: {
   from: string;
   subject: string;
@@ -466,5 +478,5 @@ export async function parseEmail(input: {
   const parsed = ParseResultSchema.parse(obj);
 
   // Post-parse date sanity check (the SA01 Jun/Jul confusion guard).
-  return reviewDates(parsed, input.body);
+  return normalizeParsedCategories(reviewDates(parsed, input.body));
 }

@@ -47,18 +47,18 @@ export const STATUS_DOT_COLOR: Record<PostStatus, string> = {
 };
 
 /* SONY product line categories. Codes map to full names for display.
-   PA  = Personal Audio      (was "Professional Audio" — Sam corrected)
-   HE  = Headphones
+   PA  = Personal Audio      (includes headphones)
+   TV  = Television
    MO  = Mobile (Xperia)
    DI  = Digital Imaging (cameras + lenses)
    EC  = E-Commerce          (was just "EC" — Sam corrected)
    INZONE = INZONE gaming line
    OTHER = catch-all */
-export const CATEGORIES = ['PA', 'HE', 'MO', 'DI', 'EC', 'INZONE', 'OTHER'] as const;
+export const CATEGORIES = ['PA', 'TV', 'MO', 'DI', 'EC', 'INZONE', 'OTHER'] as const;
 export type Category = typeof CATEGORIES[number];
 export const CATEGORY_LABEL: Record<Category, string> = {
   PA:     'Personal Audio',
-  HE:     'Headphones',
+  TV:     'Television',
   MO:     'Mobile',
   DI:     'Digital Imaging',
   EC:     'E-Commerce',
@@ -67,7 +67,7 @@ export const CATEGORY_LABEL: Record<Category, string> = {
 };
 export const CATEGORY_GLYPH: Record<Category, string> = {
   PA:     'PA',
-  HE:     'HE',
+  TV:     'TV',
   MO:     'MO',
   DI:     'DI',
   EC:     'EC',
@@ -107,7 +107,7 @@ export type Post = {
   client_id: string;
   title: string;
   platform?: string[] | null;
-  category?: string[] | null;  /* multi-value: ['HE','MO'] etc. */
+  category?: string[] | null;  /* multi-value: ['PA','TV'] etc. */
   publish_date: string | null; // YYYY-MM-DD or null when in staging
   // Optional manual month override for quota / month-summary counting.
   // Stored as the first day of the chosen month (YYYY-MM-01).
@@ -207,7 +207,8 @@ export function normalizePlatforms(
 /* Helpers for category arrays — used by the multi-select UI and filter. */
 export function postCategories(post: Pick<Post, 'category'>): string[] {
   if (!post.category) return [];
-  if (Array.isArray(post.category)) return post.category.filter(Boolean);
-  // Legacy scalar fallback (DB migration in progress / row not yet migrated)
-  return [post.category].filter(Boolean);
+  const raw = Array.isArray(post.category) ? post.category.filter(Boolean) : [post.category].filter(Boolean);
+  // Legacy HE rows were historically used for headphones. Headphones now
+  // belong under PA, while TV is a brand-new category code.
+  return raw.map(value => value === 'HE' ? 'PA' : value);
 }
