@@ -39,6 +39,7 @@ export function Calendar() {
   const [creating, setCreating] = useState<{ date?: string } | null>(null);
   const [statusFilter, setStatusFilter] = useState<StatusFilter>('all');
   const [categoryFilter, setCategoryFilter] = useState<CategoryFilter>(new Set());
+  const [quotaMonthOnly, setQuotaMonthOnly] = useState(false);
   const [search, setSearch] = useState('');
   const [showReviewInbox, setShowReviewInbox] = useState(false);
   const [lastIngestAt, setLastIngestAt] = useState<string | null>(null);
@@ -234,9 +235,21 @@ export function Calendar() {
     return getHolidaysInRange(start, end);
   }, [monthDays, weekDays]);
 
+  const matchesQuotaMonth = useCallback((p: PostWithPeople) => {
+    const monthSource = p.quota_month || p.publish_date;
+    if (!monthSource) return false;
+    const d = new Date(monthSource);
+    return d.getFullYear() === cursor.getFullYear() && d.getMonth() === cursor.getMonth();
+  }, [cursor]);
+
+  const quotaScopedPosts = useMemo(
+    () => quotaMonthOnly ? posts.filter(matchesQuotaMonth) : posts,
+    [posts, quotaMonthOnly, matchesQuotaMonth]
+  );
+
   const filteredPosts = useMemo(() => {
     const q = search.trim().toLowerCase();
-    return posts.filter(p => {
+    return quotaScopedPosts.filter(p => {
       if (statusFilter !== 'all' && p.status !== statusFilter) return false;
       if (categoryFilter.size > 0) {
         const cats = postCategories(p);
@@ -267,7 +280,7 @@ export function Calendar() {
       }
       return true;
     });
-  }, [posts, statusFilter, categoryFilter, search]);
+  }, [quotaScopedPosts, statusFilter, categoryFilter, search]);
 
   const datedPosts = useMemo(
     () => filteredPosts.filter(p => p.publish_date),
@@ -291,35 +304,28 @@ export function Calendar() {
   }, [datedPosts]);
 
   const counts = useMemo(() => {
-    const c: Record<string, number> = { all: posts.length };
-    STATUS_ORDER.forEach(s => { c[s] = posts.filter(p => p.status === s).length; });
+    const c: Record<string, number> = { all: quotaScopedPosts.length };
+    STATUS_ORDER.forEach(s => { c[s] = quotaScopedPosts.filter(p => p.status === s).length; });
     return c;
-  }, [posts]);
+  }, [quotaScopedPosts]);
 
   /** Posts scheduled for the currently-viewed month (used for the month summary card) */
   const monthStats = useMemo(() => {
-    const y = cursor.getFullYear();
-    const m = cursor.getMonth();
-    const inMonth = posts.filter(p => {
-      const monthSource = p.quota_month || p.publish_date;
-      if (!monthSource) return false;
-      const d = new Date(monthSource);
-      return d.getFullYear() === y && d.getMonth() === m;
-    });
+    const inMonth = posts.filter(matchesQuotaMonth);
     const total = inMonth.length;
     return { total };
-  }, [posts, cursor]);
+  }, [posts, matchesQuotaMonth]);
 
   const categoryCounts = useMemo(() => {
     const c: Record<string, number> = { NONE: 0 };
     CATEGORIES.forEach(k => { c[k] = 0; });
-    for (const p of posts) {
+    for (const p of quotaScopedPosts) {
       const cats = postCategories(p);
       if (cats.length === 0) c.NONE++;
       else for (const cat of cats) c[cat] = (c[cat] || 0) + 1;
     }
     return c;
-  }, [posts]);
+  }, [quotaScopedPosts]);
 
   function toggleCategory(cat: string) {
     setCategoryFilter(prev => {
@@ -560,12 +566,19 @@ export function Calendar() {
                 </div>
                 <div className="-mx-4 px-4 overflow-x-auto no-scrollbar">
                   <div className="pb-1 min-w-max">
-                    <StatusSelect
-                      value={statusFilter}
-                      counts={counts}
-                      onChange={setStatusFilter}
-                      fullWidth
-                    />
+                    <div className="flex items-center gap-2 min-w-max">
+                      <FilterChip
+                        label={`quota · ${format(cursor, 'MMM yyyy')}`}
+                        active={quotaMonthOnly}
+                        onClick={() => setQuotaMonthOnly(v => !v)}
+                      />
+                      <StatusSelect
+                        value={statusFilter}
+                        counts={counts}
+                        onChange={setStatusFilter}
+                        fullWidth
+                      />
+                    </div>
                   </div>
                 </div>
               </>
@@ -596,7 +609,12 @@ export function Calendar() {
                   )}
                 </div>
 
-                <div className="flex items-center justify-end shrink-0">
+                <div className="flex items-center justify-end gap-2 shrink-0">
+                  <FilterChip
+                    label={`quota · ${format(cursor, 'MMM yyyy')}`}
+                    active={quotaMonthOnly}
+                    onClick={() => setQuotaMonthOnly(v => !v)}
+                  />
                   <StatusSelect
                     value={statusFilter}
                     counts={counts}
