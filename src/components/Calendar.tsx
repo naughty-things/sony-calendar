@@ -542,7 +542,6 @@ export function Calendar() {
                     )}
                     {CATEGORIES.map(c => {
                       const n = categoryCounts[c] || 0;
-                      if (n === 0 && !categoryFilter.has(c)) return null;
                       return (
                         <FilterChip
                           key={c}
@@ -589,7 +588,6 @@ export function Calendar() {
                   )}
                   {CATEGORIES.map(c => {
                     const n = categoryCounts[c] || 0;
-                    if (n === 0 && !categoryFilter.has(c)) return null;
                     return (
                       <FilterChip
                         key={c}
