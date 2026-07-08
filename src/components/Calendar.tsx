@@ -559,23 +559,13 @@ export function Calendar() {
                   </div>
                 </div>
                 <div className="-mx-4 px-4 overflow-x-auto no-scrollbar">
-                  <div className="flex items-center gap-1.5 pb-1 min-w-max">
-                    <FilterChip
-                      label={`All · ${counts.all}`}
-                      active={statusFilter === 'all'}
-                      onClick={() => setStatusFilter('all')} />
-                    {STATUS_ORDER.map(s => {
-                      const n = counts[s] || 0;
-                      if (n === 0 && statusFilter !== s) return null;
-                      return (
-                        <FilterChip
-                          key={s}
-                          label={`${STATUS_LABEL[s]} · ${n}`}
-                          color={STATUS_DOT[s]}
-                          active={statusFilter === s}
-                          onClick={() => setStatusFilter(s)} />
-                      );
-                    })}
+                  <div className="pb-1 min-w-max">
+                    <StatusSelect
+                      value={statusFilter}
+                      counts={counts}
+                      onChange={setStatusFilter}
+                      fullWidth
+                    />
                   </div>
                 </div>
               </>
@@ -606,23 +596,12 @@ export function Calendar() {
                   )}
                 </div>
 
-                <div className="flex items-center gap-1.5 flex-wrap justify-end shrink-0">
-                  <FilterChip
-                    label={`All · ${counts.all}`}
-                    active={statusFilter === 'all'}
-                    onClick={() => setStatusFilter('all')} />
-                  {STATUS_ORDER.map(s => {
-                    const n = counts[s] || 0;
-                    if (n === 0 && statusFilter !== s) return null;
-                    return (
-                      <FilterChip
-                        key={s}
-                        label={`${STATUS_LABEL[s]} · ${n}`}
-                        color={STATUS_DOT[s]}
-                        active={statusFilter === s}
-                        onClick={() => setStatusFilter(s)} />
-                    );
-                  })}
+                <div className="flex items-center justify-end shrink-0">
+                  <StatusSelect
+                    value={statusFilter}
+                    counts={counts}
+                    onChange={setStatusFilter}
+                  />
                 </div>
               </>
             )}
@@ -733,6 +712,38 @@ function FilterChip({ label, color, active = false, onClick, title }: { label: s
       {color && <span className={`w-1.5 h-1.5 rounded-full ${color}`} />}
       {label}
     </button>
+  );
+}
+
+function StatusSelect({
+  value,
+  counts,
+  onChange,
+  fullWidth = false
+}: {
+  value: StatusFilter;
+  counts: Record<string, number>;
+  onChange: (value: StatusFilter) => void;
+  fullWidth?: boolean;
+}) {
+  return (
+    <label className={`relative inline-flex items-center ${fullWidth ? 'w-full' : ''}`}>
+      <span className="text-[10px] uppercase tracking-[0.14em] text-text-faint font-mono mr-2 shrink-0">
+        status
+      </span>
+      <select
+        value={value}
+        onChange={e => onChange(e.target.value as StatusFilter)}
+        className={`appearance-none bg-surface text-text-soft border border-edge hover:border-edge-strong focus:border-edge-strong focus:outline-none rounded-md text-[12px] font-medium py-1.5 pl-3 pr-8 transition ${fullWidth ? 'w-full min-w-0' : 'min-w-[170px]'}`}>
+        <option value="all">{`All · ${counts.all}`}</option>
+        {STATUS_ORDER.map(s => (
+          <option key={s} value={s}>
+            {`${STATUS_LABEL[s]} · ${counts[s] || 0}`}
+          </option>
+        ))}
+      </select>
+      <ChevronDown size={14} className="absolute right-2 top-1/2 -translate-y-1/2 text-text-faint pointer-events-none" />
+    </label>
   );
 }
 
