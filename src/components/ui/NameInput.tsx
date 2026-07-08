@@ -12,7 +12,9 @@ export function NameInput({
   suggestions,
   placeholder,
   className,
-  id
+  id,
+  readOnly = false,
+  disabled = false
 }: {
   value: string;
   onChange: (v: string) => void;
@@ -20,6 +22,8 @@ export function NameInput({
   placeholder?: string;
   className?: string;
   id?: string;
+  readOnly?: boolean;
+  disabled?: boolean;
 }) {
   const autoId = useId();
   const listId = id ? `${id}-list` : `${autoId}-list`;
@@ -40,6 +44,8 @@ export function NameInput({
         value={value}
         onChange={e => onChange(e.target.value)}
         placeholder={placeholder}
+        readOnly={readOnly}
+        disabled={disabled}
         autoComplete="off"
         spellCheck={false}
         className={className}

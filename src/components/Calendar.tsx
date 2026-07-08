@@ -69,8 +69,8 @@ export function Calendar() {
   }, [requireAdmin]);
 
   const openEdit = useCallback((p: PostWithPeople) => {
-    if (requireAdmin()) setEditing(p);
-  }, [requireAdmin]);
+    setEditing(p);
+  }, []);
 
   const openInbox = useCallback(() => {
     if (requireAdmin()) setShowReviewInbox(true);
@@ -690,6 +690,7 @@ export function Calendar() {
           post={editing}
           initialDate={creating?.date}
           recentNames={recentNames}
+          canEdit={isAdmin}
           onClose={() => { setEditing(null); setCreating(null); }}
           onSaved={async () => { setEditing(null); setCreating(null); await load(false); }}
         />

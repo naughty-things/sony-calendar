@@ -25,11 +25,12 @@ export type RecentNames = {
 };
 
 export function PostModal({
-  post, initialDate, recentNames, onClose, onSaved
+  post, initialDate, recentNames, canEdit = true, onClose, onSaved
 }: {
   post: PostWithPeople | null;
   initialDate?: string;
   recentNames: RecentNames;
+  canEdit?: boolean;
   onClose: () => void;
   onSaved: () => void | Promise<void>;
 }) {
@@ -76,6 +77,7 @@ export function PostModal({
   }, [onClose]);
 
   async function save() {
+    if (!canEdit) return;
     setSaving(true);
     const { data: sess } = await supabase.auth.getSession();
     if (!sess.session) {
@@ -120,7 +122,7 @@ export function PostModal({
   }
 
   async function remove() {
-    if (!post?.id) return;
+    if (!canEdit || !post?.id) return;
     setDeleting(true);
     const { data: sess } = await supabase.auth.getSession();
     if (!sess.session) {
@@ -158,6 +160,7 @@ export function PostModal({
   }
 
   async function runDraft() {
+    if (!canEdit) return;
     setDrafting(true);
     const res = await fetch('/api/ai/draft', {
       method: 'POST',
@@ -169,7 +172,7 @@ export function PostModal({
     setDrafting(false);
   }
 
-  const showEmail = post?.source === 'email' && post?.source_meta;
+  const showEmail = canEdit && post?.source === 'email' && post?.source_meta;
   const isMobile = useIsMobile();
 
   return (
@@ -183,8 +186,8 @@ export function PostModal({
         <div className="px-4 sm:px-6 py-4 border-b border-edge flex items-start justify-between gap-4">
           <div className="min-w-0 flex-1">
             <div className="flex items-center gap-2 text-[10px] uppercase tracking-[0.16em] text-text-mute font-mono font-semibold">
-              {post ? 'Edit' : 'New'} post
-              {post?.source === 'email' && (
+              {post ? (canEdit ? 'Edit' : 'View') : 'New'} post
+              {showEmail && (
                 <span className="ml-1 inline-flex items-center gap-1 text-magenta">
                   <Mail size={10} /> from email
                 </span>
@@ -209,7 +212,7 @@ export function PostModal({
         <div className={`flex-1 overflow-y-auto ${showEmail ? 'grid md:grid-cols-[1.4fr_1fr]' : ''}`}>
           {/* FORM */}
           <div className="p-4 sm:p-6 space-y-5">
-            {post?.status === 'staging' && (
+              {canEdit && post?.status === 'staging' && (
               <div className="px-3 py-2.5 rounded-md border border-plum/30 bg-plum/5 text-sm flex items-start gap-2.5">
                 <span className="font-mono text-[10px] uppercase tracking-[0.12em] px-2 py-0.5 rounded-full bg-plum text-white shrink-0 mt-0.5">
                   Staging
@@ -235,6 +238,7 @@ export function PostModal({
                 ref={firstFieldRef}
                 value={title}
                 onChange={e => setTitle(e.target.value)}
+                readOnly={!canEdit}
                 placeholder="Friday IG post for Sony Alpha 7C II"
                 className={inputCls} />
             </Field>
@@ -249,13 +253,14 @@ export function PostModal({
                       <button
                         key={p}
                         type="button"
+                        disabled={!canEdit}
                         onClick={() => setPlatform(active ? platform.filter(x => x !== p) : [...platform, p])}
                         title={p}
                         className={`px-1.5 py-1 rounded-md border transition flex items-center gap-1.5 ${
                           active
                             ? 'bg-btn border-btn text-white shadow-soft'
                             : 'bg-surface border-edge hover:border-edge-strong text-text-soft'
-                        }`}>
+                        } ${!canEdit ? 'opacity-70 cursor-default' : ''}`}>
                         {isLogo ? (
                           <img
                             src={p === 'IG' ? '/platforms/instagram.png' : '/platforms/facebook.png'}
@@ -283,13 +288,14 @@ export function PostModal({
                       <button
                         key={c}
                         type="button"
+                        disabled={!canEdit}
                         onClick={() => setCategory(active ? category.filter(x => x !== c) : [...category, c])}
                         title={CATEGORY_LABEL[c]}
                         className={`min-w-[32px] px-1.5 py-1 rounded-md border transition flex items-center justify-center ${
                           active
                             ? 'bg-btn border-btn text-white shadow-soft'
                             : 'bg-surface border-edge hover:border-edge-strong text-text-soft'
-                        }`}>
+                        } ${!canEdit ? 'opacity-70 cursor-default' : ''}`}>
                         <span className="text-[11px] font-semibold uppercase tracking-wide">
                           {CATEGORY_GLYPH[c]}
                         </span>
@@ -312,6 +318,8 @@ export function PostModal({
                     type="date"
                     value={publishDate}
                     onChange={e => setPublishDate(e.target.value)}
+                    readOnly={!canEdit}
+                    disabled={!canEdit}
                     className={`${inputCls} ${stagingPost && !publishDate ? 'border-plum ring-2 ring-plum/30 bg-plum/5' : ''}`}
                   />
                 </Field>
@@ -320,6 +328,8 @@ export function PostModal({
                     type="month"
                     value={quotaMonth}
                     onChange={e => setQuotaMonth(e.target.value)}
+                    readOnly={!canEdit}
+                    disabled={!canEdit}
                     className={inputCls}
                   />
                   <div className="mt-1 text-[10px] font-mono text-text-faint">
@@ -335,7 +345,7 @@ export function PostModal({
                       <span className="text-[9px] text-text-faint">from email</span>
                     </span>
                   }>
-                    <input type="date" value={targetLaunchDate} onChange={e => setTargetLaunchDate(e.target.value)} className={inputCls} />
+                    <input type="date" value={targetLaunchDate} onChange={e => setTargetLaunchDate(e.target.value)} readOnly={!canEdit} disabled={!canEdit} className={inputCls} />
                   </Field>
                   <Field label={
                     <span className="flex items-center gap-1.5">
@@ -343,7 +353,7 @@ export function PostModal({
                       <span className="text-[9px] text-text-faint">copy deadline</span>
                     </span>
                   }>
-                    <input type="date" value={requestDate} onChange={e => setRequestDate(e.target.value)} className={inputCls} />
+                    <input type="date" value={requestDate} onChange={e => setRequestDate(e.target.value)} readOnly={!canEdit} disabled={!canEdit} className={inputCls} />
                   </Field>
                 </div>
               )}
@@ -356,12 +366,14 @@ export function PostModal({
                   return (
                     <button
                       key={s}
+                      type="button"
+                      disabled={!canEdit}
                       onClick={() => setStatus(s)}
                       className={`text-[11px] px-3 py-1.5 rounded-md border font-medium transition ${
                         active
                           ? 'bg-btn text-btn-text border-ink shadow-soft'
                           : 'bg-surface text-text-soft border-edge hover:border-edge-strong'
-                      }`}>
+                      } ${!canEdit ? 'opacity-70 cursor-default' : ''}`}>
                       {STATUS_LABEL[s]}
                     </button>
                   );
@@ -374,8 +386,10 @@ export function PostModal({
                 <NameInput
                   id="designer"
                   value={designer}
-                  onChange={setDesigner}
+                  onChange={canEdit ? setDesigner : () => {}}
                   suggestions={recentNames.designer}
+                  readOnly={!canEdit}
+                  disabled={!canEdit}
                   placeholder="e.g. Sam Lee"
                   className={inputCls} />
               </Field>
@@ -383,8 +397,10 @@ export function PostModal({
                 <NameInput
                   id="copy-writer"
                   value={copyWriter}
-                  onChange={setCopyWriter}
+                  onChange={canEdit ? setCopyWriter : () => {}}
                   suggestions={recentNames.copy_writer}
+                  readOnly={!canEdit}
+                  disabled={!canEdit}
                   placeholder="e.g. Cheri Cheung"
                   className={inputCls} />
               </Field>
@@ -392,8 +408,10 @@ export function PostModal({
                 <NameInput
                   id="internal-pic"
                   value={internalPic}
-                  onChange={setInternalPic}
+                  onChange={canEdit ? setInternalPic : () => {}}
                   suggestions={recentNames.internal_pic}
+                  readOnly={!canEdit}
+                  disabled={!canEdit}
                   placeholder="e.g. Sam Lee"
                   className={inputCls} />
               </Field>
@@ -401,15 +419,17 @@ export function PostModal({
                 <NameInput
                   id="client-pic"
                   value={clientPic}
-                  onChange={setClientPic}
+                  onChange={canEdit ? setClientPic : () => {}}
                   suggestions={recentNames.client_pic}
+                  readOnly={!canEdit}
+                  disabled={!canEdit}
                   placeholder="e.g. Sony HK"
                   className={inputCls} />
               </Field>
             </div>
 
             <Field label={<><FileText size={11} className="inline mr-1" />Notes</>}>
-              <textarea value={notes ?? ''} onChange={e => setNotes(e.target.value)} rows={3}
+              <textarea value={notes ?? ''} onChange={e => setNotes(e.target.value)} readOnly={!canEdit} rows={3}
                 placeholder="Context, talking points, links…"
                 className={inputCls} />
             </Field>
@@ -418,17 +438,20 @@ export function PostModal({
               label={
                 <div className="flex items-center justify-between w-full">
                   <span><Sparkles size={11} className="inline mr-1" />Copy draft</span>
-                  <button
-                    onClick={runDraft}
-                    disabled={drafting || !title}
-                    className="text-[10px] uppercase tracking-[0.14em] font-mono flex items-center gap-1.5 text-accent-deep hover:text-ink disabled:text-text-faint font-semibold">
-                    {drafting ? <><Loader2 size={11} className="animate-spin" /> drafting</> : <><Sparkles size={11} /> AI draft</>}
-                  </button>
+                  {canEdit && (
+                    <button
+                      onClick={runDraft}
+                      disabled={drafting || !title}
+                      className="text-[10px] uppercase tracking-[0.14em] font-mono flex items-center gap-1.5 text-accent-deep hover:text-ink disabled:text-text-faint font-semibold">
+                      {drafting ? <><Loader2 size={11} className="animate-spin" /> drafting</> : <><Sparkles size={11} /> AI draft</>}
+                    </button>
+                  )}
                 </div>
               }>
               <textarea
                 value={copyDraft ?? ''}
                 onChange={e => setCopyDraft(e.target.value)}
+                readOnly={!canEdit}
                 rows={5}
                 className={inputCls}
                 placeholder="AI-drafted or hand-written copy…" />
@@ -498,7 +521,7 @@ export function PostModal({
 
         {/* ─── Footer ─── */}
         <div className="px-6 py-3.5 border-t border-edge flex items-center justify-between bg-surface-muted">
-          {post?.id ? (
+          {canEdit && post?.id ? (
             <button
               type="button"
               onClick={remove}
@@ -509,16 +532,18 @@ export function PostModal({
           ) : <span />}
           <div className="flex items-center gap-2">
             <button onClick={onClose} className="px-4 py-1.5 text-[12px] font-medium text-text-soft hover:text-ink hover:bg-surface rounded-md transition">
-              Cancel
+              {canEdit ? 'Cancel' : 'Close'}
             </button>
-            <button
-              onClick={save}
-              disabled={saving || !title}
-              className="px-5 py-1.5 text-[12px] font-semibold bg-btn text-btn-text rounded-md hover:bg-accent hover:text-ink transition flex items-center gap-1.5 disabled:opacity-40 disabled:cursor-not-allowed shadow-soft">
-              {saving ? <><Loader2 size={12} className="animate-spin" /> saving</>
-                : savedFlash ? <><Check size={12} /> saved</>
-                : <>Save</>}
-            </button>
+            {canEdit && (
+              <button
+                onClick={save}
+                disabled={saving || !title}
+                className="px-5 py-1.5 text-[12px] font-semibold bg-btn text-btn-text rounded-md hover:bg-accent hover:text-ink transition flex items-center gap-1.5 disabled:opacity-40 disabled:cursor-not-allowed shadow-soft">
+                {saving ? <><Loader2 size={12} className="animate-spin" /> saving</>
+                  : savedFlash ? <><Check size={12} /> saved</>
+                  : <>Save</>}
+              </button>
+            )}
           </div>
         </div>
       </div>
