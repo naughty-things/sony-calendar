@@ -948,7 +948,7 @@ function DayCell({
         const postId = e.dataTransfer.getData('application/x-post-id');
         if (postId) onMovePost(postId, format(d, 'yyyy-MM-dd'));
       }}
-      className={`group relative min-h-[176px] border-r border-b border-edge last:border-r-0 p-2.5 cursor-pointer transition flex flex-col overflow-hidden
+      className={`group relative min-h-[176px] border-r border-b border-edge last:border-r-0 px-2.5 pt-2.5 pb-1 cursor-pointer transition flex flex-col overflow-hidden
         ${inMonth ? '' : 'bg-surface-muted text-text-faint'}
         ${(isSunday && inMonth && !holiday) || holiday ? 'bg-holiday-tint/50' : ''}
         ${dragOver ? 'ring-2 ring-accent ring-inset bg-accent/10' : ''}
