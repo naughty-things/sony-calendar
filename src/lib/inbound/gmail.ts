@@ -12,6 +12,7 @@ import { createAdminClient } from '@/lib/supabase/server';
 import { parseEmail } from '@/lib/ai/parseEmail';
 import { htmlTablesToMarkdown } from '@/lib/ai/htmlTable';
 import { normalizePlatforms } from '@/lib/types';
+import { normalizeMentionedPeople } from '@/lib/emailParticipants';
 
 const APP_STATE_KEY = 'gmail_last_history_id';
 const LEGACY_APP_STATE_KEYS = ['gmail_…_history_id', 'gmail_…y_id'] as const;
@@ -452,6 +453,13 @@ export async function pollGmail(): Promise<PollResult> {
 
         for (let i = 0; i < ai.posts.length; i++) {
           const item = ai.posts[i];
+          const normalizedMentions = normalizeMentionedPeople(
+            {
+              mentioned_internal: item.mentioned_internal,
+              mentioned_client: item.mentioned_client
+            },
+            from
+          );
           const hasDate = !!item.publish_date;
           const hasTitle = !!item.title;
           if (!(hasDate && hasTitle)) allHaveDateAndTitle = false;
@@ -550,8 +558,8 @@ export async function pollGmail(): Promise<PollResult> {
                 gmail_id: id,
                 row_index: i,
                 total_rows: ai.posts.length,
-                mentioned_internal: item.mentioned_internal,
-                mentioned_client: item.mentioned_client,
+                mentioned_internal: normalizedMentions.mentioned_internal,
+                mentioned_client: normalizedMentions.mentioned_client,
                 confidence: itemConfidence,
                 parse_warnings: itemWarnings,
                 target_launch_date: item.target_launch_date || null,

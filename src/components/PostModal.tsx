@@ -7,6 +7,7 @@ import { X, Trash2, Sparkles, Mail, Briefcase, Building2, FileText, Check, Loade
 import { Tape } from './ui/Tape';
 import { NameInput } from './ui/NameInput';
 import { useIsMobile } from '@/lib/useIsMobile';
+import { normalizeMentionedPeople } from '@/lib/emailParticipants';
 
 const ALL_STATUSES: PostStatus[] = STATUS_ORDER;
 
@@ -173,6 +174,13 @@ export function PostModal({
   }
 
   const showEmail = canEdit && post?.source === 'email' && post?.source_meta;
+  const normalizedMentions = normalizeMentionedPeople(
+    {
+      mentioned_internal: post?.source_meta?.mentioned_internal,
+      mentioned_client: post?.source_meta?.mentioned_client
+    },
+    post?.source_meta?.from
+  );
   const isMobile = useIsMobile();
 
   return (
@@ -490,21 +498,21 @@ export function PostModal({
                   </ul>
                 </div>
               )}
-              {post.source_meta.mentioned_internal?.length > 0 && (
+              {normalizedMentions.mentioned_internal.length > 0 && (
                 <div>
                   <div className="text-[10px] uppercase tracking-[0.16em] text-text-mute font-mono font-semibold mb-1.5">Mentioned internal</div>
                   <div className="flex flex-wrap gap-1">
-                    {post.source_meta.mentioned_internal.map((n: string, i: number) => (
+                    {normalizedMentions.mentioned_internal.map((n: string, i: number) => (
                       <span key={i} className="tag-internal text-xs px-2 py-0.5 rounded-full font-mono">{n}</span>
                     ))}
                   </div>
                 </div>
               )}
-              {post.source_meta.mentioned_client?.length > 0 && (
+              {normalizedMentions.mentioned_client.length > 0 && (
                 <div>
                   <div className="text-[10px] uppercase tracking-[0.16em] text-text-mute font-mono font-semibold mb-1.5">Mentioned client</div>
                   <div className="flex flex-wrap gap-1">
-                    {post.source_meta.mentioned_client.map((n: string, i: number) => (
+                    {normalizedMentions.mentioned_client.map((n: string, i: number) => (
                       <span key={i} className="tag-client text-xs px-2 py-0.5 rounded-full font-mono">{n}</span>
                     ))}
                   </div>
