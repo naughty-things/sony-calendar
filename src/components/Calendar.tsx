@@ -503,7 +503,7 @@ export function Calendar() {
           )}
 
           {/* Date nav */}
-          <div className="mt-5 flex items-end justify-between gap-3 sm:gap-4">
+          <div className="mt-5 flex flex-col items-stretch gap-3 sm:flex-row sm:items-end sm:justify-between sm:gap-4">
             <div className="flex items-end gap-2 sm:gap-3 min-w-0">
               <button onClick={() => setCursor(view === 'month' ? subMonths(cursor, 1) : addDays(cursor, -7))}
                 className="p-1.5 -ml-1 rounded-md hover:bg-surface-muted text-text-soft hover:text-ink transition shrink-0"
@@ -822,7 +822,7 @@ function MonthQuota({
   monthLabel: string;
 }) {
   return (
-    <div className="bg-surface-muted border border-edge-strong rounded-lg shadow-soft px-3 sm:px-4 py-2 sm:py-2.5 shrink-0 self-end mb-1.5 min-w-[160px] sm:min-w-[200px]">
+    <div className="bg-surface-muted border border-edge-strong rounded-lg shadow-soft px-3 sm:px-4 py-2 sm:py-2.5 shrink-0 w-full sm:w-auto sm:self-end sm:mb-1.5 min-w-0 sm:min-w-[200px]">
       <div className="flex items-center justify-between gap-3">
         <div className="flex items-baseline gap-1.5">
           <span className="text-[10px] uppercase tracking-[0.16em] font-mono font-semibold text-text-mute">
