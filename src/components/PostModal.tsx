@@ -179,7 +179,7 @@ export function PostModal({
       mentioned_internal: post?.source_meta?.mentioned_internal,
       mentioned_client: post?.source_meta?.mentioned_client
     },
-    post?.source_meta?.from
+    post?.source_meta?.effective_from || post?.source_meta?.from
   );
   const isMobile = useIsMobile();
 

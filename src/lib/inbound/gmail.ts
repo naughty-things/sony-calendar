@@ -12,7 +12,7 @@ import { createAdminClient } from '@/lib/supabase/server';
 import { parseEmail } from '@/lib/ai/parseEmail';
 import { htmlTablesToMarkdown } from '@/lib/ai/htmlTable';
 import { normalizePlatforms } from '@/lib/types';
-import { normalizeMentionedPeople } from '@/lib/emailParticipants';
+import { inferEffectiveFrom, normalizeMentionedPeople } from '@/lib/emailParticipants';
 
 const APP_STATE_KEY = 'gmail_last_history_id';
 const LEGACY_APP_STATE_KEYS = ['gmail_…_history_id', 'gmail_…y_id'] as const;
@@ -386,6 +386,7 @@ export async function pollGmail(): Promise<PollResult> {
         const from = header(msg.payload?.headers, 'From');
         const subject = header(msg.payload?.headers, 'Subject');
         const body = bodyFromPayload(msg.payload);
+        const effectiveFrom = inferEffectiveFrom(from, body);
 
         // 1. log raw
         const { data: ingest, error: logErr } = await admin
@@ -458,7 +459,7 @@ export async function pollGmail(): Promise<PollResult> {
               mentioned_internal: item.mentioned_internal,
               mentioned_client: item.mentioned_client
             },
-            from
+            effectiveFrom
           );
           const hasDate = !!item.publish_date;
           const hasTitle = !!item.title;
@@ -554,6 +555,7 @@ export async function pollGmail(): Promise<PollResult> {
               source_meta: {
                 ingest_id: ingest.id,
                 from,
+                effective_from: effectiveFrom,
                 subject,
                 gmail_id: id,
                 row_index: i,
