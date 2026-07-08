@@ -39,7 +39,7 @@ export function Calendar() {
   const [creating, setCreating] = useState<{ date?: string } | null>(null);
   const [statusFilter, setStatusFilter] = useState<StatusFilter>('all');
   const [categoryFilter, setCategoryFilter] = useState<CategoryFilter>(new Set());
-  const [quotaMonthOnly, setQuotaMonthOnly] = useState(false);
+  const [quotaMonthFilter, setQuotaMonthFilter] = useState('');
   const [search, setSearch] = useState('');
   const [showReviewInbox, setShowReviewInbox] = useState(false);
   const [lastIngestAt, setLastIngestAt] = useState<string | null>(null);
@@ -235,16 +235,19 @@ export function Calendar() {
     return getHolidaysInRange(start, end);
   }, [monthDays, weekDays]);
 
-  const matchesQuotaMonth = useCallback((p: PostWithPeople) => {
+  const quotaMonthKey = useCallback((p: Pick<PostWithPeople, 'quota_month' | 'publish_date'>) => {
     const monthSource = p.quota_month || p.publish_date;
-    if (!monthSource) return false;
-    const d = new Date(monthSource);
-    return d.getFullYear() === cursor.getFullYear() && d.getMonth() === cursor.getMonth();
-  }, [cursor]);
+    if (!monthSource) return '';
+    return monthSource.slice(0, 7);
+  }, []);
+
+  const matchesQuotaMonth = useCallback((p: PostWithPeople) => {
+    return quotaMonthKey(p) === format(cursor, 'yyyy-MM');
+  }, [cursor, quotaMonthKey]);
 
   const quotaScopedPosts = useMemo(
-    () => quotaMonthOnly ? posts.filter(matchesQuotaMonth) : posts,
-    [posts, quotaMonthOnly, matchesQuotaMonth]
+    () => quotaMonthFilter ? posts.filter(p => quotaMonthKey(p) === quotaMonthFilter) : posts,
+    [posts, quotaMonthFilter, quotaMonthKey]
   );
 
   const filteredPosts = useMemo(() => {
@@ -567,10 +570,16 @@ export function Calendar() {
                 <div className="-mx-4 px-4 overflow-x-auto no-scrollbar">
                   <div className="pb-1 min-w-max">
                     <div className="flex items-center gap-2 min-w-max">
-                      <FilterChip
-                        label={`quota · ${format(cursor, 'MMM yyyy')}`}
-                        active={quotaMonthOnly}
-                        onClick={() => setQuotaMonthOnly(v => !v)}
+                      {quotaMonthFilter && (
+                        <FilterChip
+                          label="clear"
+                          onClick={() => setQuotaMonthFilter('')}
+                        />
+                      )}
+                      <QuotaMonthSelect
+                        value={quotaMonthFilter}
+                        onChange={setQuotaMonthFilter}
+                        fullWidth
                       />
                       <StatusSelect
                         value={statusFilter}
@@ -610,10 +619,12 @@ export function Calendar() {
                 </div>
 
                 <div className="flex items-center justify-end gap-2 shrink-0">
-                  <FilterChip
-                    label={`quota · ${format(cursor, 'MMM yyyy')}`}
-                    active={quotaMonthOnly}
-                    onClick={() => setQuotaMonthOnly(v => !v)}
+                  {quotaMonthFilter && (
+                    <FilterChip label="clear" onClick={() => setQuotaMonthFilter('')} />
+                  )}
+                  <QuotaMonthSelect
+                    value={quotaMonthFilter}
+                    onChange={setQuotaMonthFilter}
                   />
                   <StatusSelect
                     value={statusFilter}
@@ -761,6 +772,30 @@ function StatusSelect({
         ))}
       </select>
       <ChevronDown size={14} className="absolute right-2 top-1/2 -translate-y-1/2 text-text-faint pointer-events-none" />
+    </label>
+  );
+}
+
+function QuotaMonthSelect({
+  value,
+  onChange,
+  fullWidth = false
+}: {
+  value: string;
+  onChange: (value: string) => void;
+  fullWidth?: boolean;
+}) {
+  return (
+    <label className={`relative inline-flex items-center ${fullWidth ? 'w-full' : ''}`}>
+      <span className="text-[10px] uppercase tracking-[0.14em] text-text-faint font-mono mr-2 shrink-0">
+        quota
+      </span>
+      <input
+        type="month"
+        value={value}
+        onChange={e => onChange(e.target.value)}
+        className={`bg-surface text-text-soft border border-edge hover:border-edge-strong focus:border-edge-strong focus:outline-none rounded-md text-[12px] font-medium py-1.5 px-3 transition ${fullWidth ? 'w-full min-w-0' : 'min-w-[150px]'}`}
+      />
     </label>
   );
 }
