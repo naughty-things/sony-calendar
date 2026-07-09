@@ -11,7 +11,7 @@ import { JWT } from 'google-auth-library';
 import { createAdminClient } from '@/lib/supabase/server';
 import { parseEmail } from '@/lib/ai/parseEmail';
 import { htmlTablesToMarkdown } from '@/lib/ai/htmlTable';
-import { normalizePlatforms } from '@/lib/types';
+import { normalizeCategories, normalizePlatforms } from '@/lib/types';
 import { inferEffectiveFrom, normalizeMentionedPeople } from '@/lib/emailParticipants';
 
 const APP_STATE_KEY = 'gmail_last_history_id';
@@ -541,15 +541,14 @@ export async function pollGmail(): Promise<PollResult> {
               : `low confidence (${itemConfidence}); routed to staging`;
           }
 
+          const normalizedCategory = normalizeCategories(item.category);
           const { data: post, error: postErr } = await admin
             .from('posts')
             .insert({
               client_id: clientRow.id,
               title: item.title || subject || '(untitled)',
               platform: normalizePlatforms(item.platform, ['IG']),
-              category: Array.isArray(item.category) && item.category.length > 0
-                ? item.category
-                : null,
+              category: normalizedCategory.length > 0 ? normalizedCategory : null,
               publish_date: item.publish_date || null,
               quota_month: quotaMonth,
               // The two date columns from the planning table (Request Date

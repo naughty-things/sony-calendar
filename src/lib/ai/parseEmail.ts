@@ -11,6 +11,7 @@
 import { z } from 'zod';
 import { getMinimax, MINIMAX_CHAT_MODEL } from './client';
 import { htmlTablesToMarkdown } from './htmlTable';
+import { normalizeCategories } from '@/lib/types';
 
 const PostSchema = z.object({
   publish_date: z.string().nullable(),          // YYYY-MM-DD
@@ -353,12 +354,13 @@ function reviewDates(parsed: ParseResult, body: string): ParseResult {
 function normalizeParsedCategories(parsed: ParseResult): ParseResult {
   return {
     ...parsed,
-    posts: parsed.posts.map(post => ({
-      ...post,
-      category: Array.isArray(post.category)
-        ? post.category.map(value => value === 'HE' ? 'PA' : value)
-        : post.category
-    }))
+    posts: parsed.posts.map(post => {
+      const normalizedCategory = normalizeCategories(post.category);
+      return {
+        ...post,
+        category: normalizedCategory.length > 0 ? normalizedCategory : null
+      };
+    })
   };
 }
 

@@ -205,10 +205,19 @@ export function normalizePlatforms(
 }
 
 /* Helpers for category arrays — used by the multi-select UI and filter. */
-export function postCategories(post: Pick<Post, 'category'>): string[] {
-  if (!post.category) return [];
-  const raw = Array.isArray(post.category) ? post.category.filter(Boolean) : [post.category].filter(Boolean);
+export function normalizeCategories(category: string[] | string | null | undefined): string[] {
+  if (!category) return [];
+  const raw = Array.isArray(category) ? category : [category];
   // Legacy HE rows were historically used for headphones. Headphones now
   // belong under PA, while TV is a brand-new category code.
-  return raw.map(value => value === 'HE' ? 'PA' : value);
+  return Array.from(new Set(
+    raw
+      .map(value => value?.trim())
+      .filter((value): value is string => !!value)
+      .map(value => value === 'HE' ? 'PA' : value)
+  ));
+}
+
+export function postCategories(post: Pick<Post, 'category'> | null | undefined): string[] {
+  return normalizeCategories(post?.category);
 }

@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
-import { Post, PostStatus, PostWithPeople, STATUS_LABEL, STATUS_ORDER, CATEGORIES, CATEGORY_LABEL, CATEGORY_GLYPH, PLATFORMS, PLATFORM_GLYPH, normalizePlatforms } from '@/lib/types';
+import { Post, PostStatus, PostWithPeople, STATUS_LABEL, STATUS_ORDER, CATEGORIES, CATEGORY_LABEL, CATEGORY_GLYPH, PLATFORMS, PLATFORM_GLYPH, normalizeCategories, normalizePlatforms, postCategories } from '@/lib/types';
 import { getBrowserClient } from '@/lib/supabase/client';
 import { X, Trash2, Sparkles, Mail, Briefcase, Building2, FileText, Check, Loader2, Pen, Type } from 'lucide-react';
 import { Tape } from './ui/Tape';
@@ -10,13 +10,6 @@ import { useIsMobile } from '@/lib/useIsMobile';
 import { normalizeMentionedPeople } from '@/lib/emailParticipants';
 
 const ALL_STATUSES: PostStatus[] = STATUS_ORDER;
-
-function postCategories(post: { category?: string[] | string | null } | null | undefined): string[] {
-  if (!post || post.category == null) return [];
-  if (Array.isArray(post.category)) return post.category.filter(Boolean) as string[];
-  if (typeof post.category === 'string' && post.category) return [post.category];
-  return [];
-}
 
 export type RecentNames = {
   designer: string[];
@@ -95,10 +88,11 @@ export function PostModal({
     } else if (post?.status === 'staging' && !publishDate) {
       effectiveStatus = 'staging';
     }
+    const normalizedCategory = normalizeCategories(category);
     const payload: Partial<Post> = {
       title: title || '(untitled)',
       platform: normalizePlatforms(platform, ['IG']),
-      category: category.length > 0 ? category : null,
+      category: normalizedCategory.length > 0 ? normalizedCategory : null,
       publish_date: publishDate || null,
       quota_month: quotaMonth ? `${quotaMonth}-01` : null,
       target_launch_date: targetLaunchDate || null,
