@@ -1,7 +1,7 @@
-+-- Security hardening for the public calendar and staff administration.
+-- Security hardening for the public calendar and staff administration.
 --
 -- Anonymous users receive one deliberately redacted, published-only view.
--- Base tables stay private. Authenticated access is restricted to the trusted
+-- Sensitive columns and unpublished rows stay private. Authenticated access is restricted to the trusted
 -- calendar administrator email in the signed Supabase JWT. Server-side
 -- service_role operations continue to bypass RLS for Gmail ingestion.
 
@@ -27,6 +27,7 @@ drop policy if exists "auth write app_state" on public.app_state;
 drop policy if exists "calendar admin clients" on public.clients;
 drop policy if exists "calendar admin people" on public.people;
 drop policy if exists "calendar admin posts" on public.posts;
+drop policy if exists "public published posts" on public.posts;
 drop policy if exists "calendar admin email ingests" on public.email_ingests;
 drop policy if exists "calendar admin app state" on public.app_state;
 
@@ -66,6 +67,13 @@ create policy "calendar admin posts"
     and not coalesce(((select auth.jwt() ->> 'is_anonymous')::boolean), false)
   );
 
+-- The invoker view below needs access to its projected base columns. RLS keeps
+-- every unpublished row private, while column grants keep briefs and ingest
+-- metadata unavailable even through direct Data API queries.
+create policy "public published posts"
+  on public.posts for select to anon
+  using (status in ('approved', 'posted') and publish_date is not null);
+
 create policy "calendar admin email ingests"
   on public.email_ingests for all to authenticated
   using (
@@ -88,12 +96,11 @@ create policy "calendar admin app state"
     and not coalesce(((select auth.jwt() ->> 'is_anonymous')::boolean), false)
   );
 
--- A security-definer view is intentional here: anon has no privilege or RLS
--- policy on the base table. The view is the complete public API, projects only
--- non-sensitive columns, and filters out every pre-publication state.
+-- The view executes as its caller, so the underlying RLS policy still applies.
+-- It also projects only non-sensitive columns and filters pre-publication state.
 drop view if exists public.public_calendar_posts;
 create view public.public_calendar_posts
-with (security_barrier = true)
+with (security_invoker = true, security_barrier = true)
 as
 select
   id,
@@ -133,22 +140,27 @@ alter default privileges for role postgres in schema public
   revoke execute on functions from public, anon, authenticated;
 
 grant select on public.public_calendar_posts to anon;
+grant select (
+  id, title, platform, category, publish_date, quota_month,
+  target_launch_date, request_date, status, designer, copy_writer,
+  internal_pic, client_pic, created_at, updated_at
+) on public.posts to anon;
 grant select, insert, update, delete
   on public.clients, public.people, public.posts, public.email_ingests, public.app_state
   to authenticated;
 grant usage, select on all sequences in schema public to authenticated;
 
--- Realtime remains staff-only because anon has neither base-table privileges
--- nor a base-table RLS policy. Staff subscriptions continue to work.
+-- Do not publish posts through Realtime: WAL payloads are a wider surface than
+-- the deliberately projected public view. The application uses bounded polling.
 do $$
 begin
-  if not exists (
+  if exists (
     select 1 from pg_publication_tables
     where pubname = 'supabase_realtime'
       and schemaname = 'public'
       and tablename = 'posts'
   ) then
-    execute 'alter publication supabase_realtime add table public.posts';
+    execute 'alter publication supabase_realtime drop table public.posts';
   end if;
 end $$;
 

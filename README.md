@@ -18,8 +18,8 @@ agent creates draft posts for human review.
 1. **Supabase**
    - Create a new project
    - Run `supabase/schema.sql`
-   - The schema enables RLS, keeps base tables private, and exposes only
-     approved/posted fields through `public_calendar_posts` for anonymous viewers.
+   - The schema enables RLS and exposes only approved/posted rows and a limited
+     column set through `public_calendar_posts` for anonymous viewers.
    - Existing deployments must also apply
      `supabase/migrations/20260714071434_security_hardening.sql`.
    - Create the Supabase Auth admin as `sam.lee@naughtythings.com.hk`; database

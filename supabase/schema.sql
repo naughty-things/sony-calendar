@@ -130,8 +130,8 @@ create table if not exists app_state (
 -- ─────────────────────────────────────────
 -- Security boundary
 -- ─────────────────────────────────────────
--- Anonymous viewers use a redacted, published-only view. Base tables are
--- private, and authenticated writes require the trusted admin email in the
+-- Anonymous viewers use a redacted, published-only view. Sensitive columns and
+-- unpublished rows are private, and authenticated writes require the trusted admin email in the
 -- signed Supabase JWT. The service role continues to bypass RLS for ingestion.
 alter table clients        enable row level security;
 alter table people         enable row level security;
@@ -142,6 +142,7 @@ alter table app_state      enable row level security;
 drop policy if exists "calendar admin clients" on clients;
 drop policy if exists "calendar admin people" on people;
 drop policy if exists "calendar admin posts" on posts;
+drop policy if exists "public published posts" on posts;
 drop policy if exists "calendar admin email ingests" on email_ingests;
 drop policy if exists "calendar admin app state" on app_state;
 
@@ -172,6 +173,8 @@ create policy "calendar admin posts" on posts for all to authenticated
     lower(coalesce((select auth.jwt() ->> 'email'), '')) = 'sam.lee@naughtythings.com.hk'
     and not coalesce(((select auth.jwt() ->> 'is_anonymous')::boolean), false)
   );
+create policy "public published posts" on posts for select to anon
+  using (status in ('approved', 'posted') and publish_date is not null);
 create policy "calendar admin email ingests" on email_ingests for all to authenticated
   using (
     lower(coalesce((select auth.jwt() ->> 'email'), '')) = 'sam.lee@naughtythings.com.hk'
@@ -193,7 +196,7 @@ create policy "calendar admin app state" on app_state for all to authenticated
 
 drop view if exists public_calendar_posts;
 create view public_calendar_posts
-with (security_barrier = true)
+with (security_invoker = true, security_barrier = true)
 as
 select
   id, title, platform, category, publish_date, quota_month,
@@ -219,6 +222,11 @@ alter default privileges for role postgres in schema public
   revoke execute on functions from public, anon, authenticated;
 
 grant select on public_calendar_posts to anon;
+grant select (
+  id, title, platform, category, publish_date, quota_month,
+  target_launch_date, request_date, status, designer, copy_writer,
+  internal_pic, client_pic, created_at, updated_at
+) on posts to anon;
 grant select, insert, update, delete
   on clients, people, posts, email_ingests, app_state
   to authenticated;

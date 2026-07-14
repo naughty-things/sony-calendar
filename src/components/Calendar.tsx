@@ -192,20 +192,11 @@ export function Calendar() {
     return () => { cancelled = true; clearInterval(t); };
   }, [supabase, isAdmin]);
 
-  /* ─── realtime ─── */
+  /* ─── bounded refresh ─── */
   useEffect(() => {
-    if (!isAdmin) {
-      const timer = setInterval(() => load(true), 60_000);
-      return () => clearInterval(timer);
-    }
-    const channel = supabase
-      .channel('posts-changes')
-      .on('postgres_changes', { event: '*', schema: 'public', table: 'posts' }, () => {
-        load(false);
-      })
-      .subscribe();
-    return () => { supabase.removeChannel(channel); };
-  }, [supabase, load, isAdmin]);
+    const timer = setInterval(() => load(true), isAdmin ? 30_000 : 60_000);
+    return () => clearInterval(timer);
+  }, [load, isAdmin]);
 
   /* ─── keyboard shortcuts ─── */
   useEffect(() => {

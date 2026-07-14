@@ -12,6 +12,8 @@ test('schema exposes only the redacted published calendar to anon', async () => 
     assert.match(sql, /grant\s+select\s+on\s+(?:public\.)?public_calendar_posts\s+to\s+anon/i);
     assert.match(sql, /where\s+status\s+in\s*\(\s*'approved'\s*,\s*'posted'\s*\)/i);
     assert.match(sql, /auth\.jwt\(\)\s*->>\s*'email'/i);
+    assert.match(sql, /security_invoker\s*=\s*true/i);
+    assert.match(sql, /public published posts/i);
   }
 
   const view = migration.match(/create view public\.public_calendar_posts[\s\S]*?from public\.posts[\s\S]*?;/i)?.[0] ?? '';
@@ -19,6 +21,7 @@ test('schema exposes only the redacted published calendar to anon', async () => 
   for (const privateColumn of ['email', 'notes', 'copy_draft', 'source_meta', 'raw_payload', 'parsed']) {
     assert.doesNotMatch(view, new RegExp(`\\b${privateColumn}\\b`, 'i'));
   }
+  assert.doesNotMatch(migration, /alter publication supabase_realtime add table public\.posts/i);
 });
 
 test('privileged routes require server authorization and no query-string secret', async () => {
