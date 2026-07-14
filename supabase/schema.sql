@@ -66,12 +66,13 @@ create index on posts(copy_writer) where copy_writer is not null;
 create index on posts(internal_pic) where internal_pic is not null;
 create index on posts(client_pic) where client_pic is not null;
 
--- helper: app-wide moddatetime if not already installed
-create extension if not exists moddatetime;
+-- helper: app-wide moddatetime, kept outside the exposed public schema
+create schema if not exists extensions;
+create extension if not exists moddatetime with schema extensions;
 
 create trigger posts_updated_at
 before update on posts
-for each row execute function moddatetime(updated_at);
+for each row execute function extensions.moddatetime(updated_at);
 
 -- ─────────────────────────────────────────
 -- Email ingest log (audit trail for AI agent)
