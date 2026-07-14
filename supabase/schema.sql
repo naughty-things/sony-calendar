@@ -131,8 +131,8 @@ create table if not exists app_state (
 -- ─────────────────────────────────────────
 -- Security boundary
 -- ─────────────────────────────────────────
--- Anonymous viewers use a redacted, published-only view. Sensitive columns and
--- unpublished rows are private, and authenticated writes require the trusted admin email in the
+-- Anonymous viewers use a redacted, all-status progress view. Sensitive
+-- columns stay private, and authenticated writes require the trusted admin email in the
 -- signed Supabase JWT. The service role continues to bypass RLS for ingestion.
 alter table clients        enable row level security;
 alter table people         enable row level security;
@@ -144,6 +144,7 @@ drop policy if exists "calendar admin clients" on clients;
 drop policy if exists "calendar admin people" on people;
 drop policy if exists "calendar admin posts" on posts;
 drop policy if exists "public published posts" on posts;
+drop policy if exists "public task progress" on posts;
 drop policy if exists "calendar admin email ingests" on email_ingests;
 drop policy if exists "calendar admin app state" on app_state;
 
@@ -174,8 +175,8 @@ create policy "calendar admin posts" on posts for all to authenticated
     lower(coalesce((select auth.jwt() ->> 'email'), '')) = 'sam.lee@naughtythings.com.hk'
     and not coalesce(((select auth.jwt() ->> 'is_anonymous')::boolean), false)
   );
-create policy "public published posts" on posts for select to anon
-  using (status in ('approved', 'posted') and publish_date is not null);
+create policy "public task progress" on posts for select to anon
+  using (true);
 create policy "calendar admin email ingests" on email_ingests for all to authenticated
   using (
     lower(coalesce((select auth.jwt() ->> 'email'), '')) = 'sam.lee@naughtythings.com.hk'
@@ -204,11 +205,10 @@ select
   target_launch_date, request_date, status, designer, copy_writer,
   internal_pic, client_pic, created_at, updated_at
 from posts
-where status in ('approved', 'posted')
-  and publish_date is not null;
+;
 
 comment on view public_calendar_posts is
-  'Redacted published-only calendar projection for anonymous viewers.';
+  'Redacted all-status task progress projection for anonymous viewers.';
 
 grant usage on schema public to anon, authenticated;
 revoke all on all tables in schema public from anon, authenticated;

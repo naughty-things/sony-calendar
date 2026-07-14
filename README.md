@@ -18,8 +18,8 @@ agent creates draft posts for human review.
 1. **Supabase**
    - Create a new project
    - Run `supabase/schema.sql`
-   - The schema enables RLS and exposes only approved/posted rows and a limited
-     column set through `public_calendar_posts` for anonymous viewers.
+   - The schema enables RLS and exposes every task status with a limited,
+     non-sensitive column set through `public_calendar_posts` for viewers.
    - Existing deployments must also apply
      `supabase/migrations/20260714071434_security_hardening.sql`.
    - Create the Supabase Auth admin as `sam.lee@naughtythings.com.hk`; database
@@ -60,15 +60,16 @@ agent creates draft posts for human review.
 | 1 | Internal team | Sends (or forwards) email to `agent@naughtythings.com.hk` |
 | 2 | App | Polls the inbox every 60s, picks up new messages |
 | 3 | AI agent | Parses date, platform, title, people mentioned |
-| 4 | AI agent | Places every email-derived post in private `staging`; model confidence is audit metadata only |
+| 4 | AI agent | Places posts with a concrete target launch date on the calendar; undated posts remain in `staging` |
 | 5 | Sam / PIC | Opens calendar, reviews the new chip |
 | 6 | Sam / PIC | Assigns internal PIC, client PIC, internal assignee, sets real status |
 | 7 | Designer / copywriter | Works the post, moves it through statuses |
 | 8 | Sam | Schedules / posts |
 
-**Nothing auto-publishes.** Every email-derived item starts in private staging
-and needs an explicit staff save before it can advance. Anonymous viewers see
-only approved or posted calendar items.
+**Nothing auto-publishes.** Clearly dated email tasks go to `client_review` or
+`in_progress` on the calendar. Uncertain or undated tasks stay in `staging`.
+Viewers can follow every task status, but internal notes, email contents, and
+draft copy remain private.
 
 ## Views
 

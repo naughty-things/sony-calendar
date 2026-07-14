@@ -14,6 +14,7 @@ import { htmlTablesToMarkdown } from '@/lib/ai/htmlTable';
 import { normalizeCategories, normalizePlatforms } from '@/lib/types';
 import { inferEffectiveFrom, normalizeMentionedPeople } from '@/lib/emailParticipants';
 import { isTrustedEnvelopeSender } from '@/lib/inbound/senderPolicy';
+import { routeEmailPost } from '@/lib/inbound/routing';
 
 const APP_STATE_KEY = 'gmail_last_history_id';
 const LEGACY_APP_STATE_KEYS = ['gmail_…_history_id', 'gmail_…y_id'] as const;
@@ -471,7 +472,8 @@ export async function pollGmail(): Promise<PollResult> {
 
         const createdPostIds: string[] = [];
         let lastError: string | null = null;
-        let allHaveDateAndTitle = true;
+        let calendarPostCount = 0;
+        let stagingPostCount = 0;
         let primaryPostId: string | null = null;
 
         for (let i = 0; i < ai.posts.length; i++) {
@@ -483,9 +485,9 @@ export async function pollGmail(): Promise<PollResult> {
             },
             effectiveFrom
           );
-          const hasDate = !!item.publish_date;
+          const route = routeEmailPost(item);
+          const hasDate = !!route.publishDate;
           const hasTitle = !!item.title;
-          if (!(hasDate && hasTitle)) allHaveDateAndTitle = false;
 
           // Defensive: if a row has NO date AND the title matches the email
           // subject (after stripping common reply/forward prefixes), this
@@ -511,14 +513,10 @@ export async function pollGmail(): Promise<PollResult> {
             continue;
           }
 
-          // Model output is untrusted data, not an authorization decision.
-          // Every email-derived record enters staging and requires an explicit
-          // staff save before it can advance. Confidence and warnings remain
-          // audit metadata only and never choose a more trusted state.
           const itemConfidence = typeof item.confidence === 'number' ? item.confidence : 0.5;
           const itemWarnings = Array.isArray(item.parse_warnings) ? item.parse_warnings : [];
-          const postStatus = 'staging' as const;
-          const routedReason = 'email-derived record requires explicit staff review';
+          const postStatus = route.status;
+          const routedReason = route.reason;
 
           const normalizedCategory = normalizeCategories(item.category);
           const { data: post, error: postErr } = await admin
@@ -528,7 +526,7 @@ export async function pollGmail(): Promise<PollResult> {
               title: item.title || subject || '(untitled)',
               platform: normalizePlatforms(item.platform, ['IG']),
               category: normalizedCategory.length > 0 ? normalizedCategory : null,
-              publish_date: item.publish_date || null,
+              publish_date: route.publishDate,
               quota_month: quotaMonth,
               // The two date columns from the planning table (Request Date
               // = copy delivery deadline; Target Launch Date = column the
@@ -575,21 +573,22 @@ export async function pollGmail(): Promise<PollResult> {
             continue;
           }
           createdPostIds.push(post.id);
+          if (route.publishDate) calendarPostCount++;
+          else stagingPostCount++;
           if (!primaryPostId) primaryPostId = post.id;
         }
 
         // Tag the ingest
-        // Every created row remains in private staging until a staff member
-        // explicitly reviews and saves it. "rejected" here means the ingest
-        // is waiting for that human decision, not that parsing failed.
+        // Dated rows are placed on the calendar. Undated rows stay in staging
+        // until staff assign a concrete launch date.
         const status = createdPostIds.length === 0
           ? 'error'
-          : 'rejected';
+          : stagingPostCount === 0 ? 'created' : 'rejected';
         const errMsg = createdPostIds.length === 0
           ? (lastError || `Parsed ${ai.posts.length} post(s) but none inserted`)
-          : (!allHaveDateAndTitle
-              ? `Parsed ${ai.posts.length} post(s); some missing date/title (in staging)`
-              : `Parsed ${ai.posts.length} post(s); awaiting explicit staff review`);
+          : stagingPostCount > 0
+          ? `Parsed ${ai.posts.length} post(s); ${stagingPostCount} missing a concrete launch date (in staging)`
+          : null;
 
         await admin
           .from('email_ingests')
@@ -602,12 +601,8 @@ export async function pollGmail(): Promise<PollResult> {
           })
           .eq('id', ingest.id);
 
-        // Count: each created post counts as ingested (auto-placed) or
-        // rejected (in staging, awaiting human).
-        const goodCount = allHaveDateAndTitle ? createdPostIds.length : 0;
-        const badCount = createdPostIds.length - goodCount;
-        result.ingested += goodCount;
-        result.rejected += badCount;
+        result.ingested += calendarPostCount;
+        result.rejected += stagingPostCount;
       } catch (e: any) {
         await admin
           .from('email_ingests')

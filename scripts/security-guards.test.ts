@@ -5,6 +5,7 @@ import { authorizePollRequest } from '../src/lib/security/pollAuth.ts';
 import { consumeRateLimit } from '../src/lib/security/rateLimit.ts';
 import { isTrustedEnvelopeSender } from '../src/lib/inbound/senderPolicy.ts';
 import { validateDraftRequest } from '../src/lib/ai/draftRequest.ts';
+import { routeEmailPost } from '../src/lib/inbound/routing.ts';
 
 test('safeReturnPath preserves local paths and rejects script or external URLs', () => {
   assert.equal(safeReturnPath('/calendar?month=2026-07#day-1'), '/calendar?month=2026-07#day-1');
@@ -61,4 +62,33 @@ test('draft request validation enforces field types and bounds', () => {
   );
   assert.equal(validateDraftRequest({ title: '', platform: ['IG'] }), null);
   assert.equal(validateDraftRequest({ title: 'x', platform: ['IG'], notes: 'n'.repeat(5_001) }), null);
+});
+
+test('email posts with concrete launch dates go to the calendar', () => {
+  assert.deepEqual(
+    routeEmailPost({
+      title: 'Launch post',
+      target_launch_date: '2026-08-12',
+      confidence: 0.95,
+      parse_warnings: []
+    }),
+    {
+      publishDate: '2026-08-12',
+      status: 'client_review',
+      reason: 'clear launch date and complete high-confidence brief'
+    }
+  );
+  assert.equal(
+    routeEmailPost({
+      title: 'Needs a date check',
+      publish_date: '2026-08-13',
+      confidence: 0.6,
+      parse_warnings: ['Please verify the date']
+    }).status,
+    'in_progress'
+  );
+  assert.equal(
+    routeEmailPost({ title: 'Undated task', publish_date: null, target_launch_date: null }).status,
+    'staging'
+  );
 });
