@@ -13,6 +13,7 @@ import { parseEmail } from '@/lib/ai/parseEmail';
 import { htmlTablesToMarkdown } from '@/lib/ai/htmlTable';
 import { normalizeCategories, normalizePlatforms } from '@/lib/types';
 import { inferEffectiveFrom, normalizeMentionedPeople } from '@/lib/emailParticipants';
+import { isTrustedEnvelopeSender } from '@/lib/inbound/senderPolicy';
 
 const APP_STATE_KEY = 'gmail_last_history_id';
 const LEGACY_APP_STATE_KEYS = ['gmail_…_history_id', 'gmail_…y_id'] as const;
@@ -395,6 +396,16 @@ export async function pollGmail(): Promise<PollResult> {
         const from = header(msg.payload?.headers, 'From');
         const subject = header(msg.payload?.headers, 'Subject');
         const body = bodyFromPayload(msg.payload);
+
+        // Only internal forwarders may spend model quota or create calendar
+        // records. The original sender inside a forwarded body is still
+        // captured by inferEffectiveFrom(), but cannot authorize ingestion.
+        if (!isTrustedEnvelopeSender(from)) {
+          console.warn(`[inbound] rejected untrusted envelope sender for gmail_id=${id}`);
+          result.rejected++;
+          continue;
+        }
+
         const effectiveFrom = inferEffectiveFrom(from, body);
         const quotaMonth = firstDayOfMonth(
           msg.internalDate ? Number(msg.internalDate) : null
@@ -461,7 +472,6 @@ export async function pollGmail(): Promise<PollResult> {
         const createdPostIds: string[] = [];
         let lastError: string | null = null;
         let allHaveDateAndTitle = true;
-        let allRowsRoutedToReview = true; // optimistic: starts true, becomes false if any row is routed to in_progress or staging
         let primaryPostId: string | null = null;
 
         for (let i = 0; i < ai.posts.length; i++) {
@@ -501,45 +511,14 @@ export async function pollGmail(): Promise<PollResult> {
             continue;
           }
 
-          //    - full brief (date + title) → calendar chip with status=client_review
-          //    - partial brief            → staging zone for PIC to assign the date
-          /* Routing logic (2026-06-25 update with staging state):
-               - missing publish_date (no Target Launch Date in email)
-                 AND no usable target_launch_date either           → staging
-                 (PIC needs to assign a launch date before the post
-                  can go on the calendar grid)
-               - otherwise: AI confidence < 0.7 OR parse_warnings   → in_progress
-                 (human reviewer should double-check the parsed data)
-               - otherwise: full brief (date + title), high conf    → client_review
-             The SA01 Jun/Jul confusion bug taught us that even a "complete"
-             row can be wrong, so we lean on the AI's own confidence + any
-             warnings it surfaced.
-            */
+          // Model output is untrusted data, not an authorization decision.
+          // Every email-derived record enters staging and requires an explicit
+          // staff save before it can advance. Confidence and warnings remain
+          // audit metadata only and never choose a more trusted state.
           const itemConfidence = typeof item.confidence === 'number' ? item.confidence : 0.5;
           const itemWarnings = Array.isArray(item.parse_warnings) ? item.parse_warnings : [];
-          const highConfidence = itemConfidence >= 0.7 && itemWarnings.length === 0;
-          const fullBrief = hasDate && hasTitle;
-          // 'staging' is reserved for posts missing the publish date. We treat
-          // publish_date as the canonical launch date; target_launch_date is
-          // kept separately for audit but doesn't count for routing.
-          const needsLaunchDate = !hasDate && !item.target_launch_date;
-          let postStatus: 'staging' | 'in_progress' | 'client_review';
-          let routedReason: string;
-          if (needsLaunchDate) {
-            postStatus = 'staging';
-            routedReason = 'no publish_date in email (e.g. "Target Launch: Within this week"); routed to staging inbox for PIC to assign';
-          } else if (highConfidence && fullBrief) {
-            postStatus = 'client_review';
-            routedReason = 'full brief, high confidence, no warnings';
-          } else if (!fullBrief) {
-            postStatus = 'in_progress';
-            routedReason = 'incomplete brief (missing date or title)';
-          } else {
-            postStatus = 'in_progress';
-            routedReason = itemWarnings.length > 0
-              ? `low confidence (${itemConfidence}) or has ${itemWarnings.length} parse warning(s); routed to staging for human review`
-              : `low confidence (${itemConfidence}); routed to staging`;
-          }
+          const postStatus = 'staging' as const;
+          const routedReason = 'email-derived record requires explicit staff review';
 
           const normalizedCategory = normalizeCategories(item.category);
           const { data: post, error: postErr } = await admin
@@ -597,30 +576,20 @@ export async function pollGmail(): Promise<PollResult> {
           }
           createdPostIds.push(post.id);
           if (!primaryPostId) primaryPostId = post.id;
-          // Track per-row status so we can summarize the ingest correctly
-          // (a mix of client_review and in_progress rows is still 'rejected'
-          // from the ingest's perspective, because humans need to look at
-          // the in_progress ones).
-          if (postStatus !== 'client_review') {
-            // staging or in_progress rows need human eyes
-            allRowsRoutedToReview = false;
-          }
         }
 
         // Tag the ingest
-        // - all rows full brief + high confidence        → 'created'  (auto-placed)
-        // - some rows missing/low-confidence (in_progress) → 'rejected' (mixed; humans to review)
-        // - no rows inserted at all                       → 'error'    (parse ok, insert failed)
+        // Every created row remains in private staging until a staff member
+        // explicitly reviews and saves it. "rejected" here means the ingest
+        // is waiting for that human decision, not that parsing failed.
         const status = createdPostIds.length === 0
           ? 'error'
-          : (allHaveDateAndTitle && allRowsRoutedToReview ? 'created' : 'rejected');
+          : 'rejected';
         const errMsg = createdPostIds.length === 0
           ? (lastError || `Parsed ${ai.posts.length} post(s) but none inserted`)
           : (!allHaveDateAndTitle
               ? `Parsed ${ai.posts.length} post(s); some missing date/title (in staging)`
-              : !allRowsRoutedToReview
-              ? `Parsed ${ai.posts.length} post(s); some had low confidence or warnings (in staging for human review)`
-              : null);
+              : `Parsed ${ai.posts.length} post(s); awaiting explicit staff review`);
 
         await admin
           .from('email_ingests')

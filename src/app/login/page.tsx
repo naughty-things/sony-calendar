@@ -5,6 +5,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { LogIn, Loader2, User, Lock, Eye, EyeOff } from 'lucide-react';
 import { useAuth } from '@/lib/auth/AuthProvider';
 import { usernameToEmail } from '@/lib/auth/config';
+import { safeReturnPath } from '@/lib/auth/redirect';
 
 export default function LoginPage() {
   return (
@@ -26,7 +27,7 @@ function LoginInner() {
   const { ready, user, signIn } = useAuth();
   const router = useRouter();
   const params = useSearchParams();
-  const nextPath = params.get('next') || '/';
+  const nextPath = safeReturnPath(params.get('next'));
 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');

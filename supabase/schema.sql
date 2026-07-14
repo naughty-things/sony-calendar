@@ -104,27 +104,19 @@ on conflict (slug) do nothing;
 -- Safe to re-run: only touches rows that haven't been migrated yet.
 -- ─────────────────────────────────────────
 update posts
-   set platform = 'Other',
+   set platform = array['Other']::text[],
        source_meta = coalesce(source_meta, '{}'::jsonb)
                      || jsonb_build_object(
                           'platform_migrated_from', platform,
                           'platform_migrated_at',   to_char(now(), 'YYYY-MM-DD"T"HH24:MI:SSOF')
                         )
- where platform in ('X','LinkedIn','TikTok','Blog')
+ where platform && array['X','LinkedIn','TikTok','Blog']::text[]
    and coalesce(source_meta->>'platform_migrated_from','') = '';
 
 -- Normalize the legacy 'Instagram' label to the canonical 'IG' glyph.
 update posts
-   set platform = 'IG'
- where platform = 'Instagram';
-
--- ─────────────────────────────────────────
--- Grants (needed when "Automatically expose new tables" is OFF)
--- ─────────────────────────────────────────
-grant usage on schema public to anon, authenticated;
-grant select, insert, update, delete on all tables in schema public to anon, authenticated;
-grant usage, select on all sequences in schema public to anon, authenticated;
-grant execute on all functions in schema public to anon, authenticated;
+   set platform = array_replace(platform, 'Instagram', 'IG')
+ where 'Instagram' = any(platform);
 
 -- ─────────────────────────────────────────
 -- App state (small key/value store for cron markers etc.)
@@ -134,3 +126,100 @@ create table if not exists app_state (
   value text not null,
   updated_at timestamptz default now()
 );
+
+-- ─────────────────────────────────────────
+-- Security boundary
+-- ─────────────────────────────────────────
+-- Anonymous viewers use a redacted, published-only view. Base tables are
+-- private, and authenticated writes require the trusted admin email in the
+-- signed Supabase JWT. The service role continues to bypass RLS for ingestion.
+alter table clients        enable row level security;
+alter table people         enable row level security;
+alter table posts          enable row level security;
+alter table email_ingests  enable row level security;
+alter table app_state      enable row level security;
+
+drop policy if exists "calendar admin clients" on clients;
+drop policy if exists "calendar admin people" on people;
+drop policy if exists "calendar admin posts" on posts;
+drop policy if exists "calendar admin email ingests" on email_ingests;
+drop policy if exists "calendar admin app state" on app_state;
+
+create policy "calendar admin clients" on clients for all to authenticated
+  using (
+    lower(coalesce((select auth.jwt() ->> 'email'), '')) = 'sam.lee@naughtythings.com.hk'
+    and not coalesce(((select auth.jwt() ->> 'is_anonymous')::boolean), false)
+  )
+  with check (
+    lower(coalesce((select auth.jwt() ->> 'email'), '')) = 'sam.lee@naughtythings.com.hk'
+    and not coalesce(((select auth.jwt() ->> 'is_anonymous')::boolean), false)
+  );
+create policy "calendar admin people" on people for all to authenticated
+  using (
+    lower(coalesce((select auth.jwt() ->> 'email'), '')) = 'sam.lee@naughtythings.com.hk'
+    and not coalesce(((select auth.jwt() ->> 'is_anonymous')::boolean), false)
+  )
+  with check (
+    lower(coalesce((select auth.jwt() ->> 'email'), '')) = 'sam.lee@naughtythings.com.hk'
+    and not coalesce(((select auth.jwt() ->> 'is_anonymous')::boolean), false)
+  );
+create policy "calendar admin posts" on posts for all to authenticated
+  using (
+    lower(coalesce((select auth.jwt() ->> 'email'), '')) = 'sam.lee@naughtythings.com.hk'
+    and not coalesce(((select auth.jwt() ->> 'is_anonymous')::boolean), false)
+  )
+  with check (
+    lower(coalesce((select auth.jwt() ->> 'email'), '')) = 'sam.lee@naughtythings.com.hk'
+    and not coalesce(((select auth.jwt() ->> 'is_anonymous')::boolean), false)
+  );
+create policy "calendar admin email ingests" on email_ingests for all to authenticated
+  using (
+    lower(coalesce((select auth.jwt() ->> 'email'), '')) = 'sam.lee@naughtythings.com.hk'
+    and not coalesce(((select auth.jwt() ->> 'is_anonymous')::boolean), false)
+  )
+  with check (
+    lower(coalesce((select auth.jwt() ->> 'email'), '')) = 'sam.lee@naughtythings.com.hk'
+    and not coalesce(((select auth.jwt() ->> 'is_anonymous')::boolean), false)
+  );
+create policy "calendar admin app state" on app_state for all to authenticated
+  using (
+    lower(coalesce((select auth.jwt() ->> 'email'), '')) = 'sam.lee@naughtythings.com.hk'
+    and not coalesce(((select auth.jwt() ->> 'is_anonymous')::boolean), false)
+  )
+  with check (
+    lower(coalesce((select auth.jwt() ->> 'email'), '')) = 'sam.lee@naughtythings.com.hk'
+    and not coalesce(((select auth.jwt() ->> 'is_anonymous')::boolean), false)
+  );
+
+drop view if exists public_calendar_posts;
+create view public_calendar_posts
+with (security_barrier = true)
+as
+select
+  id, title, platform, category, publish_date, quota_month,
+  target_launch_date, request_date, status, designer, copy_writer,
+  internal_pic, client_pic, created_at, updated_at
+from posts
+where status in ('approved', 'posted')
+  and publish_date is not null;
+
+comment on view public_calendar_posts is
+  'Redacted published-only calendar projection for anonymous viewers.';
+
+grant usage on schema public to anon, authenticated;
+revoke all on all tables in schema public from anon, authenticated;
+revoke all on all sequences in schema public from anon, authenticated;
+revoke execute on all functions in schema public from public, anon, authenticated;
+
+alter default privileges for role postgres in schema public
+  revoke all on tables from anon, authenticated;
+alter default privileges for role postgres in schema public
+  revoke all on sequences from anon, authenticated;
+alter default privileges for role postgres in schema public
+  revoke execute on functions from public, anon, authenticated;
+
+grant select on public_calendar_posts to anon;
+grant select, insert, update, delete
+  on clients, people, posts, email_ingests, app_state
+  to authenticated;
+grant usage, select on all sequences in schema public to authenticated;

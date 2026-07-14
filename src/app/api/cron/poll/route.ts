@@ -9,20 +9,27 @@
 
 import { NextRequest, NextResponse } from 'next/server';
 import { pollGmail } from '@/lib/inbound/gmail';
+import { authorizePollRequest } from '@/lib/security/pollAuth';
+import { consumeRateLimit } from '@/lib/security/rateLimit';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 export const maxDuration = 60;
 
 export async function GET(req: NextRequest) {
-  const expected = process.env.POLL_SECRET;
-  if (expected) {
-    const got = req.headers.get('authorization')?.replace(/^Bearer\s+/i, '')
-      || new URL(req.url).searchParams.get('secret')
-      || req.headers.get('x-poll-secret');
-    if (got !== expected) {
-      return NextResponse.json({ ok: false, error: 'unauthorized' }, { status: 401 });
-    }
+  const authorization = authorizePollRequest(req);
+  if (!authorization.ok) {
+    return NextResponse.json(
+      { ok: false, error: authorization.error },
+      { status: authorization.status }
+    );
+  }
+  const rate = consumeRateLimit('poll:cron', 5, 60_000);
+  if (!rate.allowed) {
+    return NextResponse.json(
+      { ok: false, error: 'rate limit exceeded' },
+      { status: 429, headers: { 'retry-after': String(rate.retryAfterSeconds) } }
+    );
   }
   try {
     const result = await pollGmail();

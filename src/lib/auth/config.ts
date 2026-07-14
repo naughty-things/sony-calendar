@@ -27,3 +27,10 @@ export function usernameToEmail(username: string): string | null {
   const match = USERS.find(x => x.username.toLowerCase() === u);
   return match?.email ?? null;
 }
+
+/** Trusted staff check used by both the UI and server-side API authorization. */
+export function isAdminEmail(email: string | null | undefined): boolean {
+  if (!email) return false;
+  const normalized = email.trim().toLowerCase();
+  return USERS.some(user => user.email.toLowerCase() === normalized);
+}

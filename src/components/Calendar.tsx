@@ -13,7 +13,7 @@ import { Tape } from './ui/Tape';
 import { Toast, ToastItem } from './ui/Toast';
 import { useIsMobile } from '@/lib/useIsMobile';
 import { useAuth } from '@/lib/auth/AuthProvider';
-import { USERS, usernameToEmail } from '@/lib/auth/config';
+import { USERS, isAdminEmail, usernameToEmail } from '@/lib/auth/config';
 import { useRouter, usePathname } from 'next/navigation';
 import { LogIn, LogOut, User as UserIcon } from 'lucide-react';
 import { useTheme } from '@/lib/useTheme';
@@ -52,7 +52,7 @@ export function Calendar() {
   const supabase = getBrowserClient();
   const isMobile = useIsMobile();
   const { user, signOut } = useAuth();
-  const isAdmin = !!user;
+  const isAdmin = isAdminEmail(user?.email);
   const router = useRouter();
   const pathname = usePathname();
   const [userMenuOpen, setUserMenuOpen] = useState(false);
@@ -80,13 +80,15 @@ export function Calendar() {
   /* ─── data load ─── */
   const load = useCallback(async (silent = false) => {
     const { data: p } = await supabase
-      .from('posts')
+      .from(isAdmin ? 'posts' : 'public_calendar_posts')
       .select('*')
       .order('publish_date', { ascending: true, nullsFirst: false })
       .order('created_at', { ascending: false });
     const next = (p as any) || [];
     setPosts(next);
-    const { data: pp } = await supabase.from('people').select('*').order('name');
+    const { data: pp } = isAdmin
+      ? await supabase.from('people').select('*').order('name')
+      : { data: [] };
     setPeople(pp || []);
 
     const collect = (col: 'designer' | 'copy_writer' | 'internal_pic' | 'client_pic') => {
@@ -138,7 +140,7 @@ export function Calendar() {
         }, 4000);
       }
     }
-  }, [supabase]);
+  }, [supabase, isAdmin]);
 
   useEffect(() => { load(); }, [load]);
 
@@ -172,6 +174,10 @@ export function Calendar() {
 
   /* ─── last ingest timestamp ─── */
   useEffect(() => {
+    if (!isAdmin) {
+      setLastIngestAt(null);
+      return;
+    }
     let cancelled = false;
     async function checkIngest() {
       const { data } = await supabase
@@ -184,10 +190,14 @@ export function Calendar() {
     checkIngest();
     const t = setInterval(checkIngest, 30000);
     return () => { cancelled = true; clearInterval(t); };
-  }, [supabase]);
+  }, [supabase, isAdmin]);
 
   /* ─── realtime ─── */
   useEffect(() => {
+    if (!isAdmin) {
+      const timer = setInterval(() => load(true), 60_000);
+      return () => clearInterval(timer);
+    }
     const channel = supabase
       .channel('posts-changes')
       .on('postgres_changes', { event: '*', schema: 'public', table: 'posts' }, () => {
@@ -195,7 +205,7 @@ export function Calendar() {
       })
       .subscribe();
     return () => { supabase.removeChannel(channel); };
-  }, [supabase, load]);
+  }, [supabase, load, isAdmin]);
 
   /* ─── keyboard shortcuts ─── */
   useEffect(() => {
