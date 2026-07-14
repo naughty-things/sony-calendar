@@ -10,7 +10,6 @@ import { ChevronLeft, ChevronRight, Plus, Search, Mail, Loader2, Sun, Moon, Chev
 import { PostModal } from './PostModal';
 import { WeekKanban } from './WeekKanban';
 import { Tape } from './ui/Tape';
-import { Toast, ToastItem } from './ui/Toast';
 import { useIsMobile } from '@/lib/useIsMobile';
 import { useAuth } from '@/lib/auth/AuthProvider';
 import { USERS, isAdminEmail, usernameToEmail } from '@/lib/auth/config';
@@ -43,7 +42,6 @@ export function Calendar() {
   const [search, setSearch] = useState('');
   const [showReviewInbox, setShowReviewInbox] = useState(false);
   const [lastIngestAt, setLastIngestAt] = useState<string | null>(null);
-  const [toasts, setToasts] = useState<ToastItem[]>([]);
   const [arrivedIds, setArrivedIds] = useState<Set<string>>(new Set());
   const [searchOpen, setSearchOpen] = useState(false);
   const initialLoaded = useRef(false);
@@ -121,15 +119,6 @@ export function Calendar() {
         newOnes.forEach((x: PostWithPeople) => {
           seenPostIds.current.add(x.id);
           setArrivedIds(prev => new Set(prev).add(x.id));
-          if (x.source === 'email' && x.status === 'client_review') {
-            setToasts(t => [...t, {
-              id: 'arr-' + x.id,
-              title: 'New from email',
-              detail: x.title,
-              kind: 'info',
-              ttlMs: 6000
-            }]);
-          }
         });
         setTimeout(() => {
           setArrivedIds(prev => {
@@ -154,21 +143,6 @@ export function Calendar() {
       .eq('id', postId);
     if (error) {
       await load(true);
-      setToasts(t => [...t, {
-        id: 'move-err-' + postId + '-' + Date.now(),
-        title: 'Could not reschedule',
-        detail: error.message,
-        kind: 'warning',
-        ttlMs: 5000
-      }]);
-    } else {
-      setToasts(t => [...t, {
-        id: 'move-' + postId + '-' + Date.now(),
-        title: 'Rescheduled',
-        detail: newDate,
-        kind: 'success',
-        ttlMs: 3000
-      }]);
     }
   }, [supabase, load, isAdmin]);
 
@@ -720,8 +694,6 @@ export function Calendar() {
         />
       )}
 
-      {/* ─── Toasts ─── */}
-      <Toast items={toasts} onDismiss={(id) => setToasts(t => t.filter(x => x.id !== id))} />
     </div>
   );
 }
