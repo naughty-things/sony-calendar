@@ -109,6 +109,9 @@ export type Post = {
   platform?: string[] | null;
   category?: string[] | null;  /* multi-value: ['PA','TV'] etc. */
   publish_date: string | null; // YYYY-MM-DD or null when in staging
+  // Optional time-only scheduling value. Kept separate from publish_date
+  // because posts often receive a date before their final posting time.
+  publish_time?: string | null;
   // Optional manual month override for quota / month-summary counting.
   // Stored as the first day of the chosen month (YYYY-MM-01).
   quota_month?: string | null;
@@ -140,6 +143,10 @@ export type Post = {
 };
 
 export type PostWithPeople = Post; // legacy alias — fields are now inline strings
+
+export function formatPublishTime(value?: string | null): string {
+  return value ? value.slice(0, 5) : '';
+}
 
 /* Small helper to get initials for avatar fallback */
 export function initials(name: string): string {
