@@ -39,6 +39,7 @@ export function PostModal({
       ?? (stagingPost ? '' : new Date().toISOString().slice(0, 10))
   );
   const [quotaMonth, setQuotaMonth] = useState<string>(post?.quota_month ? post.quota_month.slice(0, 7) : '');
+  const [quotaEnabled, setQuotaEnabled] = useState(post?.quota_enabled ?? true);
   const [targetLaunchDate, setTargetLaunchDate] = useState<string>(post?.target_launch_date ?? '');
   const [requestDate, setRequestDate] = useState<string>(post?.request_date ?? '');
   const [status, setStatus] = useState<PostStatus>(post?.status ?? 'in_progress');
@@ -94,7 +95,8 @@ export function PostModal({
       platform: normalizePlatforms(platform, ['IG']),
       category: normalizedCategory.length > 0 ? normalizedCategory : null,
       publish_date: publishDate || null,
-      quota_month: quotaMonth ? `${quotaMonth}-01` : null,
+      quota_month: quotaEnabled && quotaMonth ? `${quotaMonth}-01` : null,
+      quota_enabled: quotaEnabled,
       target_launch_date: targetLaunchDate || null,
       request_date: requestDate || null,
       status: effectiveStatus,
@@ -331,11 +333,23 @@ export function PostModal({
                     value={quotaMonth}
                     onChange={e => setQuotaMonth(e.target.value)}
                     readOnly={!canEdit}
-                    disabled={!canEdit}
+                    disabled={!canEdit || !quotaEnabled}
                     className={inputCls}
                   />
+                  <label className={`mt-2 flex items-center gap-2 text-[11px] text-text-soft ${!canEdit ? 'opacity-70' : ''}`}>
+                    <input
+                      type="checkbox"
+                      checked={quotaEnabled}
+                      onChange={e => setQuotaEnabled(e.target.checked)}
+                      disabled={!canEdit}
+                      className="h-3.5 w-3.5 accent-btn"
+                    />
+                    Include in monthly quota
+                  </label>
                   <div className="mt-1 text-[10px] font-mono text-text-faint">
-                    Leave blank to count this post in the publish-date month.
+                    {quotaEnabled
+                      ? 'Leave blank to count this post in the publish-date month.'
+                      : 'Off — this separate job will not count in any quota month.'}
                   </div>
                 </Field>
               </div>

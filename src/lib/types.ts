@@ -112,6 +112,9 @@ export type Post = {
   // Optional manual month override for quota / month-summary counting.
   // Stored as the first day of the chosen month (YYYY-MM-01).
   quota_month?: string | null;
+  // Set to false for work that should appear on the calendar but never be
+  // included in any monthly quota total.
+  quota_enabled?: boolean;
   // The "Target Launch Date" column from the email's planning table, if any.
   // Mirrors publish_date but keeps the original column value separate for audit.
   // When the planning table has BOTH Target Launch Date AND Request Date
