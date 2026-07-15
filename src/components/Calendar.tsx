@@ -210,7 +210,8 @@ export function Calendar() {
     return getHolidaysInRange(start, end);
   }, [monthDays, weekDays]);
 
-  const quotaMonthKey = useCallback((p: Pick<PostWithPeople, 'quota_month' | 'publish_date'>) => {
+  const quotaMonthKey = useCallback((p: Pick<PostWithPeople, 'quota_enabled' | 'quota_month' | 'publish_date'>) => {
+    if (p.quota_enabled === false) return '';
     const monthSource = p.quota_month || p.publish_date;
     if (!monthSource) return '';
     return monthSource.slice(0, 7);
@@ -504,10 +505,10 @@ export function Calendar() {
 
             <div className="flex flex-col sm:flex-row items-stretch sm:items-end gap-2 shrink-0">
               <MonthQuota
-                label="All Posts"
+                label="Quota posts"
                 count={monthStats.total}
                 supportingCount={monthStats.total}
-                supportingLabel="all statuses"
+                supportingLabel="included in quota"
                 target={35}
                 monthLabel={format(cursor, 'MMM yyyy')}
               />
