@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { isSameDay, format, isToday } from 'date-fns';
-import { PostWithPeople, STATUS_COLOR, normalizePlatforms } from '@/lib/types';
+import { PostWithPeople, STATUS_COLOR, formatPublishTime, normalizePlatforms } from '@/lib/types';
 import { Holiday } from '@/lib/holidays';
 import { PlatformChip } from './ui/PlatformChip';
 import { useIsMobile } from '@/lib/useIsMobile';
@@ -118,6 +118,7 @@ function WeekColumn({
 }
 
 function Card({ p, onClick, highlight }: { p: PostWithPeople; onClick: () => void; highlight?: boolean }) {
+  const publishTime = formatPublishTime(p.publish_time);
   // Status-tinted background so a glance at the week reveals what's where.
   const statusBg: Record<string, string> = {
     staging:       'bg-[#F6EFF8] dark:bg-[#2A1E32]',
@@ -134,35 +135,42 @@ function Card({ p, onClick, highlight }: { p: PostWithPeople; onClick: () => voi
     posted:        'before:bg-forest'
   };
   return (
-    <button
-      draggable
-      onDragStart={(e) => {
-        e.dataTransfer.setData('application/x-post-id', p.id);
-        e.dataTransfer.effectAllowed = 'move';
-      }}
-      onClick={onClick}
-      className={`group/card relative w-full text-left ${statusBg[p.status]} border border-edge/60 rounded-md pl-3 pr-2.5 py-2.5 hover:shadow-card transition cursor-grab active:cursor-grabbing before:content-[''] before:absolute before:left-0 before:top-2 before:bottom-2 before:w-[3px] before:rounded-full ${statusBar[p.status]} ${highlight ? 'just-arrived' : ''}`}>
-      <div className="flex items-center justify-between mb-1.5 gap-1">
-        <span className="flex items-center gap-0.5 flex-wrap">
-          {(() => {
-            const arr = normalizePlatforms(p.platform, p.source === 'email' ? ['IG'] : ['Other']);
-            return arr.map(pl => (
-              <PlatformChip key={pl} platform={pl} size={18} />
-            ));
-          })()}
-        </span>
-        <span className={STATUS_COLOR[p.status]}>
-          {p.status.replace('_', ' ')}
-        </span>
-      </div>
-      <div className="text-[13px] font-medium leading-[1.3] line-clamp-3 text-ink">
-        {p.title}
-      </div>
-      {([p.designer, p.copy_writer, p.internal_pic, p.client_pic].filter(Boolean).length > 0) && (
-        <div className="mt-2 pt-2 border-t border-edge/40 text-[10px] text-text-mute font-mono leading-tight">
-          {[p.designer, p.copy_writer, p.internal_pic, p.client_pic].filter(Boolean).join(' · ')}
+    <div className={publishTime ? 'pt-2' : ''}>
+      <button
+        draggable
+        onDragStart={(e) => {
+          e.dataTransfer.setData('application/x-post-id', p.id);
+          e.dataTransfer.effectAllowed = 'move';
+        }}
+        onClick={onClick}
+        className={`group/card relative w-full text-left ${statusBg[p.status]} border border-edge/60 rounded-md pl-3 pr-2.5 py-2.5 hover:shadow-card transition cursor-grab active:cursor-grabbing before:content-[''] before:absolute before:left-0 before:top-2 before:bottom-2 before:w-[3px] before:rounded-full ${statusBar[p.status]} ${highlight ? 'just-arrived' : ''}`}>
+        {publishTime && (
+          <span className={`absolute left-1/2 top-0 z-10 -translate-x-1/2 -translate-y-1/2 px-1.5 text-[9px] leading-3 font-mono font-semibold text-text-soft whitespace-nowrap ${statusBg[p.status]}`}>
+            {publishTime}
+          </span>
+        )}
+        <div className="flex items-center justify-between mb-1.5 gap-1">
+          <span className="flex items-center gap-0.5 flex-wrap">
+            {(() => {
+              const arr = normalizePlatforms(p.platform, p.source === 'email' ? ['IG'] : ['Other']);
+              return arr.map(pl => (
+                <PlatformChip key={pl} platform={pl} size={18} />
+              ));
+            })()}
+          </span>
+          <span className={STATUS_COLOR[p.status]}>
+            {p.status.replace('_', ' ')}
+          </span>
         </div>
-      )}
-    </button>
+        <div className="text-[13px] font-medium leading-[1.3] line-clamp-3 text-ink">
+          {p.title}
+        </div>
+        {([p.designer, p.copy_writer, p.internal_pic, p.client_pic].filter(Boolean).length > 0) && (
+          <div className="mt-2 pt-2 border-t border-edge/40 text-[10px] text-text-mute font-mono leading-tight">
+            {[p.designer, p.copy_writer, p.internal_pic, p.client_pic].filter(Boolean).join(' · ')}
+          </div>
+        )}
+      </button>
+    </div>
   );
 }

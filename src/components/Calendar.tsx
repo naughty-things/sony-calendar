@@ -4,7 +4,7 @@ import { useEffect, useMemo, useState, useCallback, useRef } from 'react';
 import { addDays, addMonths, eachDayOfInterval, endOfMonth, endOfWeek, format, isSameDay, isSameMonth, startOfMonth, startOfWeek, subMonths } from 'date-fns';
 import { Holiday, getHolidaysInRange } from '@/lib/holidays';
 import { getBrowserClient } from '@/lib/supabase/client';
-import { PostWithPeople, PostStatus, Person, STATUS_COLOR, STATUS_LABEL, STATUS_ORDER, STATUS_DOT, PLATFORM_GLYPH, CATEGORY_GLYPH, CATEGORIES, CATEGORY_LABEL, postCategories, normalizePlatforms } from '@/lib/types';
+import { PostWithPeople, PostStatus, Person, STATUS_COLOR, STATUS_LABEL, STATUS_ORDER, STATUS_DOT, PLATFORM_GLYPH, CATEGORY_GLYPH, CATEGORIES, CATEGORY_LABEL, formatPublishTime, postCategories, normalizePlatforms } from '@/lib/types';
 import { PlatformChip } from './ui/PlatformChip';
 import { ChevronLeft, ChevronRight, Plus, Search, Mail, Loader2, Sun, Moon, ChevronDown } from 'lucide-react';
 import { PostModal } from './PostModal';
@@ -958,6 +958,7 @@ function DayCell({
 function PostChip({ p, onOpen, highlight, draggable = true }: { p: PostWithPeople; onOpen: (p: PostWithPeople) => void; highlight?: boolean; draggable?: boolean }) {
   const cats = postCategories(p);
   const platforms = normalizePlatforms(p.platform, p.source === 'email' ? ['IG'] : []);
+  const publishTime = formatPublishTime(p.publish_time);
   // Status-tinted left bar + subtle background — gives at-a-glance
   // status scanning in the month grid (was the original "paper tape" feel).
   const statusBar: Record<string, string> = {
@@ -982,30 +983,37 @@ function PostChip({ p, onOpen, highlight, draggable = true }: { p: PostWithPeopl
     posted:        'border-forest/40 dark:border-forest/40'
   };
   return (
-    <button
-      draggable={draggable}
-      onDragStart={draggable ? (e) => {
-        e.dataTransfer.setData('application/x-post-id', p.id);
-        e.dataTransfer.effectAllowed = 'move';
-      } : undefined}
-      onClick={(e) => { e.stopPropagation(); onOpen(p); }}
-      className={`group/chip relative w-full text-left flex items-start gap-1.5 pl-3 pr-2 py-1.5 rounded-md border ${statusBg[p.status]} ${statusBorder[p.status]} ${draggable ? 'cursor-grab active:cursor-grabbing hover:shadow-soft' : ''} ${highlight ? 'just-arrived' : ''} transition before:content-[''] before:absolute before:left-0 before:top-1.5 before:bottom-1.5 before:w-[3px] before:rounded-full ${statusBar[p.status]}`}>
-      {platforms.length > 0 ? (
-        platforms.map(pl => (
-          <PlatformChip key={pl} platform={pl} />
-        ))
-      ) : (
-        <span className="font-mono text-[8px] font-bold leading-tight bg-surface/70 text-text-mute px-1 py-0.5 rounded-sm shrink-0 mt-[1px]">··</span>
-      )}
-      {cats.length > 0 && (
-        <span className="font-mono text-[8px] font-bold leading-tight bg-surface/70 text-text-soft px-1 py-0.5 rounded-sm shrink-0 mt-[1px]">
-          {cats.map(c => CATEGORY_GLYPH[c as keyof typeof CATEGORY_GLYPH] || c).join('·')}
+    <div className={publishTime ? 'pt-2' : ''}>
+      <button
+        draggable={draggable}
+        onDragStart={draggable ? (e) => {
+          e.dataTransfer.setData('application/x-post-id', p.id);
+          e.dataTransfer.effectAllowed = 'move';
+        } : undefined}
+        onClick={(e) => { e.stopPropagation(); onOpen(p); }}
+        className={`group/chip relative w-full text-left flex items-start gap-1.5 pl-3 pr-2 py-1.5 rounded-md border ${statusBg[p.status]} ${statusBorder[p.status]} ${draggable ? 'cursor-grab active:cursor-grabbing hover:shadow-soft' : ''} ${highlight ? 'just-arrived' : ''} transition before:content-[''] before:absolute before:left-0 before:top-1.5 before:bottom-1.5 before:w-[3px] before:rounded-full ${statusBar[p.status]}`}>
+        {publishTime && (
+          <span className={`absolute left-1/2 top-0 z-10 -translate-x-1/2 -translate-y-1/2 px-1.5 text-[9px] leading-3 font-mono font-semibold text-text-soft whitespace-nowrap ${statusBg[p.status]}`}>
+            {publishTime}
+          </span>
+        )}
+        {platforms.length > 0 ? (
+          platforms.map(pl => (
+            <PlatformChip key={pl} platform={pl} />
+          ))
+        ) : (
+          <span className="font-mono text-[8px] font-bold leading-tight bg-surface/70 text-text-mute px-1 py-0.5 rounded-sm shrink-0 mt-[1px]">··</span>
+        )}
+        {cats.length > 0 && (
+          <span className="font-mono text-[8px] font-bold leading-tight bg-surface/70 text-text-soft px-1 py-0.5 rounded-sm shrink-0 mt-[1px]">
+            {cats.map(c => CATEGORY_GLYPH[c as keyof typeof CATEGORY_GLYPH] || c).join('·')}
+          </span>
+        )}
+        <span className="text-[12px] leading-[1.25] font-medium line-clamp-2 flex-1 min-w-0 text-ink">
+          {p.title}
         </span>
-      )}
-      <span className="text-[12px] leading-[1.25] font-medium line-clamp-2 flex-1 min-w-0 text-ink">
-        {p.title}
-      </span>
-    </button>
+      </button>
+    </div>
   );
 }
 
