@@ -226,6 +226,14 @@ export function Calendar() {
     [posts, quotaMonthFilter, quotaMonthKey]
   );
 
+  /** Category badges follow the month shown in the calendar unless an explicit
+   * quota-month filter is active. */
+  const categoryScopedPosts = useMemo(() => {
+    if (quotaMonthFilter) return quotaScopedPosts;
+    const monthKey = format(cursor, 'yyyy-MM');
+    return posts.filter(p => p.publish_date?.slice(0, 7) === monthKey);
+  }, [posts, quotaMonthFilter, quotaScopedPosts, cursor]);
+
   const filteredPosts = useMemo(() => {
     const q = search.trim().toLowerCase();
     return quotaScopedPosts.filter(p => {
@@ -300,13 +308,13 @@ export function Calendar() {
   const categoryCounts = useMemo(() => {
     const c: Record<string, number> = { NONE: 0 };
     CATEGORIES.forEach(k => { c[k] = 0; });
-    for (const p of quotaScopedPosts) {
+    for (const p of categoryScopedPosts) {
       const cats = postCategories(p);
       if (cats.length === 0) c.NONE++;
       else for (const cat of cats) c[cat] = (c[cat] || 0) + 1;
     }
     return c;
-  }, [quotaScopedPosts]);
+  }, [categoryScopedPosts]);
 
   function toggleCategory(cat: string) {
     setCategoryFilter(prev => {
