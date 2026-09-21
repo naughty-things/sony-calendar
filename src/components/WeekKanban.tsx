@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { isSameDay, format, isToday } from 'date-fns';
-import { PostWithPeople, STATUS_COLOR, formatPublishTime, normalizePlatforms } from '@/lib/types';
+import { PostWithPeople, STATUS_COLOR, comparePostsByPublishTime, formatPublishTime, normalizePlatforms } from '@/lib/types';
 import { Holiday } from '@/lib/holidays';
 import { PlatformChip } from './ui/PlatformChip';
 import { useIsMobile } from '@/lib/useIsMobile';
@@ -47,7 +47,9 @@ function WeekColumn({
   holiday: Holiday | null;
   isMobile?: boolean;
 }) {
-  const items = posts.filter(p => p.publish_date && isSameDay(new Date(p.publish_date), d));
+  const items = posts
+    .filter(p => p.publish_date && isSameDay(new Date(p.publish_date), d))
+    .sort(comparePostsByPublishTime);
   const isCurrent = isToday(d);
   const isSunday = d.getDay() === 0;
   const dayClassRed = holiday || isSunday;

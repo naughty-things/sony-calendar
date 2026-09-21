@@ -41,6 +41,7 @@ create table if not exists posts (
   publish_time time without time zone, -- optional schedule time, independent of publish_date
   quota_month date,            -- optional manual month override for quota / summary counting
   quota_enabled boolean not null default true, -- false excludes separate work from every quota month
+  quota_count integer not null default 1 check (quota_count >= 1), -- quota slots consumed by this post
   target_launch_date date,
   request_date date,
   status text not null default 'in_progress'
@@ -203,7 +204,7 @@ create view public_calendar_posts
 with (security_invoker = true, security_barrier = true)
 as
 select
-  id, title, platform, category, publish_date, publish_time, quota_month, quota_enabled,
+  id, title, platform, category, publish_date, publish_time, quota_month, quota_enabled, quota_count,
   target_launch_date, request_date, status, designer, copy_writer,
   internal_pic, client_pic, created_at, updated_at
 from posts
@@ -226,7 +227,7 @@ alter default privileges for role postgres in schema public
 
 grant select on public_calendar_posts to anon;
 grant select (
-  id, title, platform, category, publish_date, publish_time, quota_month, quota_enabled,
+  id, title, platform, category, publish_date, publish_time, quota_month, quota_enabled, quota_count,
   target_launch_date, request_date, status, designer, copy_writer,
   internal_pic, client_pic, created_at, updated_at
 ) on posts to anon;

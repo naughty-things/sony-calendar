@@ -118,6 +118,8 @@ export type Post = {
   // Set to false for work that should appear on the calendar but never be
   // included in any monthly quota total.
   quota_enabled?: boolean;
+  // Number of quota slots this post consumes when quota_enabled is true.
+  quota_count?: number;
   // The "Target Launch Date" column from the email's planning table, if any.
   // Mirrors publish_date but keeps the original column value separate for audit.
   // When the planning table has BOTH Target Launch Date AND Request Date
@@ -144,8 +146,35 @@ export type Post = {
 
 export type PostWithPeople = Post; // legacy alias — fields are now inline strings
 
+export const DEFAULT_QUOTA_COUNT = 1;
+
+/** Normalize the per-post quota weight while keeping it valid for Postgres integer storage. */
+export function normalizeQuotaCount(value: unknown): number {
+  const numeric = typeof value === 'number'
+    ? value
+    : typeof value === 'string' && value.trim()
+    ? Number(value)
+    : Number.NaN;
+
+  if (!Number.isFinite(numeric)) return DEFAULT_QUOTA_COUNT;
+  return Math.min(2_147_483_647, Math.max(DEFAULT_QUOTA_COUNT, Math.floor(numeric)));
+}
+
 export function formatPublishTime(value?: string | null): string {
   return value ? value.slice(0, 5) : '';
+}
+
+export function comparePostsByPublishTime(
+  a: Pick<Post, 'publish_time'>,
+  b: Pick<Post, 'publish_time'>
+): number {
+  const aTime = formatPublishTime(a.publish_time);
+  const bTime = formatPublishTime(b.publish_time);
+
+  if (!aTime && !bTime) return 0;
+  if (!aTime) return 1;
+  if (!bTime) return -1;
+  return aTime.localeCompare(bTime);
 }
 
 /* Small helper to get initials for avatar fallback */

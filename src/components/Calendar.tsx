@@ -4,7 +4,7 @@ import { useEffect, useMemo, useState, useCallback, useRef } from 'react';
 import { addDays, addMonths, eachDayOfInterval, endOfMonth, endOfWeek, format, isSameDay, isSameMonth, startOfMonth, startOfWeek, subMonths } from 'date-fns';
 import { Holiday, getHolidaysInRange } from '@/lib/holidays';
 import { getBrowserClient } from '@/lib/supabase/client';
-import { PostWithPeople, PostStatus, Person, STATUS_COLOR, STATUS_LABEL, STATUS_ORDER, STATUS_DOT, PLATFORM_GLYPH, CATEGORY_GLYPH, CATEGORIES, CATEGORY_LABEL, formatPublishTime, postCategories, normalizePlatforms } from '@/lib/types';
+import { PostWithPeople, PostStatus, Person, STATUS_COLOR, STATUS_LABEL, STATUS_ORDER, STATUS_DOT, PLATFORM_GLYPH, CATEGORY_GLYPH, CATEGORIES, CATEGORY_LABEL, comparePostsByPublishTime, formatPublishTime, postCategories, normalizePlatforms, normalizeQuotaCount } from '@/lib/types';
 import { PlatformChip } from './ui/PlatformChip';
 import { ChevronLeft, ChevronRight, Plus, Search, Mail, Loader2, Sun, Moon, ChevronDown } from 'lucide-react';
 import { PostModal } from './PostModal';
@@ -279,7 +279,9 @@ export function Calendar() {
   );
 
   const postsOn = useCallback((date: Date) => {
-    return datedPosts.filter(p => p.publish_date && isSameDay(new Date(p.publish_date), date));
+    return datedPosts
+      .filter(p => p.publish_date && isSameDay(new Date(p.publish_date), date))
+      .sort(comparePostsByPublishTime);
   }, [datedPosts]);
 
   const counts = useMemo(() => {
@@ -291,8 +293,8 @@ export function Calendar() {
   /** Posts scheduled for the currently-viewed month (used for the month summary card) */
   const monthStats = useMemo(() => {
     const inMonth = posts.filter(matchesQuotaMonth);
-    const total = inMonth.length;
-    return { total };
+    const total = inMonth.reduce((sum, post) => sum + normalizeQuotaCount(post.quota_count), 0);
+    return { total, includedPosts: inMonth.length };
   }, [posts, matchesQuotaMonth]);
 
   const categoryCounts = useMemo(() => {
@@ -505,10 +507,10 @@ export function Calendar() {
 
             <div className="flex flex-col sm:flex-row items-stretch sm:items-end gap-2 shrink-0">
               <MonthQuota
-                label="Quota posts"
+                label="Quota slots"
                 count={monthStats.total}
-                supportingCount={monthStats.total}
-                supportingLabel="included in quota"
+                supportingCount={monthStats.includedPosts}
+                supportingLabel="posts included"
                 target={35}
                 monthLabel={format(cursor, 'MMM yyyy')}
               />

@@ -1,9 +1,9 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
-import { Post, PostStatus, PostWithPeople, STATUS_LABEL, STATUS_ORDER, CATEGORIES, CATEGORY_LABEL, CATEGORY_GLYPH, PLATFORMS, PLATFORM_GLYPH, formatPublishTime, normalizeCategories, normalizePlatforms, postCategories } from '@/lib/types';
+import { Post, PostStatus, PostWithPeople, STATUS_LABEL, STATUS_ORDER, CATEGORIES, CATEGORY_LABEL, CATEGORY_GLYPH, PLATFORMS, PLATFORM_GLYPH, formatPublishTime, normalizeCategories, normalizePlatforms, postCategories, normalizeQuotaCount } from '@/lib/types';
 import { getBrowserClient } from '@/lib/supabase/client';
-import { X, Trash2, Sparkles, Mail, Briefcase, Building2, FileText, Check, Loader2, Pen, Type } from 'lucide-react';
+import { X, Trash2, Sparkles, Mail, Briefcase, Building2, FileText, Check, Loader2, Pen, Type, RotateCcw } from 'lucide-react';
 import { Tape } from './ui/Tape';
 import { NameInput } from './ui/NameInput';
 import { useIsMobile } from '@/lib/useIsMobile';
@@ -41,6 +41,7 @@ export function PostModal({
   const [publishTime, setPublishTime] = useState(formatPublishTime(post?.publish_time));
   const [quotaMonth, setQuotaMonth] = useState<string>(post?.quota_month ? post.quota_month.slice(0, 7) : '');
   const [quotaEnabled, setQuotaEnabled] = useState(post?.quota_enabled ?? true);
+  const [quotaCount, setQuotaCount] = useState<string>(String(normalizeQuotaCount(post?.quota_count)));
   const [targetLaunchDate, setTargetLaunchDate] = useState<string>(post?.target_launch_date ?? '');
   const [requestDate, setRequestDate] = useState<string>(post?.request_date ?? '');
   const [status, setStatus] = useState<PostStatus>(post?.status ?? 'in_progress');
@@ -91,6 +92,7 @@ export function PostModal({
       effectiveStatus = 'staging';
     }
     const normalizedCategory = normalizeCategories(category);
+    const normalizedQuotaCount = normalizeQuotaCount(quotaCount);
     const payload: Partial<Post> = {
       title: title || '(untitled)',
       platform: normalizePlatforms(platform, ['IG']),
@@ -99,6 +101,7 @@ export function PostModal({
       publish_time: publishTime || null,
       quota_month: quotaEnabled && quotaMonth ? `${quotaMonth}-01` : null,
       quota_enabled: quotaEnabled,
+      quota_count: normalizedQuotaCount,
       target_launch_date: targetLaunchDate || null,
       request_date: requestDate || null,
       status: effectiveStatus,
@@ -318,7 +321,7 @@ export function PostModal({
             </div>
 
             <div className="grid grid-cols-1 gap-4">
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <Field label="Publish date" required={stagingPost}>
                   <input
                     type="date"
@@ -330,14 +333,29 @@ export function PostModal({
                   />
                 </Field>
                 <Field label="Publish time">
-                  <input
-                    type="time"
-                    value={publishTime}
-                    onChange={e => setPublishTime(e.target.value)}
-                    readOnly={!canEdit}
-                    disabled={!canEdit}
-                    className={inputCls}
-                  />
+                  <div className="flex items-center gap-2">
+                    <input
+                      type="time"
+                      value={publishTime}
+                      onChange={e => setPublishTime(e.target.value)}
+                      readOnly={!canEdit}
+                      disabled={!canEdit}
+                      className={inputCls}
+                    />
+                    <button
+                      type="button"
+                      onClick={e => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        setPublishTime('');
+                      }}
+                      disabled={!canEdit || !publishTime}
+                      aria-label="Reset publish time"
+                      title="Reset publish time"
+                      className="shrink-0 p-1.5 rounded-md text-text-mute hover:text-ink hover:bg-surface-muted transition disabled:opacity-25 disabled:cursor-not-allowed">
+                      <RotateCcw size={14} />
+                    </button>
+                  </div>
                   <div className="mt-1 text-[10px] font-mono text-text-faint">
                     Optional — leave blank until the post is ready to schedule.
                   </div>
@@ -365,6 +383,22 @@ export function PostModal({
                     {quotaEnabled
                       ? 'Leave blank to count this post in the publish-date month.'
                       : 'Off — this separate job will not count in any quota month.'}
+                  </div>
+                </Field>
+                <Field label="Quota count">
+                  <input
+                    type="number"
+                    min={1}
+                    step={1}
+                    inputMode="numeric"
+                    value={quotaCount}
+                    onChange={e => setQuotaCount(e.target.value)}
+                    readOnly={!canEdit}
+                    disabled={!canEdit}
+                    className={inputCls}
+                  />
+                  <div className="mt-1 text-[10px] font-mono text-text-faint">
+                    Counts as this many quota slots. Defaults to 1.
                   </div>
                 </Field>
               </div>
