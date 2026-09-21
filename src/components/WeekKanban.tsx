@@ -5,6 +5,7 @@ import { isSameDay, format, isToday } from 'date-fns';
 import { PostWithPeople, STATUS_COLOR, comparePostsByPublishTime, formatPublishTime, normalizePlatforms } from '@/lib/types';
 import { Holiday } from '@/lib/holidays';
 import { PlatformChip } from './ui/PlatformChip';
+import { QuotaBadge } from './ui/QuotaBadge';
 import { useIsMobile } from '@/lib/useIsMobile';
 
 export function WeekKanban({
@@ -146,6 +147,7 @@ function Card({ p, onClick, highlight }: { p: PostWithPeople; onClick: () => voi
         }}
         onClick={onClick}
         className={`group/card relative w-full text-left ${statusBg[p.status]} border border-edge/60 rounded-md pl-3 pr-2.5 py-2.5 hover:shadow-card transition cursor-grab active:cursor-grabbing before:content-[''] before:absolute before:left-0 before:top-2 before:bottom-2 before:w-[3px] before:rounded-full ${statusBar[p.status]} ${highlight ? 'just-arrived' : ''}`}>
+        <QuotaBadge value={p.quota_count} />
         {publishTime && (
           <span className={`absolute left-1/2 top-0 z-10 -translate-x-1/2 -translate-y-1/2 px-1.5 text-[9px] leading-3 font-mono font-semibold text-text-soft whitespace-nowrap ${statusBg[p.status]}`}>
             {publishTime}

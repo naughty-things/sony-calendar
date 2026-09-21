@@ -6,6 +6,7 @@ import { Holiday, getHolidaysInRange } from '@/lib/holidays';
 import { getBrowserClient } from '@/lib/supabase/client';
 import { PostWithPeople, PostStatus, Person, STATUS_COLOR, STATUS_LABEL, STATUS_ORDER, STATUS_DOT, PLATFORM_GLYPH, CATEGORY_GLYPH, CATEGORIES, CATEGORY_LABEL, comparePostsByPublishTime, formatPublishTime, postCategories, normalizePlatforms, normalizeQuotaCount } from '@/lib/types';
 import { PlatformChip } from './ui/PlatformChip';
+import { QuotaBadge } from './ui/QuotaBadge';
 import { ChevronLeft, ChevronRight, Plus, Search, Mail, Loader2, Sun, Moon, ChevronDown } from 'lucide-react';
 import { PostModal } from './PostModal';
 import { WeekKanban } from './WeekKanban';
@@ -1002,6 +1003,7 @@ function PostChip({ p, onOpen, highlight, draggable = true }: { p: PostWithPeopl
         } : undefined}
         onClick={(e) => { e.stopPropagation(); onOpen(p); }}
         className={`group/chip relative w-full text-left flex items-start gap-1.5 pl-3 pr-2 py-1.5 rounded-md border ${statusBg[p.status]} ${statusBorder[p.status]} ${draggable ? 'cursor-grab active:cursor-grabbing hover:shadow-soft' : ''} ${highlight ? 'just-arrived' : ''} transition before:content-[''] before:absolute before:left-0 before:top-1.5 before:bottom-1.5 before:w-[3px] before:rounded-full ${statusBar[p.status]}`}>
+        <QuotaBadge value={p.quota_count} />
         {publishTime && (
           <span className={`absolute left-1/2 top-0 z-10 -translate-x-1/2 -translate-y-1/2 px-1.5 text-[9px] leading-3 font-mono font-semibold text-text-soft whitespace-nowrap ${statusBg[p.status]}`}>
             {publishTime}
