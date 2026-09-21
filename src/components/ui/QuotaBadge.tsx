@@ -13,7 +13,7 @@ export function QuotaBadge({ value }: { value?: number | null }) {
     <span
       aria-label={label}
       title={label}
-      className={`pointer-events-none absolute left-1 top-0 z-10 -translate-y-1/2 rounded-sm px-0.5 text-[8px] leading-3 font-mono font-bold ${tone}`}
+      className={`pointer-events-none absolute right-1 top-1 z-10 rounded-sm px-0.5 text-[8px] leading-3 font-mono font-bold ${tone}`}
     >
       {count}
     </span>
