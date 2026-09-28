@@ -528,6 +528,8 @@ export function PostModal({
                   <div className="flex items-center justify-between w-full">
                     <span><Sparkles size={11} className="inline mr-1" />Copy draft</span>
                     <button
+                      aria-label="AI draft"
+                      type="button"
                       onClick={runDraft}
                       disabled={drafting || !title}
                       className="text-[10px] uppercase tracking-[0.14em] font-mono flex items-center gap-1.5 text-accent-deep hover:text-ink disabled:text-text-faint font-semibold">
