@@ -80,54 +80,66 @@ export function PostModal({
     return () => window.removeEventListener('keydown', onKey);
   }, [onClose]);
 
-  async function save() {
-    if (!canEdit) return;
+  async function save(draftOverride?: string) {
+    if (!canEdit || saving || deleting) return;
     setSaving(true);
-    const { data: sess } = await supabase.auth.getSession();
-    if (!sess.session) {
+    setDraftError(null);
+    try {
+      const { data: sess } = await supabase.auth.getSession();
+      if (!sess.session) {
+        setSaving(false);
+        alert('You need to sign in to save changes.');
+        return;
+      }
+      const trim = (s: string) => s.trim() || null;
+      let effectiveStatus = status;
+      if (post?.status === 'staging' && publishDate) {
+        effectiveStatus = 'in_progress';
+      } else if (post?.status === 'in_progress' && !publishDate) {
+        effectiveStatus = 'staging';
+      } else if (post?.status === 'staging' && !publishDate) {
+        effectiveStatus = 'staging';
+      }
+      const normalizedCategory = normalizeCategories(category);
+      const normalizedQuotaCount = normalizeQuotaCount(quotaCount);
+      const payload: Partial<Post> = {
+        title: title || '(untitled)',
+        platform: normalizePlatforms(platform, ['IG']),
+        category: normalizedCategory.length > 0 ? normalizedCategory : null,
+        publish_date: publishDate || null,
+        publish_time: publishTime || null,
+        quota_month: quotaEnabled && quotaMonth ? `${quotaMonth}-01` : null,
+        quota_enabled: quotaEnabled,
+        quota_count: normalizedQuotaCount,
+        target_launch_date: targetLaunchDate || null,
+        request_date: requestDate || null,
+        status: effectiveStatus,
+        designer: trim(designer),
+        copy_writer: trim(copyWriter),
+        internal_pic: trim(internalPic),
+        client_pic: trim(clientPic),
+        notes,
+        copy_draft: draftOverride ?? copyDraft
+      };
+      if (post?.id) {
+        const { error } = await supabase.from('posts').update(payload).eq('id', post.id).select('id').single();
+        if (error) throw error;
+      } else {
+        const { data: client, error: clientError } = await supabase.from('clients').select('id').eq('slug', 'sony').single();
+        if (clientError || !client) throw clientError || new Error('Sony client not found.');
+        const { error } = await supabase.from('posts').insert({ ...payload, client_id: client.id, source: 'manual' }).select('id').single();
+        if (error) throw error;
+      }
+      if (draftOverride !== undefined) {
+        setCopyDraft(draftOverride);
+        setGeneratedDraft(null);
+      }
+      setSavedFlash(true);
+      setTimeout(() => onSaved(), 250);
+    } catch {
+      setDraftError('Could not save. Your draft is still here; please retry.');
       setSaving(false);
-      alert('You need to sign in to save changes.');
-      return;
     }
-    const trim = (s: string) => s.trim() || null;
-    let effectiveStatus = status;
-    if (post?.status === 'staging' && publishDate) {
-      effectiveStatus = 'in_progress';
-    } else if (post?.status === 'in_progress' && !publishDate) {
-      effectiveStatus = 'staging';
-    } else if (post?.status === 'staging' && !publishDate) {
-      effectiveStatus = 'staging';
-    }
-    const normalizedCategory = normalizeCategories(category);
-    const normalizedQuotaCount = normalizeQuotaCount(quotaCount);
-    const payload: Partial<Post> = {
-      title: title || '(untitled)',
-      platform: normalizePlatforms(platform, ['IG']),
-      category: normalizedCategory.length > 0 ? normalizedCategory : null,
-      publish_date: publishDate || null,
-      publish_time: publishTime || null,
-      quota_month: quotaEnabled && quotaMonth ? `${quotaMonth}-01` : null,
-      quota_enabled: quotaEnabled,
-      quota_count: normalizedQuotaCount,
-      target_launch_date: targetLaunchDate || null,
-      request_date: requestDate || null,
-      status: effectiveStatus,
-      designer: trim(designer),
-      copy_writer: trim(copyWriter),
-      internal_pic: trim(internalPic),
-      client_pic: trim(clientPic),
-      notes,
-      copy_draft: copyDraft
-    };
-    if (post?.id) {
-      await supabase.from('posts').update(payload).eq('id', post.id);
-    } else {
-      const { data: client } = await supabase.from('clients').select('id').eq('slug', 'sony').single();
-      await supabase.from('posts').insert({ ...payload, client_id: client!.id, source: 'manual' });
-    }
-    setSaving(false);
-    setSavedFlash(true);
-    setTimeout(() => onSaved(), 250);
   }
 
   async function remove() {
@@ -531,7 +543,7 @@ export function PostModal({
                       aria-label="AI draft"
                       type="button"
                       onClick={runDraft}
-                      disabled={drafting || !title}
+                      disabled={drafting || saving || deleting || !title}
                       className="text-[10px] uppercase tracking-[0.14em] font-mono flex items-center gap-1.5 text-accent-deep hover:text-ink disabled:text-text-faint font-semibold">
                       {drafting ? <><Loader2 size={11} className="animate-spin" /> drafting</> : <><Sparkles size={11} /> AI draft</>}
                     </button>
@@ -563,9 +575,10 @@ export function PostModal({
                           : reference.title}</li>
                       ))}</ul>
                     </details>
+                    <p className="text-[11px] text-text-mute">Using this draft saves the post and your current edits immediately.</p>
                     <div className="flex gap-3">
-                      <button type="button" className="text-xs font-semibold text-accent-deep" onClick={() => { setCopyDraft(generatedDraft.draft); setGeneratedDraft(null); }}>
-                        {copyDraft?.trim() ? 'Replace copy with this draft' : 'Use this draft'}
+                      <button type="button" className="text-xs font-semibold text-accent-deep" disabled={saving || deleting || !title.trim()} onClick={() => save(generatedDraft.draft)}>
+                        {saving ? 'Saving draft…' : copyDraft?.trim() ? 'Replace and save draft' : 'Use and save draft'}
                       </button>
                       <button type="button" className="text-xs text-text-mute" onClick={() => setGeneratedDraft(null)}>Dismiss</button>
                     </div>
@@ -642,7 +655,7 @@ export function PostModal({
             <button
               type="button"
               onClick={remove}
-              disabled={deleting}
+              disabled={deleting || saving}
               className="text-magenta hover:text-ink text-[11px] uppercase tracking-[0.14em] font-mono font-semibold flex items-center gap-1.5 px-2 py-1 rounded-md hover:bg-surface transition disabled:opacity-40 disabled:cursor-not-allowed">
               {deleting ? <><Loader2 size={12} className="animate-spin" /> deleting</> : <><Trash2 size={12} /> Delete</>}
             </button>
@@ -653,7 +666,7 @@ export function PostModal({
             </button>
             {canEdit && (
               <button
-                onClick={save}
+                onClick={() => save()}
                 disabled={saving || !title}
                 className="px-5 py-1.5 text-[12px] font-semibold bg-btn text-btn-text rounded-md hover:bg-accent hover:text-ink transition flex items-center gap-1.5 disabled:opacity-40 disabled:cursor-not-allowed shadow-soft">
                 {saving ? <><Loader2 size={12} className="animate-spin" /> saving</>
