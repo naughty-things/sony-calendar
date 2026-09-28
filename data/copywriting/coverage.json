@@ -1,0 +1,87 @@
+{
+  "total_posts": 100,
+  "unique_post_ids": 100,
+  "unique_normalized_captions": 100,
+  "categories": {
+    "photography": 39,
+    "audio": 28,
+    "home_cinema": 8,
+    "retail_and_brand": 12,
+    "gaming": 3,
+    "mobile": 9,
+    "wearable": 1
+  },
+  "post_types": {
+    "workshop": 13,
+    "creator_story": 2,
+    "lifestyle": 5,
+    "feature_benefit": 21,
+    "software_update": 1,
+    "product_launch": 13,
+    "event_recap": 6,
+    "comparison_guide": 1,
+    "preorder": 5,
+    "collaboration": 2,
+    "event_signup": 2,
+    "competition": 3,
+    "member_promotion": 2,
+    "trade_in": 4,
+    "award_recognition": 2,
+    "promotion": 11,
+    "teaser": 2,
+    "educational_resource": 1,
+    "event_announcement": 3,
+    "service_notice": 1
+  },
+  "with_observed_photo_links": 80,
+  "with_derived_post_links": 43,
+  "exact_publication_dates_verified": 0,
+  "similarity_pairs": [
+    {
+      "a": "facebook:1599848572184510",
+      "b": "facebook:1569458415223526",
+      "character_trigram_jaccard": 0.317
+    },
+    {
+      "a": "facebook:1598638338972200",
+      "b": "facebook:1576867714482596",
+      "character_trigram_jaccard": 0.405
+    },
+    {
+      "a": "facebook:1598638338972200",
+      "b": "facebook:1536271995208835",
+      "character_trigram_jaccard": 0.414
+    },
+    {
+      "a": "facebook:1590902813079086",
+      "b": "facebook:1590352273134140",
+      "character_trigram_jaccard": 0.348
+    },
+    {
+      "a": "facebook:1579832820852752",
+      "b": "facebook:1553632330139468",
+      "character_trigram_jaccard": 0.45
+    },
+    {
+      "a": "facebook:1579832820852752",
+      "b": "facebook:1532952112207490",
+      "character_trigram_jaccard": 0.302
+    },
+    {
+      "a": "facebook:1576867714482596",
+      "b": "facebook:1536271995208835",
+      "character_trigram_jaccard": 0.579
+    },
+    {
+      "a": "facebook:1569458415223526",
+      "b": "facebook:1537162875119747",
+      "character_trigram_jaccard": 0.41
+    },
+    {
+      "a": "facebook:1553632330139468",
+      "b": "facebook:1532952112207490",
+      "character_trigram_jaccard": 0.446
+    }
+  ],
+  "similarity_method": "Character-trigram Jaccard >= 0.30 after removing whitespace, hashtags and URLs. Candidate related examples, not a claim of duplication."
+}

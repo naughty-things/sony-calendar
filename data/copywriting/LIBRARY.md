@@ -1,0 +1,3335 @@
+# Sony Hong Kong: 100-post copy library
+
+Collected from the Sony Hong Kong Facebook page on 28 September 2026. Published references; preferred examples have not yet been selected. Exact publication dates are unverified.
+
+## Coverage
+
+| Category | Posts |
+|---|---:|
+| photography | 39 |
+| audio | 28 |
+| home cinema | 8 |
+| retail and brand | 12 |
+| gaming | 3 |
+| mobile | 9 |
+| wearable | 1 |
+
+## Index
+
+| # | Category | Format | Caption |
+|---:|---|---|---|
+| 1 | photography | workshop | [【My Sony Studio 10 月攝影基礎課程｜由認識相機，到影出心中所想📸】](#example-1) |
+| 2 | photography | creator story | [有些旅程，唔係為咗抵達終點，而係為咗沿途遇見嘅光影。](#example-2) |
+| 3 | photography | workshop | [【My Sony Studio｜掌握 Alpha 相機操作，拍攝更得心應手📸！】](#example-3) |
+| 4 | audio | lifestyle | [【今日想揀咩色？🌈 Sony 全新無線耳機 WH-CH530 隨你襯出日常 Style🎧】](#example-4) |
+| 5 | photography | workshop | [【My Sony Studio ／ 新手夜拍🌃 圈出璀璨繁華的城市光軌】](#example-5) |
+| 6 | audio | feature benefit | [【Sony WH-CH730N 無線降噪耳機丨由專注聆聽到輕鬆佩戴，照顧每日所需 🎧】](#example-6) |
+| 7 | photography | software update | [【CREATORS' APP 功能更新 ／ 套用全球創作者的Creative Look】](#example-7) |
+| 8 | photography | product launch | [【全新 α7R VI 📸 秒見細膩・解像度飆速躍進】](#example-8) |
+| 9 | photography | event recap | [【世界田徑終極冠軍賽 2026｜用影像重溫賽場精彩瞬間🏃📸】](#example-9) |
+| 10 | audio | comparison guide | [【邊款先係你嘅音樂拍檔？🎧 Sony 1000X 系列耳機挑選指南】](#example-10) |
+| 11 | audio | feature benefit | [【活力藍色連同其餘 5 色同步登場💙 Sony 無線耳機 WH-CH530 輕巧隨行🎧】](#example-11) |
+| 12 | home cinema | workshop | [【BRAVIA 客廳影院設計分享會 ︳新居入伙 × 現居升級：零裝修 × 微改動理想客廳影院攻略 🎬🛋️】](#example-12) |
+| 13 | photography | preorder | [【全球最輕* 超遠攝定焦鏡頭｜FE 400mm F4.5 GM OSS 及 FE 600mm F6.3 GM OSS 預售登場🎉】](#example-13) |
+| 14 | audio | lifestyle | [【🎨 5 色隨心襯｜Sony 無線降噪耳機 WH-CH730N 將降噪體驗融入每日 Style 🎧】](#example-14) |
+| 15 | photography | product launch | [【全球最輕* 超遠攝定焦鏡頭｜FE 400mm F4.5 GM OSS 及 FE 600mm F6.3 GM OSS 隆重登場✨ 】](#example-15) |
+| 16 | retail and brand | collaboration | [【Hello Kitty 粉絲注意⚠️ Sony ‧ Hello Kitty 首度跨界聯乘 為生活注入心動頻率】](#example-16) |
+| 17 | home cinema | product launch | [【全新 BRAVIA 6 OLED 正式登場！影院級震撼娛樂影視體驗 📺】](#example-17) |
+| 18 | audio | feature benefit | [【全新 Sony WH-CH530 無線耳機丨將音效、舒適與風格，融入每一天 🎧】](#example-18) |
+| 19 | photography | feature benefit | [【 建築風景攝影全新視角 ︳全新 FE 8-14mm F3.5 Fisheye G 魚眼變焦鏡頭 】](#example-19) |
+| 20 | audio | event signup | [【 LinkBuds Clip × DUO.HK 🏃🏻‍♂️ 最後1️⃣場火熱招募 ⚡】](#example-20) |
+| 21 | gaming | competition | [【Sony INZONE: CS2槍王競賽 ／ 大戰一觸即發！🔥】](#example-21) |
+| 22 | photography | preorder | [【Sony 首支魚眼變焦鏡頭｜全新 FE 8-14mm F3.5 Fisheye G 現正預售！】](#example-22) |
+| 23 | gaming | event recap | [【Sony INZONE CS2 電競雙人盃：精彩對決熱血重溫🔥】](#example-23) |
+| 24 | photography | product launch | [【Sony 首支魚眼變焦鏡頭*｜FE 8-14mm F3.5 Fisheye G】](#example-24) |
+| 25 | audio | product launch | [【全新無線降噪耳機 Sony WH-CH730N 及無線耳機 WH-CH530 同步登場】](#example-25) |
+| 26 | retail and brand | competition | [【「分享Hello, Sony時刻」有獎遊戲 🎀 】](#example-26) |
+| 27 | audio | feature benefit | [【HK$449 入手 Sony 無線耳機 WH-CH530！六款活力色彩任你揀🎨】](#example-27) |
+| 28 | retail and brand | collaboration | [【🎀Hello, Sony. ／ Sony ‧ Hello Kitty 聯乘矚目登場✨】](#example-28) |
+| 29 | mobile | feature benefit | [【Xperia 10 VIII 丨快捷選單 ✕ 瞬間快拍 一鍵解鎖流暢日常體驗】](#example-29) |
+| 30 | retail and brand | member promotion | [【🎉🎉My Sony大賞投 分秒"BID"爭！ ／ 9月7-10日】](#example-30) |
+| 31 | mobile | trade in | [【旗艦手機 Xperia 1 VIII ／ 尊享 Trade-in 升級禮遇】](#example-31) |
+| 32 | photography | workshop | [【My Sony Studio城市攝影課 ／ 定格城市獨特魅力】](#example-32) |
+| 33 | retail and brand | member promotion | [【🏫Sony Store 教育專賞快閃折扣 ／ 期間限定】](#example-33) |
+| 34 | home cinema | award recognition | [【權威認可Sony BRAVIA 9 II 獲評 Sound Advice 2026 Exceptional ！ 🎉 】](#example-34) |
+| 35 | mobile | lifestyle | [【Xperia 10 VIII 丨將自然光影盡握手中】](#example-35) |
+| 36 | photography | workshop | [【My Sony Studio ／ 教你必學Alpha系列相機基礎技巧！】](#example-36) |
+| 37 | photography | feature benefit | [【羽量級超遠攝變焦鏡頭 SEL100400 風景實戰📸紀錄迷人自然景色🌄】](#example-37) |
+| 38 | mobile | promotion | [【全新Xperia 10 VIII 限時優惠丨盡享高達$1,200 豐富禮遇】](#example-38) |
+| 39 | photography | workshop | [📸【My Sony Studio Master Series ／ 人像攝影大師課：掌握光影與構圖】✨](#example-39) |
+| 40 | mobile | product launch | [【全新 Xperia 10 VIII 矚目登場丨 突破入門級極限 全方位昇華日常視聽娛樂】](#example-40) |
+| 41 | gaming | preorder | [[警告🚨🚨🚨狼人將至🐺請及早準備迎戰]](#example-41) |
+| 42 | photography | workshop | [【My Sony Studio 9 月攝影基礎課程 ／ 攝影入門由此起】](#example-42) |
+| 43 | photography | promotion | [【全片幅相機 暑期限時優惠 ☀️  】](#example-43) |
+| 44 | home cinema | feature benefit | [【Sony BRAVIA 全新True RGB技術  帶你走進色彩的未來！📺✨】](#example-44) |
+| 45 | mobile | teaser | [重新定義日常的每一次互動，敬請期待。](#example-45) |
+| 46 | audio | feature benefit | [【✨舞台由你定義｜IER-M500 全新舞台入耳式監聽耳機 三色同步登場🎨】](#example-46) |
+| 47 | photography | creator story | [生態攝影最吸引嘅地方，就係永遠估唔到下一秒會發生咩事。](#example-47) |
+| 48 | home cinema | award recognition | [【業界權威加冕 👑 Sony BRAVIA 9 II 榮獲 2026 King of RGB LED TV！】](#example-48) |
+| 49 | home cinema | feature benefit | [【Cinema Is Coming Home 🎬 荷里活頂級音效人員都讚不絕口！將真正電影院「聲」臨其境帶返客廳 🍿🔊】](#example-49) |
+| 50 | audio | feature benefit | [【🎧 掌握聆聽藝術之巔！旗艦無線降噪耳機 1000X THE COLLEXION ✨】](#example-50) |
+| 51 | photography | promotion | [【海洋公園大熊貓生日 x Sony Store 消暑禮品大放送！】](#example-51) |
+| 52 | home cinema | event recap | [【Sony X Post76｜Sony True RGB 家庭影院體驗工作坊精華 🎬】](#example-52) |
+| 53 | photography | promotion | [【全城慶祝！買 Sony 專業影像裝備，請你去海洋公園大熊貓生日大派對！】](#example-53) |
+| 54 | audio | product launch | [【WH-1000XM6 型格新色登場 🕊️ 全新限定灰綠色正式加入配色陣容】](#example-54) |
+| 55 | retail and brand | promotion | [【限時 4 日！Sony Store 夏日祭快閃驚喜⚡️】](#example-55) |
+| 56 | photography | feature benefit | [【羽量級超遠攝變焦鏡頭 SEL100400 體育實戰📸鎖定賽事關鍵一刻🤾‍♂️】](#example-56) |
+| 57 | photography | educational resource | [【全新Sony Alpha Universe 香港雀鳥攝影地圖  6-8 月鳥攝指南！】](#example-57) |
+| 58 | audio | feature benefit | [【 🎤 登上舞台，震撼全場！全新 Sony IER-M500 監聽耳機耀眼登場 ✨】](#example-58) |
+| 59 | audio | product launch | [【 🫒Meet Olive Gray｜無線降噪耳機 WH-1000XM6 新色質感登場 🎧】](#example-59) |
+| 60 | audio | promotion | [【高品質音效黑膠唱盤 PS-LX5BT ／ 3日快閃限時優惠賞 🎶】](#example-60) |
+| 61 | audio | trade in | [【升級旗艦降噪新體驗｜WH 系列舊機 Trade-in 即減高達 $700 🎧】](#example-61) |
+| 62 | mobile | trade in | [【Sony 最新旗艦手機 Xperia 1 VIII ／ 限時Trade-in折扣及禮遇】](#example-62) |
+| 63 | photography | feature benefit | [【羽量級超遠攝變焦鏡頭 SEL100400 生態實戰📸捕捉細緻靈動瞬間 🐦】](#example-63) |
+| 64 | audio | product launch | [【舞台監聽新選擇｜全新舞台專用入耳式監聽耳機 IER-M500 震撼登場👂🏻】](#example-64) |
+| 65 | audio | feature benefit | [【全新灰綠色登場｜WH-1000XM6 型格升級】](#example-65) |
+| 66 | audio | feature benefit | [【專業舞台級靈魂！IER-M500 全新舞台專用入耳式監聽耳機震撼登場 🎤🔥】](#example-66) |
+| 67 | audio | product launch | [【無線降噪耳機 WH-1000XM6 家族再添新成員！🎉 全新「灰綠色」限定登場 🫒✨】](#example-67) |
+| 68 | audio | promotion | [【🎧 限時優惠：入手十週年奢華之作1000X THE COLLEXION 送限量護照套！】](#example-68) |
+| 69 | photography | workshop | [【My Sony Studio Master Series ／ 初階鳥攝課程 捕捉雀鳥精彩瞬間】](#example-69) |
+| 70 | photography | preorder | [【羽量級．遠攝新基準 ／ 全新 SEL100400 超遠攝變焦鏡頭 預售啟動！】](#example-70) |
+| 71 | photography | product launch | [【全新羽量級超遠攝變焦鏡頭 SEL100400📸精彩瞬間 近在咫尺！】](#example-71) |
+| 72 | photography | event recap | [📸「第一屆全港小學學界三項鐵人攝影比賽」圓滿落幕 🌟](#example-72) |
+| 73 | photography | event recap | [【Sony 呈獻：Jason Chan Live in Frames 20 週年演唱會 精彩時刻全紀錄】](#example-73) |
+| 74 | retail and brand | promotion | [【Sony Store 夏日祭 🌻 驚喜優惠正式開催！】](#example-74) |
+| 75 | audio | lifestyle | [【 無線開放式耳機 LinkBuds Clip ／ 升級你嘅運動造型！】](#example-75) |
+| 76 | retail and brand | event announcement | [【🕷️ 蜘蛛俠驚喜現身 Sony Store 旺角專門店】](#example-76) |
+| 77 | photography | workshop | [【My Sony Studio ／ 流動定格．動態明信片 短片拍攝及後製剪接課程】](#example-77) |
+| 78 | audio | event signup | [【無線開放式耳機 LinkBuds Clip 同你跑入香港跑步社群 🏃🏻‍♀️ 】](#example-78) |
+| 79 | home cinema | lifestyle | [【BRAVIA 9 II True RGB 極致真實色彩，完美融入你的質感家居】](#example-79) |
+| 80 | retail and brand | service notice | [【Sony Store 尖沙咀專門店 搬遷通知】](#example-80) |
+| 81 | retail and brand | event recap | [【LiSA ✖ Sony Store Hong Kong限定見面會圓滿結束🎊】](#example-81) |
+| 82 | audio | feature benefit | [【無線開放式耳機 LinkBuds Clip 跑住聽🏃🏻‍♂️保持節奏 掌握四周】](#example-82) |
+| 83 | photography | preorder | [【全新 Sony Cinema Line FX5 預售登場 🎬｜電影級影像　輕巧掌控】](#example-83) |
+| 84 | retail and brand | event announcement | [🕷️ Sony Store 期間限定《蜘蛛俠：英雄重生》主題活動登場！](#example-84) |
+| 85 | photography | product launch | [【Lighting The Way Forward 🎬 Sony 全新 Cinema Line 專業電影攝影機 FX5 隆重登場】](#example-85) |
+| 86 | audio | feature benefit | [【🎧 匠心成就 極致之聲：旗艦無線降噪耳機 1000X THE COLLEXION】](#example-86) |
+| 87 | photography | teaser | [Lighting the way forward.](#example-87) |
+| 88 | photography | workshop | [【My Sony Studio 8 月攝影基礎課程 ／ 速成攝影入門技巧】](#example-88) |
+| 89 | audio | feature benefit | [【🎧 一秒隔絕煩囂：無線降噪耳機 WH-1000XM6】](#example-89) |
+| 90 | photography | workshop | [【My Sony Studio ／ 掌握Alpha系列相機基礎技巧】](#example-90) |
+| 91 | audio | promotion | [【 🎧 無線開放式耳機 LinkBuds Clip 限時優惠】](#example-91) |
+| 92 | wearable | promotion | [【 🥵 暑熱生存指南 ｜REON POCKET 6 限時降溫優惠！】](#example-92) |
+| 93 | mobile | promotion | [【Sony 年度旗艦手機 Xperia 1 VIII ／ 限時優惠及禮遇 出機好機會！🤩】](#example-93) |
+| 94 | audio | feature benefit | [【全天候無縫切換：全無線降噪耳機 WF-1000XM6 極致降噪體驗】](#example-94) |
+| 95 | retail and brand | event announcement | [【LiSA個人出道15 週年巡迴演唱會香港站演唱會進入倒數 🔥 LiSA ✖ Sony Store Hong Kong 限定活動最後召集】](#example-95) |
+| 96 | photography | trade in | [【A7R VI 全片幅相機 限時Trade-in升級優惠】](#example-96) |
+| 97 | photography | competition | [【Sony作品招募 – 尋幽探野】 7 月主題](#example-97) |
+| 98 | mobile | feature benefit | [【全新 Xperia 1 VIII ｜ 📸 「原」美捕捉每一瞬間】](#example-98) |
+| 99 | photography | workshop | [【My Sony Studio 📸 專業人像攝影工作坊 ｜捕捉動人神態 ✨】](#example-99) |
+| 100 | photography | product launch | [【一機走天涯 📷｜全新一代 Sony RX10V 全能變焦相機強勢登場】](#example-100) |
+
+<a id="example-1"></a>
+## Example 1
+
+Category: photography · Format: workshop · Post ID: 1599848572184510
+
+[Source photo](https://www.facebook.com/photo/?fbid=1599848532184514)
+
+```text
+【My Sony Studio 10 月攝影基礎課程｜由認識相機，到影出心中所想📸】
+
+眼見到靚景，但相機又影唔到心目中嘅效果？想拍攝時更有把握，就由掌握相機設定同攝影基礎開始💡！My Sony Studio 攝影基礎課程由專業攝影導師帶領，幫你逐步了解手上嘅 Sony 相機，由曝光、構圖到實際操作，建立清晰嘅拍攝思路。再一齊走出課室，透過戶外實習將所學活用，影出自己想要嘅畫面🫶🏻！
+
+🎯 課程重點：
+👉🏻 掌握光圈、快門同 ISO 嘅關係，按拍攝需要調整曝光
+👉🏻 認識 Sony 相機各種拍攝模式及實用設定
+👉🏻 學習基本拍攝步驟同器材保養技巧
+👉🏻 由導師帶領戶外實拍，即場指導構圖及相機設定
+
+10 月攝影基礎課程（共 5 堂）｜課程編號：SA01
+
+📍室內課堂：觀塘絲寶國際大廈 18 樓
+第 1 堂：2026 年 10 月 7 日（三）19:00–20:45
+第 2 堂：2026 年 10 月 12 日（一）19:00–20:45
+第 3 堂：2026 年 10 月 14 日（三）19:00–20:45
+第 4 堂：2026 年 10 月 23 日（五）19:00–20:45
+
+📍戶外拍攝課：香港公園
+第 5 堂：2026 年 10 月 31 日（六）14:00–16:00
+
+👥 課程名額：10 人
+💰 課程費用：HK$1,280
+📚 課程安排：3 堂理論、1 堂基礎相機操作及 1 堂戶外拍攝
+
+📸 請自備 Sony 攝影器材上堂，包括相機、鏡頭、充滿電嘅電池及記憶卡。
+👉🏻 立即報名：https://bit.ly/3VDgF1J
+
+*成功報名之參加者會經電郵收到課程登記確認信。
+
+#SonyHongKong #MySonyStudio #SonyAlpha #SonyLens #攝影課程 #新手學攝影 #SonySA01
+```
+
+<a id="example-2"></a>
+## Example 2
+
+Category: photography · Format: creator_story · Post ID: 1599774122191955
+
+Source: Sony Hong Kong Facebook page; post ID recorded above.
+
+```text
+有些旅程，唔係為咗抵達終點，而係為咗沿途遇見嘅光影。
+
+今次 Sony A7R VI 跟隨Sony CURATORS ELITE Vincent Chan @vinvincent 、Sony CURATORS Alvis Chui @alvischui_  同風景攝影師 Kelvin Yuen @kelvin_yuen_ 踏上一段橫越美國嘅風景攝影之旅，穿越遼闊峽谷、壯麗山脈，以鏡頭追逐大自然最真實純粹嘅光影瞬間。
+
+A7R VI 搭載 66.8MP 超高解像度感光元件，能細緻呈現細膩嘅景觀層次。面對日出、日落等高反差場景，其高達 16級動態範圍有效保留光暗細節，忠實還原眼前所見。
+
+跟隨三位攝影師嘅腳步，一同探索美國國家公園嘅壯麗景色，感受攝影如何將轉瞬即逝嘅自然之美化成永恆影像。
+
+• 6,680萬像素超高解像度，由遠方山脈紋理到樹木細節都清晰可見
+• 16級動態範圍，即使高反差場景，依然保留豐富光暗細節
+• 8.5級機身防震，手持拍攝或低光環境下拍攝時更穩定
+• 4軸多角度翻揭式 LCD 螢幕，輕鬆應對多角度構圖
+• 機背發光按鈕，低光環境下快速準確操作相機
+
+🎥: Sony CURATORS @alvischui_
+
+了解更多A7R VI: https://bit.ly/3UYTSgE
+
+#SonyAlpha #A7RVI #ResolutionAccelerated
+```
+
+<a id="example-3"></a>
+## Example 3
+
+Category: photography · Format: workshop · Post ID: 1598638338972200
+
+[Source photo](https://www.facebook.com/photo/?fbid=1598638322305535)
+
+```text
+【My Sony Studio｜掌握 Alpha 相機操作，拍攝更得心應手📸！】
+
+入手咗 Sony Alpha 系列相機，但面對機身上嘅功能鍵同 Menu 入面嘅各種設定，仲係有啲摸不着頭腦🤔？參加 My Sony Studio「10 月相機基礎操作班」，由導師一步步帶你認識機身操作、理清選單結構，掌握攝影常用設定，將各項功能靈活運用喺日常拍攝之中📸。想更熟悉手上嘅 Alpha 相機，影相時操作更順手，即刻報名啦🙌！
+
+📸 相機基礎操作班（攝影）SA02A
+適用型號：α1 II / α7R VI / α7 V / α7C II / α7CR / α6700
+
+課程由 My Sony Studio 導師主講，帶你逐步掌握：
+🔵 認識機身功能鍵配置，熟習實際操作
+🔵 掌握攝影常用功能設定
+🔵 理解 Menu 結構，更快搵到所需設定
+🔵 即場解答操作疑問，幫你更快上手
+
+📅 課程詳情
+課程日期（可選其一）：
+2026 年 10 月 6 日（星期二）
+2026 年 10 月 20 日（星期二）
+
+地點：觀塘絲寶國際大廈 18 樓
+時間：19:00 – 20:30
+費用：HK$260
+名額：10 人（額滿即止）
+立即報名：https://bit.ly/4xXk49X
+
+❤️ 溫馨提示：請自攜 Sony 相機、鏡頭、已充滿電嘅電池及記憶卡出席課堂。
+
+*成功報名之參加者會經電郵收到課程登記確認信。
+
+#SonyHongKong #MySonyStudio #SonyAlpha #SonyLens #A1II #A7RVI #A7V #A7CII #A7CR #A6700 #攝影入門 #攝影教學 #相機操作
+```
+
+<a id="example-4"></a>
+## Example 4
+
+Category: audio · Format: lifestyle · Post ID: 1597613415741359
+
+Source: Sony Hong Kong Facebook page; post ID recorded above.
+
+```text
+【今日想揀咩色？🌈 Sony 全新無線耳機 WH-CH530 隨你襯出日常 Style🎧】
+
+👉 揀選你嘅心水色：https://bit.ly/4hfmpHp
+
+出門前揀好衫、襯好鞋，耳機都要配合今日嘅心情😎！Sony 無線耳機 WH-CH530 備有六款色彩，無論鍾意簡約百搭，定係為成身穿搭加添亮點，都有無窮發揮空間✨～ 黑色🖤、白色🤍、藍色💙、珊瑚色🧡、粉紅色🩷、薄荷綠💚 —— 今日想用襯隻色由你話事！
+
+返工途中播首歌進入狀態，放假出街就用心水 Playlist 陪你周圍行🎶。輕巧舒適嘅 WH-CH530，將你鍾意嘅色彩同音樂帶入日常，行到邊，聽到邊，隨時投入自己嘅節奏！
+
+Colour Your Way. Play All Day. 🎨🎧
+
+👉 探索 WH-CH530 六色選擇：https://bit.ly/4hfmpHp
+
+#SonyHongKong #ForTheMusic #WHCH530 #SonyAudio #WirelessHeadphones #ColourYourWay #PlayAllDay
+```
+
+<a id="example-5"></a>
+## Example 5
+
+Category: photography · Format: workshop · Post ID: 1596894435813257
+
+[Source photo](https://www.facebook.com/photo/?fbid=1596894369146597)
+
+```text
+【My Sony Studio | 新手夜拍🌃 圈出璀璨繁華的城市光軌】
+
+想親手拍下中環流動嘅璀璨車軌，但每次用 Auto Mode 都影到曝光失準或者「鬆郁矇」？今次 My Sony Studio 課程專為攝影初學者而設，帶你徹底擺脫 Auto Mode 嘅限制，用慢快門做畫筆，喺黑夜中親手描繪出專屬你嘅中環光影軌跡✨！
+
+My Sony Studio 導師 Alex Leung 會先用最簡單易明嘅方法拆解「曝光三角」，教你掌握精準對焦、慢快門設定及夜景構圖技巧，輕鬆拍出充滿層次感嘅城市夜色📸。隨後更會帶領大家深入中環進行實地拍攝，由 Studio 理論拆解到現場實戰全程指導，即學即用！
+
+活動更特別提供最新推出嘅 Sony FE 8-14mm F3.5 Fisheye G（SEL814G）魚眼變焦鏡頭體驗機會。參加者可親身感受魚眼鏡頭獨特嘅超廣闊視角，將高樓大廈、繁華街景同璀璨夜空一次過收進畫面，利用誇張透視效果創造極具視覺衝擊力嘅作品，為夜景攝影帶來全新創作可能✨。無論你係第一次接觸夜景攝影，定係想體驗魚眼鏡頭嘅獨特魅力，今次工作坊都係理想嘅入門機會，帶你用嶄新視角記錄香港最迷人嘅夜色🌃！
+
+課程對象: 攝影新手，建議已完成 SA01 基礎攝影課程學員參加，或有一定攝影基礎者。
+
+活動詳情：
+📅 日期：2026 年 10 月 3 日（星期六）
+🕒 時間及流程：
+下午 5:00 – 6:30｜🧑‍🏫 理論講解
+📍 地點：Sony Store 香港專門店
+
+晚上 7:00 – 9:00｜📸 戶外拍攝實習
+📍 地點：中環區
+
+👥 名額：15人
+💰 活動費用：HK$560
+🔗 立即報名：https://bit.ly/46AEpWG
+
+*成功報名之參加者將會收到電郵確認。
+主辦單位擁有隨時修改及終止本活動之權利，如有任何變更將公布於本網頁或 Sony Hong Kong Facebook 專頁，恕不另行通知。如有爭議，Sony 保留最終決定權。
+
+#SonyHongKong #MySonyStudio #SonyAlpha #SonyLens
+```
+
+<a id="example-6"></a>
+## Example 6
+
+Category: audio · Format: feature_benefit · Post ID: 1595725679263466
+
+Source: Sony Hong Kong Facebook page; post ID recorded above.
+
+```text
+【Sony WH-CH730N 無線降噪耳機丨由專注聆聽到輕鬆佩戴，照顧每日所需 🎧】
+
+由降噪功能、環境音模式到輕巧設計及 5 款配色，一次過帶你了解 Sony WH-CH730N 無線降噪耳機，點樣配合你每日唔同嘅聆聽需要，同時襯出個人風格🎨～
+
+🔇 雙重雜訊感應器 專注享受音樂
+配備雙重雜訊感應器，有效減低四周環境雜音，減少搭車或工作時嘅聲音干擾，讓你更專注投入喜愛嘅音樂，享受屬於自己嘅寧靜時光。
+
+🌿 環境音模式 時刻留意身邊聲音
+想聽歌之餘，亦留意到周圍動靜？切換至環境音模式，就可以一邊享受音樂，一邊聽到身邊聲音，畀你按當下需要靈活調整聆聽方式。
+
+☁️ 約 207g 輕巧設計 長時間佩戴更舒適
+輕巧機身配合舒適耳墊及經改良嘅鬆緊度，貼合頭部之餘，亦減輕佩戴負擔。無論返工途中、專心工作定放鬆聽歌，都可以長時間舒適享受。
+
+🎨 5 款百搭配色 襯出每日 Style
+黑色🖤、白色🤍、藍色💙、米色🤎、粉紅色🩷，由低調簡約到清新甜美，都可以輕鬆配搭個人風格，為每日造型加添色彩。
+
+即刻睇片，了解 Sony WH-CH730N 如何結合降噪功能、輕巧舒適設計及百搭配色，成為你每日都想戴住嘅無線降噪耳機。
+
+💰 建議零售價：HK$899
+🛒 即刻了解更多：https://bit.ly/46MPmo0
+
+#SonyHongKong #WHCH730N #無線降噪耳機 #ForTheMusic
+```
+
+<a id="example-7"></a>
+## Example 7
+
+Category: photography · Format: software_update · Post ID: 1593843269451707
+
+[Source photo](https://www.facebook.com/photo/?fbid=1593843252785042)
+
+```text
+【CREATORS' APP 功能更新 | 套用全球創作者的Creative Look】
+本次 Creators’ App 新增「套入風格外觀Creative Look」功能。你可以喺Creators’ App瀏覽全球創作者分享嘅Creative Look並套用到相機上使用。讓你的作品更具個人風格，輕鬆拍出更多不同的影像風格！
+
+立即探索更多創作者作品，發掘最適合你的 Creative Look！
+https://bit.ly/4yF8iRv
+#CreatorsApp #CreativeLook #SonyAlpha
+```
+
+<a id="example-8"></a>
+## Example 8
+
+Category: photography · Format: product_launch · Post ID: 1593015266201174
+
+[Source photo](https://www.facebook.com/photo/?fbid=1593014936201207)
+
+```text
+【全新 α7R VI 📸 秒見細膩・解像度飆速躍進】
+
+唯有巔峰，足以捕捉巔峰。
+作為 α7R 系列首部搭載 6,680 萬像素全片幅全堆疊式 CMOS Exmor RS™ 感光元件嘅相機，α7R VI 讀取速度最高提升 5.6 倍，讓你以傲視同儕嘅超高像素，配合豐富細膩嘅影像質素，完美捕捉每個變幻瞬間。浮雲嘅光影變化、湖泊嘅虛幻倒影，都纖毫畢現；無論置身高山低谷，都可以輕鬆駕馭各種拍攝場景，釋放無限創作潛力。
+
+α7R VI 嘅低感光度動態範圍高達 16 級，並支援 HDR 處理，可以大幅減少風景相嘅陰影雜訊；即使面對極端光暗對比，依然可以完美還原豐富層次與真實色彩，忠實呈現大自然嘅瞬息萬變。
+屢獲殊榮嘅風景攝影師 Kelvin Yuen，就以α7R VI 嘅鏡頭，將一秒定格成永恆。你又會點樣用α7R VI ，凝住每秒細膩？
+
+重點功能一覽：
+✨ 6,680 萬像素全堆疊式 CMOS Exmor RS 感光元件
+✨ 具備 16 級動態範圍，大幅減少陰影雜訊
+✨ 全解析度下達 30fps 高速連拍及預拍攝功能
+✨ BIONZ XR2 整合 AI 處理單元，即時識別自動對焦升級
+✨ 升級 D-Range Optimizer 自動優化技術 (DRO) ，強度設定最高可達 Lv8
+✨ 全新發光後面板按鈕，黑暗環境無礙流暢攝影
+✨ 4K 60P 無裁切錄影，支援 32-bit float 音訊錄製
+
+👉 立即了解更多：https://bit.ly/4h4zEcD
+
+#SonyHongKong #SonyAlpha #A7RVI #全片幅相機 #秒見細膩 #ResolutionAccelerated
+```
+
+<a id="example-9"></a>
+## Example 9
+
+Category: photography · Format: event_recap · Post ID: 1592937129542321
+
+[Source photo](https://www.facebook.com/photo/?fbid=1592940042875363)
+
+```text
+【世界田徑終極冠軍賽 2026｜用影像重溫賽場精彩瞬間🏃📸】
+
+世界田徑終極冠軍賽（World Athletics Ultimate Championship）2026 早前喺布達佩斯完滿落幕 🎉 ！
+
+無論係全力拼搏嘅身影，又或者係盡情慶祝嘅喜悅，一眾攝影師們將比賽中各個精彩時刻，透過 Sony  Alpha™ 無反相機及G Master™鏡頭一一定格，讓大家細看每個難忘瞬間✨！
+
+賽事完整精華相集已登陸「WORLD ATHLETICS MOMENTS」！即刻瀏覽相集，一齊重溫運動員喺世界舞台上全情投入、綻放光芒嘅一刻 👉🏻
+https://worldathleticsmoments.worldathletics.org/
+
+#Sony #WorldAthletics #WorldAthleticsUltimate #ShotOnSony #SonyAlpha
+```
+
+<a id="example-10"></a>
+## Example 10
+
+Category: audio · Format: comparison_guide · Post ID: 1592759799560054
+
+[Source photo](https://www.facebook.com/photo/?fbid=1592759762893391)
+
+```text
+【邊款先係你嘅音樂拍檔？🎧 Sony 1000X 系列耳機挑選指南】
+👉 探索 Sony 1000X 系列，揀選你嘅音樂拍檔：https://bit.ly/3UAdAPL
+
+每日返工放工都想有音樂陪住🎵，去旅行又想靜靜地聽歌，連耳機嘅設計都想襯埋自己嘅 Style？Sony 無線降噪耳機 WH-1000XM6、全無線降噪耳機 WF-1000XM6  同 旗艦無線降噪耳機 1000X THE COLLEXION 各有特色，一於由你嘅日常習慣出發，睇吓邊款最啱你！🙌🏻
+
+✈️ WH-1000XM6｜從日常通勤到萬呎高空，點樣靜靜聽歌又有專屬 Style？
+
+無論喺巴士、地鐵定飛機上面，都想享受到頭戴式耳機包覆雙耳嘅感覺？☁️ WH-1000XM6 結合出色降噪表現同舒適耳罩，無論身處鬧市定機艙，都能減低周遭噪音干擾，讓你自在投入音樂。仲有多款配色👔✨，配襯日常唔同造型，聽歌同穿搭一樣有自己嘅風格。
+
+🎒 💼 WF-1000XM6｜每日四圍走，聽歌接 Call 都想輕鬆搞掂？
+習慣輕裝出門，又成日要喺聽歌同講電話之間切換？😎 WF-1000XM6 採用貼耳嘅人體工學設計，方便隨身攜帶。出色降噪配合防風噪結構，沿途隨時投入好音樂；有 Call 入嚟📲， AI 波束成形技術、骨傳導加雙麥克風即時啟動就算身處鬧市嘈雜環境，都精準傳達你嘅聲音，忙碌日常都應付自如。👍
+
+💫👂🏻 1000X THE COLLEXION｜每日戴出街，好聲同質感全都要？
+重視音樂細節與質感，揀隨身單品亦特別留意材質同設計？1000X THE COLLEXION 嚴選高級金屬材質打造⭐️，為日常造型添上低調卻精緻嘅質感。配合內置高清降噪處理器 QN3同 自適應降噪優化技術，行到邊都實時幫你重現原音 🎛️️
+
+跟住自己嘅生活節奏，即刻挑選最夾你嘅 Sony 1000X 音樂拍檔👉 https://bit.ly/3UAdAPL
+🎁 登記產品保養即享額外 3 個月延長保養，立即登記!
+
+#SonyHongKong #WH1000XM6 #WF1000XM6 #1000XTHECOLLEXION #1000XSeries #ForTheMusic
+```
+
+<a id="example-11"></a>
+## Example 11
+
+Category: audio · Format: feature_benefit · Post ID: 1591825126320188
+
+Source: Sony Hong Kong Facebook page; post ID recorded above.
+
+```text
+【活力藍色連同其餘 5 色同步登場💙 Sony 無線耳機 WH-CH530 輕巧隨行🎧】
+👉 揀選心水色彩，創造你嘅日常聆聽風格：https://bit.ly/4cxQb7C
+
+一副日常耳機，最重要就係夠輕、夠舒服，仲要隨時有高質好聲。Sony 無線耳機 WH-CH530 以活力藍色率先登場💙，簡約俐落設計配合輕巧佩戴體驗；由朝早出門到夜晚放鬆，音樂一路隨行。
+
+🌈 Colour Your Way｜六款色彩襯出個人風格
+除咗百搭耐看嘅藍色💙，WH-CH530 仲備有黑色🖤、白色🤍、珊瑚色🧡、粉紅色🩷及薄荷綠💚，由低調到搶眼，總有一款配合你嘅 Style。
+
+🪶 輕巧舒適｜戴足全日都自在
+約 150g 輕盈機身配合舒適頭帶軟墊及柔軟無皺褶耳墊，舒適貼合雙耳，長時間聽歌、睇片一樣輕鬆。
+
+🛡️ 安全聆聽 輕鬆掌控音量
+支援「安全聆聽」模式及自訂最大音量限制，可於 Sony | Sound Connect 應用程式查看即時聲壓及每週聲壓使用量，按需要調節音量上限，防止因誤觸而導致音量過大的情況發生。
+
+🔋 55 小時長效續航｜Quick Charging 隨時補充電力
+一次充電即可提供最長 55 小時電池續航力，配合快速充電，就算每日帶住出街，都唔使擔心電量。
+
+輕巧佩戴、個人化音色、長效續航，再加六款色彩選擇 —— Colour Your Way. Play All Day. 🎨🎧
+👉 揀選心水 WH-CH530：https://bit.ly/4cxQb7C
+
+#SonyHongKong #WHCH530 #無線耳機  #ForTheMusic
+```
+
+<a id="example-12"></a>
+## Example 12
+
+Category: home_cinema · Format: workshop · Post ID: 1591093943059973
+
+[Source post (derived link)](https://www.facebook.com/sonyhongkong/posts/pfbid02Y3dFv8mpLox1rn1xpcJBLqQ2AtqFW5EG8kEdzkra6XnQwg6J1JDXi5XVcNMyD9n9l)
+
+```text
+【BRAVIA 客廳影院設計分享會 ︳新居入伙 × 現居升級：零裝修 × 微改動理想客廳影院攻略 🎬🛋️】
+
+想將屋企客廳升級成頂級私人影院？ 無論你係準備入伙新居，定係想為現有客廳注入新活力，呢個分享會絕對不能錯過！
+Sony 聯同日本家具品牌 ALOT Living 舉辦專屬分享會。 ALOT Living 首席設計師與影音專家帶路，教你利用「軟裝修」原則，將 Sony 旗艦級影音完美融入家居美學！
+🔗 https://bit.ly/4rb39OA
+
+✨ 活動三大亮點：
+🎯 Sony 旗艦影音體驗｜實機試聽 True RGB / OLED 電視及 BRAVIA Theatre 系列，感受 360 空間聲學震撼！
+🏡 ALOT 設計師親臨指導｜Cannie Wong 傳授佈局心法，教你免動大工輕鬆打造高品質日式家居美學。
+🛋️ 真實空間場景模擬｜透過多組 ALOT Living 家具展區，實機示範電視與 Soundbar 最佳黃金擺位！
+
+📌 活動詳情
+日期： 2026年10月8日 (星期四) 或 10月9日 (星期五)
+時間： 7:00 PM – 8:30 PM
+地點： ALOT Living 觀塘旗艦店 (觀塘巧明街 115 號柏秀中心 1 樓)
+名額： 每時段僅限 50 名（費用全免，每個成功登記名額供一人出席）
+報名截止日期: 9月27日 23:59PM
+結果公佈： 成功參加者將於 9 月 28 日起收到電郵或SMS 確認通知。
+
+🎁 會員獨家禮遇:
+✨送ALOT Group 旗下家具及餐飲優惠券，現場更可享 Sony 及 ALOT Living 限定產品選購優惠！驚喜加碼： 現場參與互動，更有機會贏取 Sony 精美限定禮品！
+☕🍰現場美饌： 免費享用 Relish 專屬精緻茶點及飲料
+
+一齊重新定義你嘅客廳娛樂空間，體驗「Cinema is coming home」嘅無縫家居美學啦！👇
+🔗 https://bit.ly/4rb39OA
+
+活動受條款及細則約束。
+
+#Sonyhongkong #BRAVIA #BRAVIA9II #BRAVIA7II #TheatreTrio #ALOTLiving #CinemaIsComingHome #家庭影院 #室內設計 #空間美學 #零裝修微改動
+```
+
+<a id="example-13"></a>
+## Example 13
+
+Category: photography · Format: preorder · Post ID: 1590902813079086
+
+[Source post (derived link)](https://www.facebook.com/sonyhongkong/posts/pfbid09ae99KvuQ2zJfqUnbztFTqEhfnWiYYW5DUtxsiAezGpRt6AcfEiaMQidvLpKHe3jl)
+
+```text
+【全球最輕* 超遠攝定焦鏡頭｜FE 400mm F4.5 GM OSS 及 FE 600mm F6.3 GM OSS 預售登場🎉】
+
+立即訂購 FE 400mm F4.5 GM OSS：https://bit.ly/46n1NXF
+立即訂購 FE 600mm F6.3 GM OSS：https://bit.ly/4xXh8dv
+
+超遠攝拍攝，都可以輕巧自在！Sony 全新 FE 400mm F4.5 GM OSS 及 FE 600mm F6.3 GM OSS 分別僅重 994g 及 995g^ ，配合小巧、平衡嘅鏡身設計，帶嚟更靈活嘅手持拍攝體驗，隨時捕捉遠處嘅精彩瞬間📸！
+
+兩支鏡頭結合 G Master 高解像度及先進自動對焦性能，配備 2 個 XD 線性馬達，精準追蹤高速移動嘅主體；配合 11 片圓形光圈葉，細緻呈現主體，同時營造柔美散景，令畫面更突出✨！
+
+想捕捉更遠處嘅細節？兩支鏡頭均兼容 1.4 倍及 2.0 倍遠攝增距鏡，進一步延伸遠攝範圍。專業級操控設計配備功能環、OSS 切換及全時 DMF 開關，方便你按拍攝需要迅速調整，輕鬆應對現場變化！
+
+📅 9 月 16 日至 21 日預訂，即可獲享以下預售禮遇：
+✨ FE 400mm F4.5 GM OSS
+建議零售價：HK$20,990
+🎁 預售贈品：CFexpress Type A 記憶卡讀卡器 MRW-G3（價值 HK$1,090）[數量有限，送完即止]
+立即訂購 FE 400mm F4.5 GM OSS：https://bit.ly/46n1NXF
+
+✨ FE 600mm F6.3 GM OSS
+建議零售價：HK$28,990
+🎁 預售贈品：相機鏡頭防雨套 LCR-ES（價值 HK$1,290）[數量有限，送完即止]
+立即訂購 FE 600mm F6.3 GM OSS：https://bit.ly/4xXh8dv
+
+立即預訂，探索更多超遠攝拍攝可能
+
+*FE 400mm F4.5 GM OSS：截至 2026 年 9 月產品發佈。根據 Sony 關於具備 400 mm 焦距，且最大光圈值為 F4.5 或更大的全片幅超遠攝鏡頭的問卷調查；FE 600mm F6.3 GM OSS：截至 2026 年 9 月產品發佈。根據 Sony 關於具備 600 mm 焦距，且最大光圈值為 F6.3 或更大的全片幅超遠攝鏡頭的問卷調查。
+
+# 預售贈品數量有限，送完即止。
+^所列重量為鏡頭本體重量，不包括三腳架底座重量。
+
+#SonyHongKong #SEL400F45GM #SEL600F63GM #SonyGMaster #SonyLens
+```
+
+<a id="example-14"></a>
+## Example 14
+
+Category: audio · Format: lifestyle · Post ID: 1590864069749627
+
+Source: Sony Hong Kong Facebook page; post ID recorded above.
+
+```text
+【🎨 5 色隨心襯｜Sony 無線降噪耳機 WH-CH730N 將降噪體驗融入每日 Style 🎧】
+🛒 即刻以 HK$899 入手心水配色：https://bit.ly/4cAEBIZ
+
+耳機除咗要好聽，可以係每日造型嘅一部分都好緊要！Sony 無線降噪耳機 WH-CH730N 帶來 5 款百搭配色，由日常返工、Coffee Break 到 Weekend 出遊都畀到你揀出至襯你個人風格嘅顏色✨～
+
+🎨 5款配色襯出個人 Style
+黑色🖤、白色🤍、藍色💙、米色🤎、粉紅色🩷
+低調、清新定係甜美風格，都可以搵到啱你嘅一款。
+
+🔇 出色降噪｜留住屬於自己嘅寧靜
+雙重雜訊感應器有效減低四周環境雜音，讓音樂成為日常節奏嘅主角；需要留意身邊聲音時，亦可以切換環境音模式，靈活配合不同場景。
+👂🏻安全聆聽｜貼心保護聽覺健康
+配備「安全聆聽」功能，可將累積聲壓及即時聲壓視覺化呈獻；另設「最大音量限制」，可在 SCA 應用程式設定音量上限，輕鬆調節之餘，有效防止因誤觸而導致音量過大的情況發生。
+
+☁️ 約 207g 輕巧設計｜自在戴足全日
+輕巧機身配合纖薄頭帶及無皺痕平滑耳墊，貼合之餘減輕佩戴負擔，無論通勤、工作定放鬆聽歌，都可以長時間舒適享受； 更備摺疊設計方便收納。
+
+Lightweight comfort. Serene quiet.
+由顏色到聆聽體驗，WH-CH730N 都自然融入你每一種 Lifestyle。
+
+💰 建議零售價：HK$899
+🛒 即刻揀選心水配色：https://bit.ly/4cAEBIZ
+
+#SonyHongKong #WHCH730N #無線降噪耳機 #ForTheMusic
+```
+
+<a id="example-15"></a>
+## Example 15
+
+Category: photography · Format: product_launch · Post ID: 1590352273134140
+
+Source: Sony Hong Kong Facebook page; post ID recorded above.
+
+```text
+【全球最輕* 超遠攝定焦鏡頭｜FE 400mm F4.5 GM OSS 及 FE 600mm F6.3 GM OSS 隆重登場✨ 】
+
+Sony 全新推出兩支 G Master 超遠攝定焦鏡頭，FE 400mm F4.5 GM OSS 及 FE 600mm F6.3 GM OSS 分別僅重 994g 及 995g，榮登同類鏡頭中全球最輕*，成功將輕巧設計、高解像度同強勁自動對焦性能集於一身。無論係捕捉遠處雀鳥展翅、運動員衝線嘅一瞬，都唔使再驚長時間拍攝帶黎負擔！
+
+兩支鏡頭均配備 2 個 XD 線性馬達，全面發揮 α 機身嘅高水準自動對焦性能，助你緊貼高速移動嘅主體。配合 G Master 極致解像度及 11 片圓形光圈葉，細緻呈現主體，同時營造柔美夢幻嘅散景，令主體更突出✨！機身配備功能環、OSS 光學防震開關，方便你按拍攝需要迅速調整，靈活應對現場變化。加上兼容 1.4 倍及 2.0 倍遠攝增距鏡，進一步延伸拍攝距離，捕捉更遠處嘅細節。
+
+🦅由野生生態到運動賽事，呢兩支全新 G Master 超遠攝定焦鏡頭都可以幫你輕鬆捕提面前精彩瞬間！
+
+✨ FE 400mm F4.5 GM OSS
+建議零售價：HK$ 20,990
+立即了解更多：https://bit.ly/4xO7Kc4
+
+✨ FE 600mm F6.3 GM OSS
+建議零售價：HK$ 28,990
+立即了解更多：https://bit.ly/4xspGYW
+
+*FE 400mm F4.5 GM OSS：截至 2026 年 9 月產品發佈。根據 Sony 關於具備 400 mm 焦距，且最大光圈值為 F4.5 或更大的全片幅超遠攝鏡頭的問卷調查；FE 600mm F6.3 GM OSS：截至 2026 年 9 月產品發佈。根據 Sony 關於具備 600 mm 焦距，且最大光圈值為 F6.3 或更大的全片幅超遠攝鏡頭的問卷調查。
+
+#SonyHongKong #SonyGMaster #SonyLens #SonyAlpha #SEL400F45GM #SEL600F63GM
+```
+
+<a id="example-16"></a>
+## Example 16
+
+Category: retail_and_brand · Format: collaboration · Post ID: 1584252580410776
+
+[Source photo](https://www.facebook.com/photo/?fbid=1584251487077552)
+
+```text
+【Hello Kitty 粉絲注意⚠️ Sony ‧ Hello Kitty 首度跨界聯乘 為生活注入心動頻率】
+
+提起 Hello Kitty，總會諗起陪伴自己成長嘅可愛身影；而由遇上 Sony 開始，我哋開始享受音樂、用音樂與人連繫。今次 Sony 首度與Sanrio 攜手，將兩份熟悉感完美結合，並推出 4 款 Sony Store 限量聯乘套裝。
+
+從Xperia 手機到無線耳機，每款均配搭Hello Kitty 聯乘限定精品。無論是日常出行、隨心聆聽，定係想為日常造型增添一點個性，都可以將 Hello Kitty 帶喺身邊，每日不停探索、發掘全新體驗，成就專屬自己嘅每一天✨！
+
+📱 全新智能手機 Xperia 10 VIII
+明亮顯示、立體聲揚聲器及獨立快捷鍵，以極致輕盈機身助你提升生活水平
+🎧 WH-1000XM6 無線降噪耳機
+業界頂級降噪配合高質音效，隔絕城市喧囂，獨享無干擾的音樂世界
+🎧 WH-CH730N 無線降噪耳機
+輕巧舒適機身配合中階降噪技術，隨時隨地靜享長達 50 小時的沉浸聆聽體驗
+🎧 WH-CH530 無線耳機
+高達 55 小時的續航結合六款潮流配色，以個人化音效全天候為生活注入繽紛活力
+
+Xperia 套裝包括 Hello Kitty聯乘輕便斜揹袋及帆布袋；3 款耳機套裝則包括 Hello Kitty 聯乘隨身收納袋（便攜包）及帆布袋，將萌感發揮到極致，令人愛不釋手！
+
+🎀 Sony ‧ Hello Kitty 聯乘套裝* 🎀
+📱 Xperia 10 VIII ‧ Hello Kitty｜HK$5,399
+🎧 WH-1000XM6 ‧ Hello Kitty｜HK$3,249
+🎧 WH-CH730N ‧ Hello Kitty｜HK$1,249
+🎧 WH-CH530 ‧ Hello Kitty｜HK$699
+
+即刻入手聯乘限定精品，再約埋朋友去 Sony Store 記錄專屬嘅Hello, Sony甜蜜時刻，打開充滿驚喜嘅新世界啦！
+
+*聯乘套裝由 2026 年9月8日起於 Sony Store 專門店、Sony Store 網上專門店（www.sony.com.hk/store）及 Sony 銷售熱線（852）2833-5129 發售。數量有限，售完即止。
+
+#Sony #Sanrio #HelloKitty #HelloSony #SonyHelloKitty #SonyStore #聯乘套裝
+```
+
+<a id="example-17"></a>
+## Example 17
+
+Category: home_cinema · Format: product_launch · Post ID: 1587059013463466
+
+[Source post (derived link)](https://www.facebook.com/sonyhongkong/posts/pfbid02ruFmtR3qCPzxYW1jDCGNbRqBDpmduQDxHHxLQRNbcZmcXTyR721ZnnThz7Smhs44l)
+
+```text
+【全新 BRAVIA 6 OLED 正式登場！影院級震撼娛樂影視體驗 📺】
+
+全新 BRAVIA 6 正式登陸，除咗帶嚟「Cinema is coming home」嘅極致嘅 OLED 畫質同全方位影音規格，仲配備電競級規格，畀你投入最沉浸式嘅遊戲體驗。
+
+即刻睇吓四大必買賣點：
+🖤 OLED 深邃純黑與細緻畫質
+BRAVIA 6 採用自體發光 OLED 像素，呈現深不見底嘅黑色同明亮高光細節！配合 Triluminos Pro™ 技術，提供更寬廣、更自然嘅色彩層次，令畫面每一處細節都栩栩如生。
+
+🔊影音兼備  戲院級標準
+BRAVIA 6 配備 Dolby Vision® / Dolby Atmos® 同 DTS:X® 頂級聲畫標準，加上內置自動亮度調節功能。無論日夜、任何光線環境，都可以帶畀你最震撼、最舒適嘅沉浸式觀賞體驗。
+
+🎮電競全規格配備 遊戲機迷都可以享受大螢幕
+BRAVIA 6 配備 4 個 HDMI 2.1 連接埠，全面支援 4K 120fps、VRR（可變更新率） 及 ALLM（自動低延遲模式），用大螢幕暢玩快節奏遊戲，畫面流暢無卡頓！
+
+📐日本設計美學 流暢窄邊框
+BRAVIA 6 俐落的窄邊框，加上兩段式底座，等你可以更專注喺畫面內容。可調校嘅兩段式底座，方便升高電視整齊放置 Soundbar，完美融入你嘅家居風格。
+
+【全新 BRAVIA 6 建議零售價及尺寸選擇】：
+📺 48" — HK$10,999
+📺 55" — HK$14,999
+📺 65" — HK$21,999
+
+了解更多: https://bit.ly/4xLgC1G
+立即選購: https://bit.ly/4wT0evv
+預約體驗: https://bit.ly/4xMuxo7
+
+#Sonyhongkong #BRAVIA #BRAVIA6 #OLED #Cinemaiscominghome
+```
+
+<a id="example-18"></a>
+## Example 18
+
+Category: audio · Format: feature_benefit · Post ID: 1586344066868294
+
+Source: Sony Hong Kong Facebook page; post ID recorded above.
+
+```text
+【全新 Sony WH-CH530 無線耳機丨將音效、舒適與風格，融入每一天 🎧】
+🛒立即了解更多：https://bit.ly/4cAEBIZ
+
+由外觀設計、音效設定到長時間使用所需嘅實用功能，一次過帶你了解全新 Sony WH-CH530 無線耳機，點樣配合你每日唔同嘅聆聽需要。
+
+🎨 輕巧設計 六款配色
+約 150g 輕巧貼耳式設計，配合舒適頭帶軟墊、柔軟無皺褶耳墊及靜音轉軸，長時間配戴依然自在。黑色、白色、藍色、珊瑚紅、粉紅色及薄荷綠六款配色，輕鬆襯出個人風格。
+
+🎶 10 段 EQ 自訂音效
+透過 Sony | Sound Connect 應用程式調校 10 段 EQ 及電競 EQ，配合 DSEE 還原壓縮及串流音樂中失去嘅自然細節，按喜好打造專屬聲音。
+
+🔋 55 小時連續播放
+一次充電即可連續播放最多 55 小時；快速充電 3 分鐘即可播放約 1.5 小時，無論外出、通勤定臨時參與線上會議，都可以從容應對。
+
+🛡️ 安全聆聽 音量由你掌控
+「安全聆聽」模式可於 Sony | Sound Connect 應用程式查看即時聲壓及每週聲壓使用量，亦可設定最大音量限制，避免因誤觸而令音量過大。
+
+📞 AI 強化通話 清晰傳達每句說話
+內置通話專用麥克風，配合 AI 演算法降低通話時嘅環境噪音，即使身處嘈雜環境，亦能保持清晰語音。加上多點連接、Fast Pair／Swift Pair、LE Audio 及語音助手，日常操作更加靈活。
+
+即刻睇片，了解全新 Sony WH-CH530 如何以簡約設計、個人化音效及全面功能，成為你每日都想戴住嘅無線耳機。
+
+💰建議零售價：HK$449 | 🛒立即了解更多：https://bit.ly/4cAEBIZ
+
+#SonyHongKong #WHCH530 #ForTheMusic
+```
+
+<a id="example-19"></a>
+## Example 19
+
+Category: photography · Format: feature_benefit · Post ID: 1586230063546361
+
+[Source post (derived link)](https://www.facebook.com/sonyhongkong/posts/pfbid0brn3Zm1birFqXPKZZ9kqrPGHgQzpTN8F3Fv287SLWvftzfTUXtS59M1dEWhzPpmPl)
+
+```text
+【 建築風景攝影全新視角 ︳全新 FE 8-14mm F3.5 Fisheye G 魚眼變焦鏡頭 】
+
+平凡嘅城市建築景觀，變成張力十足嘅視覺藝術品！
+全新 Sony 首支 FE 8-14mm F3.5 Fisheye G 魚眼變焦鏡頭隆重登場，重新定義你嘅城市攝影建築創作，畀你創作出肉眼睇唔到嘅有趣視角！
+
+🎨  180° 視角展示建築物不一樣的面貌
+一支涵蓋「全圓魚眼」及「對角魚眼」兩款效果 ，畀你最大空間發揮無限創意。喺 8mm 焦距可以呈現獨特嘅「全圓魚眼效果」及拍攝 180° 廣闊視角，一鏡盡收遼闊天空與環繞四周的摩天大樓，營造強烈空間感！14mm 焦距：呈現經典嘅「對角魚眼效果」，完美填滿整張相片，玩轉透視感！ 無論係拍宏偉建築、螺旋樓梯，定係城市地平線，都能大玩無限創意構圖，令畫面變得生動有趣！
+
+🌟 超越一般魚眼鏡頭嘅影像品質
+鏡頭採用 ED、ED 非球面及非球面鏡片。就算魚眼畫面再寬廣，由畫面中心到最邊緣嘅細節依然清晰銳利，並有效抑制色差，還原建築物每一道流暢線條與材質細節！
+
+📸革命性 314g 纖巧設計
+超輕重量配位內變焦設計，畀你輕鬆遊走城市每一個角落 。無論你想貼近地面低角度仰拍，定係舉高相機俯瞰拍攝，都能極其靈活流暢，隨意發揮多角度拍攝嘅優勢！
+
+立即了解更多：https://bit.ly/4qRYXmQ
+
+#SonyHongKong #SEL814G #SonyG #SonyLens #SonyAlpha
+```
+
+<a id="example-20"></a>
+## Example 20
+
+Category: audio · Format: event_signup · Post ID: 1585401583629209
+
+[Source photo](https://www.facebook.com/photo/?fbid=1585401543629213)
+
+```text
+【 LinkBuds Clip × DUO.HK 🏃🏻‍♂️ 最後1️⃣場火熱招募 ⚡】
+👉🏻 把握最後機會，即刻報名：https://bit.ly/3Tr6XhZ
+
+無論係街頭緩步跑，定係喺 Gym Room 挑戰極限，最怕耳機鬆脫打亂節奏？啱啱完結嘅首兩場城門谷路跑訓練反應超熱烈！一眾跑手戴住 Sony LinkBuds Clip 無線開放式耳機 ，無論點加速轉彎，C 形耳夾都做到零晃動貼服；開放式設計更令大家跑得更安全、聽得清周圍環境，全程感受高質感音樂節奏 🎶🔥 LinkBuds Clip 係你嘅極致合拍之選!
+
+前兩場反應超熱烈！嚟緊其中一場亦已迅速額滿，得返最後一場可以報名咋，想一齊動起來嘅你千祈唔好錯過！
+
+⚡ 城市探索（最後1場）
+🗓️ 日期：2026 年 9 月 19 日
+⏰ 時間：上午 9:30 – 11:30
+📍 地點：觀塘
+👥 名額：25 位
+
+💡 一齊穿梭城市街道，感受開放式聆聽帶嚟嘅安全感與街頭節奏！
+
+🎁 現場獨家福利：
+✔️專人協助耳機設定，即場體驗 LinkBuds Clip 震撼音效
+✔️即場完成 Check-in 及問卷，即有機會免費贏取 LinkBuds Clip 乙部（每場 1 個名額）！
+
+👉🏻 剩餘名額有限，即刻 Click 呢度搶先報名  🔗 https://bit.ly/3Tr6XhZ
+
+#SonyHongKong #LinkBudsClip #ForTheMusic  #開放式耳機 #DUOHK #RunningCommunity
+```
+
+<a id="example-21"></a>
+## Example 21
+
+Category: gaming · Format: competition · Post ID: 1584452440390790
+
+[Source photo](https://www.facebook.com/photo/?fbid=1584452323724135)
+
+```text
+【Sony INZONE: CS2槍王競賽 | 大戰一觸即發！🔥】
+
+2026年9月10日至23日期間，親臨 Sony Store 香港專門店挑戰死鬥模式，成為每週頭五名即可贏取豐富禮品！ 打開槍game嘅你，仲唔係時候大顯身手？😎
+
+📝 參加方法：
+STEP 1｜親臨Sony Store 香港專門店登記參加
+STEP 2｜挑戰 CS2 死鬥模式！
+STEP 3｜於 Instagram 或 Facebook 分享個人成績，並標註 @SonyHongKong 及 #INZONE。
+STEP 4｜完成問卷，獲取精美小禮物
+
+📊 每週進行排行榜結算*，該星期最高分頭五名玩家可獲豐富獎品：
+🥇 第1名｜INZONE H9 II x1（價值HK$2,599）
+🥈 第2名｜INZONE H9 x1（價值HK$1,999）
+🥉 第3名｜INZONE H7 x1（價值HK$1,790）
+🏅 第4名｜INZONE H5 x1（價值HK$1,190）
+🏅 第5名｜INZONE H3 x1（價值HK$599）
+🌟 最強推薦人** : 於活動期間推薦最多人參加的參加者，可獲得INZONE H6 Air 一份（價值HK$1,499)！
+
+🚀 立即親臨 Sony Store 香港專門店，參加 INZONE CS2 槍王競賽，爭奪每週最高分！💪🎯
+
+*排行榜每週結算一次，排名將於Sony Hong Kong社交媒體公布，獎品安排將有專人聯絡安排。
+**必須於活動期間至少參加一次 INZONE CS2 槍王競賽，以 兩星期總推薦人數 為準則。
+
+欲了解更多詳情，歡迎親臨 Sony Store Hong Kong 查詢。
+如有任何爭議，Sony Hong Kong 保留最終及絕對決定權。
+
+#SonyHongKong #INZONE #CS2 #CounterStrike2 #槍王競賽
+```
+
+<a id="example-22"></a>
+## Example 22
+
+Category: photography · Format: preorder · Post ID: 1584350073734360
+
+[Source post (derived link)](https://www.facebook.com/sonyhongkong/posts/pfbid0z5Zn3SdyQshJh4XDHS1JQocnHFPuxVEXSChH1Ae9ygskHymNXTWiFdyCMgob57Zpl)
+
+```text
+【Sony 首支魚眼變焦鏡頭｜全新 FE 8-14mm F3.5 Fisheye G 現正預售！】
+立即選購：https://bit.ly/4xeyxNG
+
+一支鏡頭，玩轉兩款魚眼效果「全圓魚眼」及「對角魚眼」！全新 Sony FE 8-14mm F3.5 Fisheye G 以 8-14mm 魚眼變焦範圍及 180°視角，為影相、拍片及 VR 創作帶來更多構圖可能 📸🎥！
+
+G 系列光學設計配備 ED（低色散）及非球面鏡片，帶嚟高解像及清晰細節，畫面由中心至邊緣都保持清晰，並有效抑制色差。內變焦設計配合僅 314g 嘅輕巧機身，令不同拍攝場景都更加靈活。
+
+鏡頭具備 0.15m 最近對焦距離，可以貼近主體營造誇張有趣嘅視角。配備 2 個線性馬達，提供快速、高精準自動對焦；同時具備光學上減少對焦呼吸效應嘅設計，焦距轉換更加自然流暢 ✨！
+
+Sony FE 8-14mm F3.5 Fisheye G
+➤ 建議零售價：HK$11,490
+➤ 預售日期：2026年9月9日至14日
+➤ 預購贈品： LCS-SL20 相機袋 (價值 $450) [送完即止]
+
+重點一覽：
+➤ 180°視角及 8-14mm 魚眼變焦
+由全圓魚眼至對角魚眼，玩轉多種創意構圖。
+➤ 314g 輕巧設計
+方便影相、拍片及 VR 創作，隨時隨地捕捉靈感。
+➤ G 系列高解像光學表現
+由畫面中心至邊緣保持清晰細節，有效抑制色差。
+➤ 0.15m 最近對焦距離
+輕鬆貼近主體，打造誇張有趣嘅魚眼視角。
+➤ 2 個線性馬達
+提供快速、準確自動對焦及高水準連拍效能。
+
+立即選購：https://bit.ly/4xeyxNG
+了解更多SEL814G：https://bit.ly/3SXVQNI
+
+#SonyHongKong #SEL814G #Fisheye #SonyAlpha
+```
+
+<a id="example-23"></a>
+## Example 23
+
+Category: gaming · Format: event_recap · Post ID: 1584163710419663
+
+Source: Sony Hong Kong Facebook page; post ID recorded above.
+
+```text
+【Sony INZONE CS2 電競雙人盃：精彩對決熱血重溫🔥】
+
+第一屆Sony INZONE CS2 電競雙人盃已經圓滿落幕！再次多謝每一位參賽者全力投入，憑住戰術、默契同精準槍法，為大家帶來一場場精彩對決🎮。
+
+即刻睇片重溫5月比賽片段，感受場上每一個緊張刺激嘅瞬間！
+
+精彩未完，下一場 Sony INZONE 賽事即將登場 —— CS2 槍王競賽
+
+今次將會以 Counter-Strike 2 Deathmatch 模式作賽，由雙人組隊轉為單人出擊，各自爭奪最高排名！
+
+準備好成為榜首贏走獎品未？活動詳情即將公布，密切留意 Sony Hong Kong 發佈嘅最新消息！
+
+#SonyHongKong #INZONE #CS2 #CounterStrike2 #槍王競賽
+```
+
+<a id="example-24"></a>
+## Example 24
+
+Category: photography · Format: product_launch · Post ID: 1583696667133034
+
+Source: Sony Hong Kong Facebook page; post ID recorded above.
+
+```text
+【Sony 首支魚眼變焦鏡頭*｜FE 8-14mm F3.5 Fisheye G】
+
+有無諗過面對熟悉嘅景物，換個視角就可以呈現完全唔同嘅有趣畫面？
+Sony 推出全新首支 SEL814G 魚眼變焦鏡頭，提供 8mm至14mm 嘅焦距。喺8mm全片幅模式下可呈現圓形魚眼效果和 180 度視角，14mm 可呈現對角魚眼效果，無論是影相、拍片、甚至VR 創作都可以使用到📸🎥！
+
+鏡頭重量僅 314g，配合內變焦設計及 0.15m 全焦段恒定最近對焦距離，近距離拍攝時可以營造強烈而有趣嘅視覺效果。G 系列光學設計採用 ED、ED 非球面及非球面鏡片，帶來高解像及清晰細節，並有效抑制色差。加上 2 個線性馬達，提供快速、高精準自動對焦；對焦追蹤最高可達 120fps*，同時有效減少對焦呼吸效應，令影片轉焦更自然流暢。
+
+* Sony 測試條件下之結果。 於部分拍攝環境或條件下，最高連續拍攝幀數可能低於標示值。在 AF-C（連續自動對焦）模式下，連拍速度可能因所使用之鏡頭而有所差異。
+
+呢支全新魚眼變焦鏡頭多用途嘅特性為創作者們帶嚟更自由嘅創作空間，各位Sony用家準備好用呢個不一樣嘅視角去創作你嘅作品未呢？
+
+立即了解更多：https://bit.ly/4gJef8W
+
+#SonyHongKong #SEL814G #SonyG #SonyLens #SonyAlpha
+```
+
+<a id="example-25"></a>
+## Example 25
+
+Category: audio · Format: product_launch · Post ID: 1583553063814061
+
+[Source photo](https://www.facebook.com/photo/?fbid=1583552593814108)
+
+```text
+【全新無線降噪耳機 Sony WH-CH730N 及無線耳機 WH-CH530 同步登場】
+
+👉🏻立即了解更多
+WH-CH730N：https://bit.ly/4AjDibJ
+WH-CH530：https://bit.ly/4gV9OaW
+
+由返工路上、辦公室專注，到日常休閒，耳機唔只係聽歌工具，更係陪伴你由朝到晚嘅隨身夥伴。全新無線降噪耳機 Sony WH-CH730N 及無線耳機 WH-CH530 ，以高品質音效、舒適設計及長效電池續航力，滿足不同聆聽需要 🎧✨
+
+🌟WH-CH730N 無線降噪耳機🌟
+🧘🏻中階降噪技術 靜享高品質音效
+雙噪音感應器技術於每邊耳罩配備兩個麥克風，有效減少噪音干擾；支援 20 級可調節環境聲音模式及進階自適應聲音控制，讓你專注聆聽之餘，亦可自然接收周遭聲音。
+
+🪶 輕巧舒適 可摺疊隨行
+約 207g 輕巧機身配合纖薄頭帶、熱壓成型無皺痕平滑耳墊，兼顧音效與舒適配戴感；可摺疊設計方便收納。開啟降噪時電池續航最長 50 小時，關閉降噪更可達 75 小時；快速充電 3 分鐘即可播放約 1 小時。
+
+🎶 10 段 EQ 打造個人化音效
+配備 DSEE、10 段 EQ、電競 EQ 及 360 Reality Audio，並加入全新「背景音樂效果」功能，讓你按個人喜好調校音效，享受更沉浸嘅聆聽體驗。
+
+📞 精確收音 清晰通話
+精確收音技術配合波束成形麥克風及 AI 降噪技術，精準捕捉人聲並降低通話時嘅環境噪音；降風噪結構亦有助減少風噪干擾。
+
+🌟WH-CH530 無線耳機🌟
+六款潮流配色 簡約舒適
+提供黑色、白色、藍色、珊瑚色、粉紅色及薄荷綠六款潮流配色，配合約 150g 輕巧貼耳式設計、舒適頭帶軟墊及柔軟無皺褶耳墊，輕鬆配搭不同造型，長時間配戴仍然舒適。
+
+🔋 55 小時電池續航 隨時有歌聽
+一次充電最長可享 55 小時連續音樂播放時間，快速充電 3 分鐘即可播放約 1.5 小時；配合多點連接、Fast Pair／Swift Pair、LE Audio 及語音助手，日常使用更加方便。
+
+🎵 均衡音效 由你調校
+延續均衡調音，配備 DSEE、10 段 EQ 及電競 EQ，讓你按個人喜好打造更個人化嘅音效，全面提升聆聽體驗。
+
+🛡️ 安全聆聽 輕鬆掌控音量
+支援「安全聆聽」模式及自訂最大音量限制，可於 Sony | Sound Connect 應用程式查看即時聲壓及每週聲壓使用量，按需要調節音量上限，防止因誤觸而導致音量過大的情況發生。
+
+📞 AI 強化通話 清晰連線
+內置麥克風支援免提通話，配合 AI 演算法降低通話時嘅環境噪音，即使身處喧鬧環境，亦可傳送清晰語音。
+
+兩款耳機均採用再生塑膠，並使用無塑包裝，將環境考慮融入日常。
+
+🗓️ 2026 年 9 月 8 日正式發售
+無線耳機 WH-CH530 建議零售價：HK$449
+🗓️ 2026 年 9 月 13 日正式發售
+無線降噪耳機 WH-CH730N 建議零售價：HK$899
+
+👉🏻立即了解更多
+WH-CH730N：https://bit.ly/4AjDibJ
+WH-CH530：https://bit.ly/4gV9OaW
+
+#SonyHongKong #WHCH730N #WHCH530 #ForTheMusic
+```
+
+<a id="example-26"></a>
+## Example 26
+
+Category: retail_and_brand · Format: competition · Post ID: 1583548253814542
+
+[Source photo](https://www.facebook.com/photo/?fbid=1583547260481308)
+
+```text
+【「分享Hello, Sony時刻」有獎遊戲 🎀 】
+
+Hello, Sony 聯乘正式啟動🔥，誠邀你親身感受科技與可愛完美融合嘅甜蜜時光🎀！由 2026 年9月8日至9月30日，親臨指定 Sony Store 專門店，拍攝活動照片，即有機會贏取豐富禮品👀！
+
+遊戲參加方法
+步驟1️⃣  打卡並上載照片
+•於指定 Sony Store  (銅鑼灣香港專門店或旺角專門店) 親身打卡，並拍攝主題照片
+•將照片上載至 Instagram、Facebook 或 Threads
+•於帖文中標記 @SonyHongKong，並加入hashtag #HelloSony
+
+步驟2️⃣成為My Sony會員
+•參加者必須成為My Sony 會員並選擇同意接收推廣資訊
+•綁定 Sony 官方 WhatsApp帳戶，並將帖文連結提交至該WhatsApp帳戶
+
+🎁 豐富大獎
+帖文總互動率（包括讚好、留言及分享）最高嘅參加者即可獲得無線降噪耳機WH-1000X M6 (沙粉紅色) 一隻
+
+📍 活動指定門店：
+Sony Store 香港專門店
+銅鑼灣希慎廣場 503-504 號舖
+Sony Store 旺角專門店
+九龍旺角亞皆老街 8 號朗豪坊商場 L7-01 舖
+🕰️營業時間：11:00–21:00
+
+立即親臨專門店，沉浸喺呢場充滿魅力嘅盛宴之中，用快門記錄專屬 Hello, Sony. 甜蜜時光💕！
+
+*活動受條款及細則約束，Sony Hong Kong 保留此活動之最終決定權
+
+#Sony #HelloSony #SonyStore
+```
+
+<a id="example-27"></a>
+## Example 27
+
+Category: audio · Format: feature_benefit · Post ID: 1583533893815978
+
+[Source photo](https://www.facebook.com/photo/?fbid=1583533363816031)
+
+```text
+【HK$449 入手 Sony 無線耳機 WH-CH530！六款活力色彩任你揀🎨】
+揀返一款心水色彩，隨時隨地聽出自己風格：https://bit.ly/4yhUBrI
+
+想用親民預算升級日常聆聽？Sony 無線耳機 WH-CH530 只需 HK$449，集實惠價格、超卓音質、超長續航力與極致簡約設計於一身，一次過滿足你嘅日常音樂需求！
+
+🎶 實惠之選！升級音質全面超越 WH-CH520
+
+雖然定位親民，但音質依然超卓！配備 DSEE 技術修復高頻細節，更全新提供 10 段 EQ 及電競 EQ 設定，配合 360 Reality Audio，輕鬆打造極具個人化嘅極致聽覺體驗。
+
+🔋 超長電池續航力
+長達 55 小時超強續航，輕鬆應付幾日通勤與全天候聆聽，告別電量焦慮。
+
+🛋️ 輕盈舒適，長時間自在配戴
+配備柔軟耳墊，舒適貼合雙耳，無論聽歌、睇片定係日常通勤，都可以輕鬆享受音樂。
+
+🔊 可調節最大音量，聆聽更安心
+設有 5 種最大音量等級選擇，方便按個人需要調整聆聽音量。
+
+🌈 六款活力色彩
+黑色🖤｜白色🤍｜藍色💙｜珊瑚色🧡｜粉紅色🩷｜薄荷綠💚
+
+💰 建議零售價：HK$449
+
+以親民價格，將無線聆聽、個人化音效同日常舒適度一次過帶走。
+揀返一款心水色彩，隨時隨地聽出自己風格：https://bit.ly/4yhUBrI
+
+#SonyHongKong #WHCH530 #ForTheMusic
+```
+
+<a id="example-28"></a>
+## Example 28
+
+Category: retail_and_brand · Format: collaboration · Post ID: 1583331210502913
+
+[Source post (derived link)](https://www.facebook.com/sonyhongkong/posts/pfbid02dmxBnrS1NT6RJ82wWfsx19cubDRZ3fHjPugR9XTnNYRjz5GQU7vmn4rKCcAEyNPsl)
+
+```text
+【🎀Hello, Sony. | Sony ‧ Hello Kitty 聯乘矚目登場✨】
+
+Sony 首度與 Sanrio 人氣角色Hello Kitty 聯乘，將頂尖影像及音樂體驗與 Hello Kitty 標誌性魅力結合，推出 4 款Sony Store 限量聯乘套裝，為日常出行及音樂體驗增添一份歡樂與個性✨！
+
+由全新智能手機 Xperia 10 VIII，到無線降噪耳機WH-1000X M6、WH-CH730N 及 WH-CH530 三款無線耳機，均配搭Hello Kitty 限定聯乘商品，讓現代科技與甜美經典為你注入無限驚喜💖！
+
+🎀 Sony ‧ Hello Kitty款聯乘套裝🎀
+
+📱 Xperia 10 VIII × Hello Kitty｜HK$5,399
+🎧 WH-1000XM6 × Hello Kitty｜HK$3,249
+🎧 WH-CH730N × Hello Kitty｜HK$1,249
+🎧 WH-CH530 × Hello Kitty｜HK$699
+
+Xperia 套裝包括Hello Kitty 聯乘輕便斜揹袋及帆布袋；3 款耳機套裝則包括 Hello Kitty 聯乘隨身收納袋（便攜包）及帆布袋。
+
+Hello Kitty 聯乘套裝由 2026 年 9 月 8 日起於 Sony Store 專門店、Sony Store 網上專門店（www.sony.com.hk/store）及 Sony 銷售熱線（852）2833-5129 發售。套裝數量有限，售完即止。
+
+立即發掘你嘅 Hello, Sony. Moment 🎀！
+
+更正：所有聯乘套裝所附的 Hello Kitty 聯乘帆布袋均為黑色。聯乘商品安排以 Sony 香港最新公布為準。
+
+#Sony #Sanrio #HelloKitty #HelloSony #SonyStore #SonyHelloKitty
+```
+
+<a id="example-29"></a>
+## Example 29
+
+Category: mobile · Format: feature_benefit · Post ID: 1582440507258650
+
+Source: Sony Hong Kong Facebook page; post ID recorded above.
+
+```text
+【Xperia 10 VIII 丨快捷選單 ✕ 瞬間快拍 一鍵解鎖流暢日常體驗】
+
+繁忙嘅都市生活中，每個瞬間都需要精準掌握⏱️。全新 Xperia 10 VIII 特設快速啟動功能，無論你突然想聽歌🎧、要開付款 App，定係街頭偶遇想定格嘅畫面，都可以用一個按鈕立即處理，令生活節奏更順暢俐落！
+
+📱快捷選單
+雙擊電源鍵即可開啟「快捷選單」，可以按照個人習慣，將最常用嘅應用程式自由整合至同一介面，甚至自訂支付、娛樂、社交等唔同情境組合🎧。配合大圖示設計，無論你身處邊種生活場景，都可以一秒直達所需App，操作靈活從容。
+
+📸 快速拍攝按鈕
+配備專屬快速拍攝按鈕，無需解鎖或點亮螢幕，一按即可開啟相機，想影就影🤳🏼。讓你完美捕捉日常生活中突如其來嘅靈感，絕不錯過任何一個稍縱即逝嘅精彩瞬間✨！
+
+極速操作，一鍵直達。
+入手 Xperia 10 VIII，體驗前所未有嘅俐落日常👉🏻  https://bit.ly/4hMFG3P
+
+#SonyHongKong #SonyXperia #Xperia10 #Xperia10VIII
+```
+
+<a id="example-30"></a>
+## Example 30
+
+Category: retail_and_brand · Format: member_promotion · Post ID: 1582358193933548
+
+[Source post (derived link)](https://www.facebook.com/sonyhongkong/posts/pfbid02U28mUq9fVPRe8283rSYtweZbs5Qw8k81kXqFbe5xJz8oJD5EZeHvqb2Fe9am3ZBPl)
+
+```text
+【🎉🎉My Sony大賞投 分秒"BID"爭！ | 9月7-10日】
+即睇今期"BID"選優惠: https://bit.ly/46zSaVo
+
+My Sony大賞投又嚟啦！即日起至9月10日，多款精選競投產品以超筍底價俾你競投，包括:
+➤ WF-1000XM5 全無線降噪耳機 | 即買價$872起
+➤ BRAVIA 8 系列 4K OLED智能電視 | 即買價$7,600起
+➤ Xperia 1 VII 5G智能手機 | 即買價$4,590起
+➤ WH-1000XM5 無線降噪耳機 | 即買價$1,276起
+➤ ILCE-1 旗艦級專業相機 | 即買價$17,196起
+➤ ILCE-7M3 全片幅相機 | 即買價$6,296起
+
+除咗以上型號之外仲有眾多競投品，部份產品更提供一年保養服務，梗有一款啱你心水！仲唔快啲入嚟睇下有咩心頭好啱"BID" ?~
+
+今晚6點準時開BID！
+競投時間: 9月7日 6:00pm 至 9月10日 09:59am
+"BID"選優惠: https://bit.ly/46zSaVo
+
+#啱心水嘅產品可以馬上MARK定然後落BID #即日起至9月10日
+```
+
+<a id="example-31"></a>
+## Example 31
+
+Category: mobile · Format: trade_in · Post ID: 1579832820852752
+
+[Source post (derived link)](https://www.facebook.com/sonyhongkong/posts/pfbid025GL8HbBJ9KYWNa2pnydynqyDaYn9ASPgiu94kQVf9TVfiAv4hGPWxUJEtGhkuKt8l)
+
+```text
+【旗艦手機 Xperia 1 VIII | 尊享 Trade-in 升級禮遇】
+立即入手︰https://bit.ly/4tulZ2S
+
+Sony 新一代旗艦手機 Xperia 1 VIII 集結 Alpha™、BRAVIA™ 及 WALKMAN® 頂尖技術，配合全新 ORE 俐落設計，為你呈現生動世界✨！全新感光元件尺寸激增近 4 倍，主鏡頭實現全片幅級別性能📷，即使喺低光環境依然能拍攝極致影像。趁住 9 月專屬禮遇🎁，立即為生活升級頂級影音體驗啦！
+
+➤ My Sony 限定優惠價 [限時至9月30日]
+256GB: $10,999 (原價$12,099)
+512GB: $11,499 (原價$12,899)
+
+➤ 由即日起至 9 月 30 日期間，以任何Android 或 iOS舊手機Trade-in 即享優惠價$9,999起，再送總值$1,900禮品！
+
+256GB $9,999 (原價$12,099)
+512GB $10,699 (原價$12,899)
+1TB^ $13,699 (原價$15,899)
+
+^1TB版本 Trade-in 折扣不能與限時三選一優惠同時享用
+
+➤ 限時三選一優惠*# (需完成換領登記程序)
+🔘 $800超市現金禮劵 或
+🔘 LinkBuds Clip 開放式無線耳機  (價值 $1,499)  或
+🔘 以 $999 換購 WH-1000XM6 無線降噪耳機 (價值 $3,699)
+
+Sony Store 會員獨家限定
+➤ 送 專用抗菌物料手機套* (價值$290) 及 屏幕玻璃保護貼* (價值$168)
+➤ 購買 Xperia 1 VIII 可賺取 My Sony 積分（$1 = 1分）
+立即入手︰https://bit.ly/4tulZ2S
+
+* 指定顏色，數量有限，送完即止，優惠期至2026年9月30日
+# 需於網上登記禮品換領程序(需於購買日後90天內完成)並到指定地點/時間憑單換領，優惠詳情請瀏覽 https://www.sony.com.hk/campaigns/store_promo/#xperia ，職員會查閱有關My Sony保養登記紀錄，Sony保留更改優惠條款及細則之最後決定權
+
+#SonyHongKong #SonyStore #SonyXperia #Xperia1VIII #限時優惠
+```
+
+<a id="example-32"></a>
+## Example 32
+
+Category: photography · Format: workshop · Post ID: 1578872670948767
+
+[Source photo](https://www.facebook.com/photo/?fbid=1578872650948769)
+
+```text
+【My Sony Studio城市攝影課 | 定格城市獨特魅力】
+
+香港作為一個五光十色、擁有優美海港景色嘅城市，絕對係城市攝影嘅理想地點！但要點先可以發掘獨特角度，拍攝出與眾不同嘅都市景色🤔？只要參加 My Sony Studio城市攝影課，就會有專業導師分享獨門心得，再帶你到戶外以入門級相機實戰📸，以相機探索迷人黃昏景色🌇！立即報名，提升自己嘅城市攝影技巧啦！
+
+📅 日期：2026年 9月19日（星期六）
+📍 理論課：觀塘絲寶國際大廈18樓 (3:30pm – 4:30pm)
+☀️ 實戰拍攝： 東岸公園 (5:00pm – 7:00pm)
+👨‍🏫 導師： Sony Curator Siu Ming
+👥 名額： 15名（先到先得）
+💰 活動費用： $480
+🔗 立即報名： https://bit.ly/3SFRSt0
+
+*成功報名之參加者會經電郵收到課程登記確認信。📱
+
+主辦單位擁有隨時修改及終止本活動之權利，如有任何變更內容或詳細注意事項將公布於本網頁或 Sony Hong Kong Facebook 專頁上，恕不另行通知。如有任何爭議，Sony 保留最終決定權。
+
+#SonyHongKong #MySonyStudio #SonyCurators #SonyAlpha #SonyLens #Sony攝影工作坊 #城市攝影
+```
+
+<a id="example-33"></a>
+## Example 33
+
+Category: retail_and_brand · Format: member_promotion · Post ID: 1578036241032410
+
+[Source post (derived link)](https://www.facebook.com/sonyhongkong/posts/pfbid02hMzp2wCfv6vdL2KQ9QQVLWnQPix5KHchZj3SGCqU2sLJQ3RyP6Upu7mcKsmvRymyl)
+
+```text
+【🏫Sony Store 教育專賞快閃折扣 | 期間限定】
+立即選購: https://bit.ly/4gJlc9X
+
+話咁快又到咗閞學嘅日子啦🎉由即日起至9月21日，各大專院校及教職員使用學校電郵地址登記成為My Sony會員/ 登入優惠專頁，就可以享有限時產品優惠！包括人氣全無線降噪耳機WF-1000XM6、全無線開放式耳機LinkBuds Clip、輕巧全片幅相機 ILCE-7CM2、超輕量G Master 50mm標準定焦鏡頭 SEL50F14GM等等，總有一款產品適合你！~
+
+➤ 三步即可以教育專賞購買以下産品:
+1/ 前往優惠專頁 (https://bit.ly/4gJlc9X)
+2/ 使用大專電郵的 My Sony會籍登入
+3/ 即可於頁面內享有限時折扣並即時購買 (優惠會於9月21日完結)
+
+➤➤ Sony Store 教育專賞優惠之選 (優惠期至9月21日)
+📷 輕便全片幅相機 ILCE-7CM2 (連28-60mm鏡頭套裝)
+教育專賞優惠價: $12,780 （原價$18,990）
+
+📷 可換鏡頭 APS-C 相機 ZV-E10M2
+教育專賞優惠價: $5,790 （原價$7,690）
+
+📷 超輕量G Master 50mm標準定焦鏡頭 SEL50F14GM
+教育專賞優惠價: $7,890 （原價$10,990）
+
+📷 G 系列 配備半微距遠攝變焦鏡頭 SEL70200G2
+教育專賞優惠價: $9,190 （原價$12,990）
+
+🎧 全無線降噪耳機 WF-1000XM6
+教育專賞優惠價: $1,899 （原價$2,599）
+
+🎧 無線降噪耳機 WH-1000XM6
+教育專賞優惠價: $2,599 （原價$3,699）
+
+🎧 全無線開放式耳機 LinkBuds Clip
+教育專賞優惠價: $999 （原價$1,499）
+
+🎧 入耳式遊戲耳機 INZONE E9
+教育專賞優惠價: $949 （原價$1,099）
+
+🛍️ 仲可以連同My Sony Dollar 或電子現金劵一同使用，購物同時賺取Sonnion 購物積分㗎！
+🚚 Sony Store, Online限定: 購買教育專賞指定產品，即享有送貨服務(可選智能櫃自取)！
+更多教育專賞優惠 ➤➤  https://bit.ly/4gJlc9X
+
+#SonyHongKong #教育專賞計劃 #SonyStore優惠
+*此優惠推廣是教師、學校僱員以及學生專享，故此顧客會被要求取貨時出示有效的證明文件以作核對，並要由My Sony會員本人提取訂單。如有任何爭議，Sony Hong Kong保留最終決定權。
+```
+
+<a id="example-34"></a>
+## Example 34
+
+Category: home_cinema · Format: award_recognition · Post ID: 1577766281059406
+
+[Source post (derived link)](https://www.facebook.com/sonyhongkong/posts/pfbid01WvcnNoTUGpn7CQXEBuaEqBoXQtWTSao7q4oHont7jbpUDkHKaU1guBWbasvJmYl)
+
+```text
+【權威認可Sony BRAVIA 9 II 獲評 Sound Advice 2026 Exceptional ！ 🎉 】
+
+繼獲得美國 2026 TV Shootout® 肯定後，Sony BRAVIA 9 II True RGB TV 再度獲頒英國權威影音媒體 Sound Advice 最高評級 2026 Exceptional！👏🏼
+
+著名影音評測家 John Archer 於深度評測中更高度讚賞 BRAVIA 9 II 帶來「LCD 電視史上最震撼、最具沉浸感的畫質體驗」 🔈  ！
+
+獲選 Sound Advice Exceptional 的評測焦點：
+⭐ 全天候絕佳畫質：革命性抗反射屏幕塗層結合超高峰值亮度，無論係陽光充沛嘅日照客廳定暗房影院，細節與對比度依然清晰銳利。
+⭐ 零失真極致對比：重新定義黑階與控光極限，光暈現象（Blooming）降至極低，完整保留暗部細節與高光層次，絕不犧牲任何色彩。
+⭐ 頂級聲畫合一體驗：升級多揚聲器系統（含頂部及側面揚聲器），營造定位極致精準、包圍感十足嘅影院級 3D 音場。
+⭐ 極致廣闊觀賞視角：突破傳統 LCD 局限，即使坐喺客廳不同角角落落，色彩與對比度依然保持頂級水準。
+
+想親身感受國際專業媒體高度推崇嘅旗艦影音實力？即刻到 Sony Store 門市體驗！
+
+一對一體驗預約：https://bit.ly/3S2lh0e
+
+了解更多: https://bit.ly/4ih3rkC
+```
+
+<a id="example-35"></a>
+## Example 35
+
+Category: mobile · Format: lifestyle · Post ID: 1573432704826097
+
+[Source post (derived link)](https://www.facebook.com/sonyhongkong/posts/pfbid08bJhAvhE184e4oGKj1frmMPAAxAG8icF3dijBQuR1EL2gcsyXEjrsvUbPMNti5H9l)
+
+```text
+【Xperia 10 VIII 丨將自然光影盡握手中】
+
+全新 Xperia 10 VIII 將簡約美學融入機身設計，透過專屬材質與輕盈手感，完美展現你獨有嘅生活態度！
+
+🎨全新色彩 展現自然光影
+設計靈感源自大自然與光線嘅嘅奇妙交錯，機身選用半透明層次色彩，呈現微微透亮嘅質感✨，製作出三款專屬配色：
+
+🟣霧紫色
+優雅迷人，帶出唯美浪漫嘅獨特氣質
+
+🔘霧灰色
+低調型格，散發沉穩內斂嘅氣息
+
+⚪薄荷白
+清新純淨，如晨光般通透亮麗
+
+🪶輕盈纖薄機身 極致舒適握感
+延續輕巧設計理念，Xperia 10 VIII 完美演繹「極致纖薄」。俐落機身線條帶來絕佳嘅穩固、貼服手感，就算單手影相打卡🤳🏼、睇劇定係瀏覽社交動態，都依然輕鬆自如、毫無負擔 ！
+
+輕巧與美學，從此一手掌握。
+了解更多 Xperia 10 VIII 嘅絕佳手感同配色美學👉🏻 https://bit.ly/4gNriXU
+
+#SonyHongKong #SonyXperia #Xperia10 #Xperia10VIII
+```
+
+<a id="example-36"></a>
+## Example 36
+
+Category: photography · Format: workshop · Post ID: 1576867714482596
+
+[Source post (derived link)](https://www.facebook.com/sonyhongkong/posts/pfbid02WEg73NUQBUyJiMkozEFt4My5i46U1hmEp49vEQm5Qo5FYpiUeVxeCHGkuSPt7f56l)
+
+```text
+【My Sony Studio | 教你必學Alpha系列相機基礎技巧！】
+
+已經入手 Sony Alpha 系列相機嘅你，仲未學識點樣好好運用呢部攝影工具🤔？咁你就需要參加由 My Sony Studio 舉辦嘅「9月相機基礎操作班」！My Sony Studio導師會一步步引導你掌握Alpha 系列嘅性能同各種配置，等你可以更好咁發揮相機性能📸。想盡快上手、好好靈活運用 Alpha 系列相機嘅朋友，立即報名🙌！
+
+📸 相機基礎操作班（攝影）SA02A
+適用型號：α1 II / α7R VI / α7 V / α7C II / α7CR / α6700
+
+課程由 My Sony Studio 導師為你拆解：
+😎 機身功能鍵配置與實際操作
+😎 攝影常用功能設定
+😎 理解 Menu 結構
+😎 即場解答各種疑問，等你更快上手
+
+📅 活動詳情
+課程日期（可選其一）：
+2026 年 9 月 22 日 (二)
+2026 年 9 月 29 日 (二)
+
+地點：觀塘絲寶國際大廈18樓
+時間：19:00 – 20:30
+費用：HK$260
+名額：10人（額滿即止）
+立即報名：https://bit.ly/4wx9HZ8
+
+❤️ 溫馨提示： 請自攜 Sony 相機、鏡頭、已充滿電嘅電池及記憶卡出席課堂。
+
+*成功報名之參加者會經電郵收到課程登記確認信。
+
+#SonyHongKong #MySonyStudio #SonyAlpha #SonyLens #A1II #A7RVI #A7V #A7CII #A7CR #A6700 #夏日攝影 #攝影教學 #室內攝影 #戶外攝影 #旅行影相
+```
+
+<a id="example-37"></a>
+## Example 37
+
+Category: photography · Format: feature_benefit · Post ID: 1573139688188732
+
+[Source photo](https://www.facebook.com/photo/?fbid=1573139614855406)
+
+```text
+【羽量級超遠攝變焦鏡頭 SEL100400 風景實戰📸紀錄迷人自然景色🌄】
+
+拍攝風景嘅樂趣，往往在於探索嗰份未知。無論你係剛開始接觸風景攝影，定係想由標準鏡頭進階到遠攝創作。Sony 全新羽量級超遠攝變焦鏡頭 SEL100400 嘅出現，正式為大家打開輕量化攝影新篇章🆕！
+
+呢支鏡頭擁有極致輕巧嘅 654g 纖巧設計，將強大嘅變焦能力濃縮喺輕便鏡身之中。裝備變輕咗，你自然有更多體力行遠啲、爬高啲🗻，去發掘更多平日難以觸及嘅絕美角度！配合SEL100400 具備嘅卓越高解像力，能精準捕捉眼前每一處細節。由遠方晨霧中嘅樹影，到日落餘暉下嘅光影，都能夠將每種層次完美紀錄，成就一張張動人風景相🖼️。
+
+即刻入手呢個輕便同高畫質兼備嘅遠攝方案，為你下一次攝影旅程做好準備！
+
+👉 了解更多：https://bit.ly/3UylUPG
+
+#SEL100400 #SonyLens #SonyAlpha
+```
+
+<a id="example-38"></a>
+## Example 38
+
+Category: mobile · Format: promotion · Post ID: 1571533581682676
+
+[Source post (derived link)](https://www.facebook.com/sonyhongkong/posts/pfbid0jZmsPH99YL8W1xTTkgSYLfEmMGZ448gKs2CDCVZTfTv19ESA42ZPqHybXeYsLJc5l)
+
+```text
+【全新Xperia 10 VIII 限時優惠丨盡享高達$1,200 豐富禮遇】
+立即預訂：https://bit.ly/4zRhR1o
+
+Xperia 10 VIII 正式面世，結合日系半透明美學與強大效能，讓生活同日常娛樂體驗全面升級📱！超越入門級嘅超大感光元件，日夜拍攝同樣出色，將景物完美還原📸；配合升級版螢幕同前置雙揚聲器，為你帶嚟超乎想像嘅視聽享受 🎬；自訂快捷鍵及AI 功能讓你生活更便利！
+
+Xperia 10 VIII ►$4,799
+
+依家經 Sony Store 訂購更可享總值高達 $1,200 專屬優惠/禮遇！
+
+🎁  Trade-in 舊換新優惠
+Trade-in 任何Android 或 iOS 系統手機，不限品牌與機身新舊狀況，即減 $500
+
+🎁 限時二選一優惠*#
+➤$300 超市現金禮劵
+或 ➤以$499 換購 Linkbuds Clip 全無線開放式耳機（價值 $1,499）
+
+🎁  專屬防護套裝
+送Xperia 10 VIII 全新設計專用手機殼*及屏幕保護貼（總值 $458）
+
+🗓️ 限時優惠
+8月26日至9月30日
+🗓️ 最早取貨日期
+9月中旬
+
+立即訂購，感受超越入門嘅極致日常體驗：https://bit.ly/4zRhR1o
+
+*指定顏色，數量有限，送完即止，限指定優惠期內
+
+# 需於網上登記禮品換領程序(需於購買日後90天內完成)並到指定地點/時間憑單換領，職員會查閱有關My Sony保養登記紀錄，Sony保留更改優惠條款及細則之最後決定權
+
+#SonyHongKong #Xperia #Xperia10 #Xperia10VIII #全新登場 #預售 #預售優惠 #舊換新
+```
+
+<a id="example-39"></a>
+## Example 39
+
+Category: photography · Format: workshop · Post ID: 1571289831707051
+
+[Source photo](https://www.facebook.com/photo/?fbid=1571361011699933)
+
+```text
+📸【My Sony Studio Master Series | 人像攝影大師課：掌握光影與構圖】✨
+
+想提升人像攝影技巧，掌握專業攝影師嘅燈光控制同構圖思維？💡 Sony Curator Elite Ben Tang @photobyben 將會系統化拆解人像攝影嘅核心技能，由基礎光影應用到實戰拍攝，幫你拍出最具氛圍感同層次感嘅人像作品！🖼️
+
+四大課程內容：
+💡 課堂一｜基礎構圖與光線： 認識人像攝影嘅基本構圖同取景方式，理解自然光同簡單人造光嘅應用。
+🔍 課堂二｜鏡頭與光圈運用： 學習不同焦段鏡頭嘅特性，掌握光圈對景深同氛圍嘅影響。
+😊 課堂三｜人物互動與表情捕捉： 學習點樣引導拍攝對象，捕捉自然神態同情感。
+📷 課堂四｜實習拍攝： 戶外模特兒實戰拍攝，將所學融入創作。
+
+活動詳情如下，名額有限，有興趣嘅朋友記得把握機會報名參加喇！👇
+
+📅 日期：
+室內工作坊： 2026年 9月7日、14日、21日
+⏰ 時間：1900 - 2100
+📍 室內地點： 荃灣沙咀道57號荃運工業中心2期
+
+戶外模特兒實戰拍攝： 2026年10月4日
+⏰ 時間：1530 - 1730
+☀️ 戶外地點：中上環區街景 (集合地點為上環YMCA外)
+
+👨‍🏫 星級導師： Sony Curator Elite Ben Tang
+👥 名額： 15名（先到先得）
+💰 活動費用： $2,200
+🔗 立即報名：https://bit.ly/46dLcoY
+
+*成功報名之參加者會經電郵收到課程登記確認信。📱
+
+主辦單位擁有隨時修改及終止本活動之權利，如有任何變更內容或詳細注意事項將公布於本網頁或 Sony Hong Kong Facebook 專頁上，恕不另行通知。如有任何爭議，Sony 保留最終決定權。
+
+#SonyHongKong #MySonyStudio #SonyCuratorsElite #SonyAlpha #SonyLens #Sony攝影工作坊 #人像攝影
+```
+
+<a id="example-40"></a>
+## Example 40
+
+Category: mobile · Format: product_launch · Post ID: 1569707285198639
+
+[Source photo](https://www.facebook.com/photo/?fbid=1570503131785721)
+
+```text
+【全新 Xperia 10 VIII 矚目登場丨 突破入門級極限 全方位昇華日常視聽娛樂】
+
+全新 Xperia 10 VIII 完美融匯日系極簡美學與強悍性能，不單將自然光影融入半透明質感機身，更有感升級影音、拍攝與 AI 智慧效能，極致昇華你嘅日常娛樂體驗 ✨！
+
+🌿 日系美學 輕巧隨行
+168g 輕盈機身融入大自然半透明質感設計，時尚兼具穩固單手握感。
+
+📸 清晰影像 細緻捕捉
+1/1.56 吋大感光元件配合 2 倍無損光學變焦，精細捕捉夜景與遠景細節。。
+
+🎬頂級視聽 沉浸享受
+螢幕亮度提升 50%，無論身處陽光下還是移動途中，畫面依然清晰鮮豔；配合升級前置雙揚聲器，震撼音效隨身隨行。
+
+🤖 AI與快捷操作
+專屬快捷鍵，專屬快捷鍵瞬間喚醒相機與支付介面  ;  結合 Google Gemini 及 Circle to Search，一圈即可直覺查找資訊，生活步驟無縫切換。
+
+🚀  極速效能 擴充靈活無阻
+支援6GB 虛擬記憶體擴充，及最高 2TB microSD 卡擴充，搭配長效耐用大容量電池*，輕鬆應對全日所需。支援最多 4 次 Android 系統升級及長達 6 年安全性更新**，為你提供長效穩定防護。
+
+全新 Xperia 10 VIII 助你重新定義日常每一次互動：https://bit.ly/4gprCMF
+
+* 電池續航力數據來自 Sony 在以下條件下進行的測試：每日使用 360 分鐘進行網頁瀏覽、影片播放、遊戲及其他功能操作，並配合 1,080 分鐘待機時間，以 Xperia 用戶的中位數電池使用模式為基準。實際電池表現可能因使用習慣及環境因素而有所不同。
+
+** Android 作業系統版本升級次數及安全性更新支援期限可能因購買時間而有所不同。
+
+#SonyHongKong #SonyXperia #Xperia10 #Xperia10VIII
+```
+
+<a id="example-41"></a>
+## Example 41
+
+Category: gaming · Format: preorder · Post ID: 1569509918551709
+
+[Source post (derived link)](https://www.facebook.com/sonyhongkong/posts/pfbid02JLaP6iJXp5nF7wHQHwzyYE4eNLoEMTBGbHnSgDVEKk8aCEfX9Yb4sZR2nDwQ8KHbl)
+
+```text
+[警告🚨🚨🚨狼人將至🐺請及早準備迎戰]
+9月15日除了是《Marvel’s Wolverine漫威金鋼狼》的上市日之外，同日推出一系列《Marvel’s Wolverine漫威金鋼狼》PS5® Pro/數位版主機殼及DualSense™無線遙控器 限量版。🎮🎮🎮
+
+想你的PS5®主機都可以染上狼人色彩，就快啲嚟訂購啦！
+
+立即訂購： https://www.sony.com.hk/product/ps_accy/zh/
+```
+
+<a id="example-42"></a>
+## Example 42
+
+Category: photography · Format: workshop · Post ID: 1569458415223526
+
+[Source photo](https://www.facebook.com/photo/?fbid=1569458355223532)
+
+```text
+【My Sony Studio 9 月攝影基礎課程 | 攝影入門由此起】
+
+靚相同攝影大作之間，往往只係差咗一點點對光影嘅直覺🤏。如果你覺得自己未掌握好基礎拍攝技巧， 亦對手上嘅 Sony 相機未夠深入認識，不如嚟參加 My Sony Studio 嘅基礎課程📸！專業攝影導師會帶領你由零開始，了解攝影入門技巧、感受 Sony 相機獨有嘅影像魅力，仲會同你一齊走出室外實踐各種攝影理論。想由攝影新手慢慢邁向高手之路，就立即報名啦🤗！
+
+🎯 課程重點：
+👉🏻 了解光圈、快門同 ISO 對拍攝嘅影響
+👉🏻 認識 Sony 相機各種拍攝模式及隱藏設定
+👉🏻 學習正確拍攝步驟同器材保養技巧
+👉🏻 由導師帶領戶外實習拍攝，即場指導構圖思路同相機參數
+
+9月基礎攝影課程 (5 堂) | 課程編號：SA01
+📍理論課：觀塘絲寶國際大廈18樓
+第 1 堂：2026 年 9 月 9 日 (三) 19:00 – 20:45
+第 2 堂：2026 年 9 月 14 日 (一) 19:00 – 20:45
+第 3 堂：2026 年 9 月 16 日 (三) 19:00 – 20:45
+第 4 堂：2026 年 9 月 23 日 (三) 19:00 – 20:45
+
+📍戶外拍攝課：香港公園
+第 5 堂：2026 年 9 月 26 日 (六) 15:00 – 17:00
+
+👥 課程名額：10人
+💰 課程費用：$1,280
+📚 總共堂數：5 堂 (3堂理論, 1堂基礎相機操作及1堂戶外拍攝)
+📸 請自備 Sony 攝影器材上堂：包括相機、鏡頭、充足電量嘅電池及記憶卡
+👉🏻 立即報名：https://bit.ly/3TSwSiY
+
+*成功報名之參加者會經電郵收到課程登記確認信。
+
+#SonyHongKong #MySonyStudio #SonyAlpha #SonyLens #攝影課程 #新手學攝影 #SonySA01
+```
+
+<a id="example-43"></a>
+## Example 43
+
+Category: photography · Format: promotion · Post ID: 1566909288811772
+
+[Source photo](https://www.facebook.com/photo/?fbid=1566909265478441)
+
+```text
+【全片幅相機 暑期限時優惠 ☀️  】
+
+想提升攝影裝備，拍出層次豐富嘅精彩畫面？不論係主打全能表現嘅 A7M5，定係追求極致解像度嘅 A7RM6，而家都係入手嘅最佳時機！Sony 特別呈獻暑期限時激賞，指定人氣全片幅相機送你現金券同額外保養，畀你安心紀錄整個夏日！
+
+優惠期有限，把握機會升級你嘅攝影裝備，感受全片幅相機嘅強大性能！
+
+暑期限時優惠詳情
+優惠期：8月8日至8月31日
+
+📷購買 A7M5 / A7M5M
+送 $400 相機配件現金券*
+送 1年額外原廠保養*（價值︰$1,190）
+立即選購：https://bit.ly/4idJafO
+
+📷購買 A7RM6
+送 $400 相機配件現金券* x2
+送 1年額外原廠保養*（價值︰$1,590）
+*需登記保養以換領優惠
+立即選購：https://bit.ly/3UI95T0
+```
+
+<a id="example-44"></a>
+## Example 44
+
+Category: home_cinema · Format: feature_benefit · Post ID: 1566034902232544
+
+[Source post (derived link)](https://www.facebook.com/sonyhongkong/posts/pfbid02Widf3FghqpU25YQXsVs4gnAidqqRqf2S13MdNfxLGijRK4YTXak1NSRjLA5xx1RAl)
+
+```text
+【Sony BRAVIA 全新True RGB技術  帶你走進色彩的未來！📺✨】
+
+Sony 獨家嘅 True RGB LED 技術到底係點？點樣可以把每一種色彩呈現得精準、自然又有層次？
+
+1️⃣真實原色重現：由整體畫面到單顆燈珠嘅精準控光 🎯
+
+憑藉配備 AI 的 XR Processor 優化信號，聯同 RGB Backlight Master Drive Pro 進行真正獨立精準控光！RGB 智慧光學感應器精細微調，配合 RGB 超微光芯，獨立調控每一束原色光芒，呈現最真實畫面！
+
+2️⃣極致廣色域：突破傳統色域極限 🎨
+
+旗艦 True RGB 技術採用獨立控制嘅三原色 RGB LED，呈現 Sony 史上最真實的原色！將 QD-OLED 嘅絢麗色彩同 Mini LED 嘅極致亮度完美融合，實現最豐富嘅色彩量。即使喺高亮度下，依然能細膩呈現每個故事，畫面飽滿唔會泛白！
+
+3️⃣鮮豔色彩，無懼位置與環境：深邃黑色與防反射 ☀️🖤
+
+螢幕表面加入特別薄膜，大幅減低外部光源及室內照明所造成嘅反射，即使喺明亮嘅房間內，畫面依然清晰鮮明！同時大幅減少明亮高光周圍嘅眩暈，帶來更深邃嘅黑色同更具電影感嘅視覺效果，畀你全情投入影院級體驗！
+
+想親身體驗色彩嘅未來？即刻去了解更多啦！👇
+
+https://bit.ly/4zfXtXg
+了解Sony True RGB: https://bit.ly/468WASY
+了解旗艦 BRAVIA 9 II : https://bit.ly/3UEmwDr
+
+#Sonyhongkong #BRAVIA #TrueRGB #BRAVIA9II #Cinemaiscominghome
+```
+
+<a id="example-45"></a>
+## Example 45
+
+Category: mobile · Format: teaser · Post ID: 1565116742324360
+
+[Source post (derived link)](https://www.facebook.com/sonyhongkong/posts/pfbid025M8q8WPNzWjwLXBa9rneuQQyFDWTKtx4rg8JaiDzpYJrYS8viokv83GR2QYYvrm3l)
+
+```text
+重新定義日常的每一次互動，敬請期待。
+
+香港時間8月25日｜上午10點
+
+#SonyHongKong #SonyXperia #NextXperia
+```
+
+<a id="example-46"></a>
+## Example 46
+
+Category: audio · Format: feature_benefit · Post ID: 1565795232256511
+
+[Source photo](https://www.facebook.com/photo/?fbid=1565795212256513)
+
+```text
+【✨舞台由你定義｜IER-M500 全新舞台入耳式監聽耳機 三色同步登場🎨】
+
+每一次企上舞台，都係展現個人風格同音樂魅力嘅最佳時刻！ 全新舞台入耳式監聽耳機 IER-M500，專為每一位全情投入演出嘅音樂人與藝人而設。集穩固貼合、精準音效與舞台級耐用度於一身，更備有三款特色配色，讓你用自己嘅色彩，登上屬於你嘅舞台🎤！
+
+🎨 三款透明配色展現個人風格
+黑色🖤 透明 🤍 紅藍色❤️💙
+
+🕺 原創承托耳翼✖️穩固貼合自由演出
+Sony專用貼合承托配件搭配隔音耳棉更隨附靈活的耳掛和線夾，帶來穩固貼合感。即使大幅度郁動或跳躍，耳機依然非常穩固，令你更加專注，發揮舞台魅力！
+
+🔊 專業級精準音效✖️掌握每個細節
+
+獲業內多位頂尖音響監聽工程師參與研發，提供精準可靠嘅音效表現。無論係人聲、樂器定節奏，你都可以喺舞台上清楚掌握任何 Cue 以及細節！
+
+🛡️ 舞台級耐用度✖️應對高強度演出
+
+IER-M500 經得起頻繁使用、汗水與濕氣考驗，配搭穩固接頭，保持可靠連接，為每一次演出提供穩定支援！
+
+💰 建議零售價：HK$1,099
+🛒 即刻揀選你嘅舞台色彩：https://bit.ly/3Sch2PB
+
+#SonyHongKong #IERM500 #舞台入耳式監聽耳機 #ForTheMusic
+```
+
+<a id="example-47"></a>
+## Example 47
+
+Category: photography · Format: creator_story · Post ID: 1565107345658633
+
+Source: Sony Hong Kong Facebook page; post ID recorded above.
+
+```text
+生態攝影最吸引嘅地方，就係永遠估唔到下一秒會發生咩事。
+有時飛鳥一瞬間展翅起飛，有時昆蟲只係停留幾秒，所以高速拍攝能力同超高解像度同樣重要。高速連拍幫你捕捉珍貴瞬間，而高解像度就為後期裁切及細節呈現提供更大彈性。
+
+今次 Sony CURATORS ELITE Tooleebee @tooleebee_photography 同 Sony CURATORS 馮漢城 @fhs.f  深入自然生態，分別從飛鳥及微距生態攝影角度，以 A7R VI 捕捉自然世界中的珍貴瞬間。
+
+- 6,680萬像素超高解像度，細膩呈現羽毛及昆蟲紋理
+- 30fps 高速連拍，捕捉瞬息萬變嘅動態畫面
+- Pre-Capture 預拍攝功能，不錯過關鍵一刻
+- AI 鳥類及昆蟲辨識 AF，精準鎖定主體
+- 8.5 級機身防震，提升手持拍攝穩定性
+- 4 軸多角度翻揭式 LCD 螢幕，拍攝角度更靈活
+
+了解更多A7R VI: https://bit.ly/4bWMuIq
+
+即刻觀看影片，一齊走進生態攝影世界，見證 Sony A7R VI 如何兼顧速度、細節與創作自由。
+
+🎥: Sony CURATORs ELITE @davecheungy
+
+#SonyAlpha #A7RVI #ResolutionAccelerated
+```
+
+<a id="example-48"></a>
+## Example 48
+
+Category: home_cinema · Format: award_recognition · Post ID: 1565062928996408
+
+[Source photo](https://www.facebook.com/photo/?fbid=1565062912329743)
+
+```text
+【業界權威加冕 👑 Sony BRAVIA 9 II 榮獲 2026 King of RGB LED TV！】
+
+好消息！喺影音界極具權威性嘅年度盛事——由美國 Value Electronics 主辦嘅 2026 TV Shootout® 評選中，Sony BRAVIA 9 II True RGB TV 憑藉極致強悍嘅畫質表現，榮獲 King of RGB LED TV 尊榮大獎！🏆✨
+
+大會由荷里活專業調色師、電影後製專家及權威影音評論家組成專業評審團，嚴格比對色彩忠實度、色彩飽和度、對比度及動態解像度等多項指標。Sony BRAVIA 9 II 喺頂級 Sony BVM-HX3110 專業級 Master Monitor 作參考基準下，展現出無可比擬嘅畫質實力！
+
+BRAVIA 9 II的核心優勢：
+⭐True RGB 背光技術： 採用獨立驅動紅綠藍三原色 LED，突破 90% BT.2020 廣闊色域，帶來更細膩嘅色階層次與無瑕原色。
+
+⭐4000-nit 級峰值亮度： 媲美 Sony 專業級 Master Monitor 表現，保留極致高光細節與深邃對比，黑階表現直逼 OLED。
+
+⭐XR 晶片 × RGB 控光晶片： AI 演算雙晶片強強聯手，微米級精準調控背光，完美重現荷里活創作者嘅真實意圖。
+
+⭐革命性抗反射屏幕： 完美抑制室內雜光反射，無論明亮定全黑環境，畫面細節依然清晰銳利。
+
+想喺屋企體驗獲權威認可嘅王者級畫質？即刻到 Sony Store 門市親身感受！
+一對一體驗預約: https://bit.ly/3SCGwWy
+了解更多BRAVIA 9 II: https://bit.ly/4x8ezVt
+
+#Sonyhongkong #BRAVIA #BRAVIA9II #TrueRGB #KingofRGBLEDTV #TVShootout2026 #SonyTV #Cinemaiscominghome
+```
+
+<a id="example-49"></a>
+## Example 49
+
+Category: home_cinema · Format: feature_benefit · Post ID: 1564058129096888
+
+Source: Sony Hong Kong Facebook page; post ID recorded above.
+
+```text
+【Cinema Is Coming Home 🎬 荷里活頂級音效人員都讚不絕口！將真正電影院「聲」臨其境帶返客廳 🍿🔊】
+
+點樣先算係真正嘅 Home Cinema 體驗？除咗極致嘅畫面，「聲音」都係帶你入戲嘅靈魂！ 🎧
+最新 BRAVIA Theatre Trio 旗艦級三單元影院系統成功將影院級震撼音效 100% 帶返客廳，得閒嚟Sony Store 親身感受「Cinema is coming home」嘅震撼體驗啦！
+
+了解更多: https://bit.ly/4xn1urP
+
+#Sonyhongkong #BRAVIAtheatre #BRAVIATheatreTrio #Trio #HomeCinema #Cinemaiscominghome
+```
+
+<a id="example-50"></a>
+## Example 50
+
+Category: audio · Format: feature_benefit · Post ID: 1563956092440425
+
+[Source photo](https://www.facebook.com/photo/?fbid=1563956022440432)
+
+```text
+【🎧 掌握聆聽藝術之巔！旗艦無線降噪耳機 1000X THE COLLEXION ✨】
+🛒 即刻探索奢華聆聽：https://bit.ly/45D57NJ
+
+戴上 1000X THE COLLEXION，即刻進入只屬於自己嘅沉浸式聆聽體驗🎶！Sony 1000X THE COLLEXION旗艦無線降噪耳機，為每一位追求極致音色、細膩工藝與生活品味嘅音樂愛好者而生。將奢華設計、沉浸式音效與傳奇 1000X 降噪性能集於一身，隨時隨地享受最純粹嘅私人聆聽時光⭐️！
+
+🎼全新驅動單元✖️廣闊細膩音場
+全新驅動單元配搭與知名母帶工程師共同調音，帶嚟均衡低音、自然人聲與清晰高音，細緻呈現音樂創作原意。啟動 360 Upmix，更可將音樂、電影及遊戲昇華至如臨其境嘅沉浸式空間音場！
+
+🪞 奢華金屬細節✖️舒適細緻觸感
+嚴選金屬細節配搭柔軟細緻人造皮革，將低調優雅融入每一處設計。視覺與觸感同樣講究，讓你享受音樂之餘，亦時刻展現獨到品味！
+
+🔇 傳奇 1000X 降噪✖️專注每個細節
+由先進處理器及適應性麥克風系統驅動，實時優化降噪效能，減少外界噪音干擾。無論身處辦公室、交通工具或繁忙街道，都可以專注享受每一章細膩旋律！
+
+🎨 仲有兩款奢華色彩畀你揀：
+黑色 🖤 | 鉑金色 🤍
+
+🎁 由即日起至 8 月 31 日，凡購買 1000X THE COLLEXION 並完成登記 My Sony 保養，即可免費獲贈 Sony 1000X 限量護照套一個，更可額外獲得3個月延長保養服務及其他會員優惠。立即入手，為完美旅程解鎖！🎶
+
+🛒 即刻探索奢華聆聽：https://bit.ly/45D57NJ
+
+#SonyHongKong #1000XTHECOLLEXION #旗艦無線降噪耳機 #ForTheMusic
+```
+
+<a id="example-51"></a>
+## Example 51
+
+Category: photography · Format: promotion · Post ID: 1563858425783525
+
+[Source photo](https://www.facebook.com/photo/?fbid=1565733812262653)
+
+```text
+【海洋公園大熊貓生日 x Sony Store 消暑禮品大放送！】
+
+為慶祝海洋公園大熊貓生日大派對同「加加」「得得」 2 歲⽣⽇  ，Sony Store 繼續為大家送上驚喜禮遇🎉！適逢 8 月盛夏熱辣辣😎，我哋特別準備咗一系列超得意嘅 Panda Friends 限量消暑禮品～ 而 Sony Store 香港專門店亦會擺放各種熊貓主題擺設及裝飾🐼，歡迎大家到嚟親身體驗 Sony 相機，同時喺店內同萌爆嘅熊貓擺設打卡，享受快樂時光！
+
+由 8 月 17 日起，只要喺 Sony Store 消費滿指定金額，就可以將呢啲實用又可愛嘅禮品帶返屋企，陪你過一個清涼暑假！
+🐼限定禮品大放送詳情：
+
+於 Sony Store 門市或網上買指定 Sony 相機同鏡頭，即可獲贈指定 Panda Friends 禮品:
+
+🎁 買指定 Sony 相機a1 II、a7R V、a7R VI、a9 III、a7CR、a7 IV、a7 V、a7C II、ILCE-7SM3、ILCE-1、ZV-E1送：Panda Friends 手提冰敷風扇 (價值 $180)
+
+🎁買指定 Sony 遠攝鏡頭  SEL100400GM、SEL100M28GM、SEL135F18GM、SEL300F28GM、SEL50150GM、 SEL70200GM2、SEL85F14GM2送：Panda Friends 藍天草地摺傘 (價值 $150)
+
+🎁買指定 Sony 鏡頭  SEL1224GM、  SEL14F18GM、SEL1635GM2、 SEL2470GM2、SEL24F14GM、SEL2870GM、 SEL35F14GM、SEL50F12GM、SEL50F14GM、 SEL2450G、SEL1625G、SEL70200G2、SEL24105G、SEL2070G送：Panda Friends 加加得得地道小食透明水樽 (價值 $100)
+
+贈品數量有限，先到先得，送完即止！各位熊貓迷，快啲把握時間到 Sony Store 消費，一齊同大熊貓慶生兼消暑啦！
+
+📅推廣日期︰2026 年 8 月 17 日至 31 日
+
+#SonyHongKong #海洋公園 #OceanPark #大熊貓 #加加得得 #大熊貓生日大派對 #PandaFriends
+```
+
+<a id="example-52"></a>
+## Example 52
+
+Category: home_cinema · Format: event_recap · Post ID: 1559409356228432
+
+Source: Sony Hong Kong Facebook page; post ID recorded above.
+
+```text
+【Sony X Post76｜Sony True RGB 家庭影院體驗工作坊精華 🎬】
+Sony 聯手 Post76 舉辦「True RGB 家庭影院體驗工作坊」，由 Post76 創辦人小瑟帶大家解構 True RGB 技術，更於特設體驗房實機演示旗艦 BRAVIA 9 II、BRAVIA 7 II 與 BRAVIA Theatre Trio，帶來沉浸式家庭影院體驗！
+
+📌 精華亮點：
+✨ 解構 True RGB 原畫色彩技術
+📺 旗艦 BRAVIA 9 II 超高光暗對比
+📺 BRAVIA 7 II 聲畫合一功能
+🔊 BRAVIA Theatre Trio 打造 360 環繞聲場
+🔊 全系列無線重低音及後置揚聲器陣容
+
+🎬 立即觀看精華重溫：https://youtu.be/6WBd-y1pYzQ
+
+#Sonyhongkong #Post76 #BRAVIA #TrueRGB #BRAVIA9II #BRAVIA7II #BRAVIATheatreTrio #HomeCinema #Cinemaiscominghome
+```
+
+<a id="example-53"></a>
+## Example 53
+
+Category: photography · Format: promotion · Post ID: 1559117772924257
+
+[Source post (derived link)](https://www.facebook.com/sonyhongkong/posts/pfbid022vUQ5UHfFaV2syz6DeTGg8PAAQTWR6HFj9rTjEi4AVQ49WRXNUQ8N72bs4d9rPU5l)
+
+```text
+【全城慶祝！買 Sony 專業影像裝備，請你去海洋公園大熊貓生日大派對！】
+
+各位熊貓迷同攝影愛好者注意！今個8月，海洋公園嘅大熊貓龍鳳胎家姐「加加」同細佬「得得」迎嚟兩歲生日🎂，加埋 媽媽「盈盈」和爸爸「樂樂」 ，仲有人氣高企嘅安安、可可，全園 6 隻大熊貓齊齊化身Panda Friends同大家開Party慶祝生日🥳！
+
+想近距離捕捉佢哋嘅「賣萌」高清神態😍？只要喺限時 4 日嘅 「大熊貓生日快閃優惠」期間，入手指定 Sony Alpha 系列相機或鏡頭，即送你 海洋公園標準入場門票兩張 🎫 參加盛夏最「熊」生日盛典 ，畀你帶埋新嘅攝影裝備入園，為至萌壽星送上祝福兼大影特影！
+
+🐼 大熊貓生日快閃優惠：
+📸 凡購買以下指定型號相機／鏡頭，即可獲贈海洋公園大熊貓生日大派對入場券兩張：
+
+➤指定相機
+即送 Peak Design Capture 相機夾 黑色（價值 HK$628 ）(網上限定)：
+🛍️ 立即選購︰
+A7R VI :https://bit.ly/4wW3uqG
+A1 II : https://bit.ly/4i1UjAf
+A7CR : https://bit.ly/4gqzJbu
+
+➤指定鏡頭
+即送Peak Design Outdoor Sling 7L 戶外單肩袋黑色（價值 HK$782）或Matador Camera Base Layer 2.0 相機內膽包 價值 HK$619  (網上限定)
+🛍️ 立即選購︰
+SEL50150GM : https://bit.ly/45p818S
+SEL2870GM : https://bit.ly/4fREI51
+SEL100400MC : https://bit.ly/4xtjWyj
+📅 快閃限期︰2026 年 8 月 13 至 16 日
+
+#SonyHongKong #SonyAlpha #海洋公園 #OceanPark #大熊貓 #盈盈樂樂 #加加得得 #安安可可 #大熊貓生日大派對 #快閃優惠
+```
+
+<a id="example-54"></a>
+## Example 54
+
+Category: audio · Format: product_launch · Post ID: 1559117646257603
+
+[Source photo](https://www.facebook.com/photo/?fbid=1559117596257608)
+
+```text
+【WH-1000XM6 型格新色登場 🕊️ 全新限定灰綠色正式加入配色陣容】
+
+呢度揀選你嘅專屬配色 👉🏻https://bit.ly/3RqC5xG
+
+無線降噪耳機 WH-1000XM6 迎來全新限定灰綠配色！低調沉穩嘅灰綠色調，帶有自然、俐落又型格嘅質感，無論配襯日常休閒造型、戶外機能風，定係簡約上班穿搭，都可以輕鬆融入，為整體造型增添個性😎。
+
+🎨無線降噪耳機 WH-1000XM6 六種美妙配色🎨
+
+🫒 灰綠色｜🤎 砂岩色｜🌸 沙粉紅色｜
+🤍 白金銀 ｜🌙 月夜藍｜🖤 黑色
+
+除咗外型選擇更豐富，WH-1000XM6 本身配備出色降噪技術及細膩音質表現，有效減少環境雜音，清晰呈現人聲、樂器細節同豐富空間感。無論搭車、工作、旅行定係靜心享受音樂，都可以隨時投入屬於自己嘅私人聆聽空間。
+
+立即揀選最代表你嘅風格嘅 WH-1000XM6 配色，以出色音質同型格設計，為每日聆聽體驗增添個人色彩。
+
+呢度揀選你嘅專屬配色 👉🏻 https://bit.ly/3RqC5xG
+
+#SonyHongKong #WH1000XM6 #Forthemusic #OliveGray #NewColor
+```
+
+<a id="example-55"></a>
+## Example 55
+
+Category: retail_and_brand · Format: promotion · Post ID: 1559049622931072
+
+[Source post (derived link)](https://www.facebook.com/sonyhongkong/posts/pfbid023CXXMGEXiosKo3vPB7qdS4YFYDwTZTVtciRRapuV9CNgvTFXVtW3ek72beoYAGkLl)
+
+```text
+【限時 4 日！Sony Store 夏日祭快閃驚喜⚡️】
+🛍️立即選購：https://bit.ly/4z2IsYY
+
+Sony Store 夏日祭快閃優惠襲來🌞！由8月13日起一連四日，多款精選人氣攝影、音響及電視產品以快閃價發售，部分產品網上選購仲有獨家限定禮品送畀你🎁！即睇5大快閃精選︰
+
+📸高效能全片幅混合式相機 A7 V
+⚡️快閃價 $18,490 (建議零售價 $22,990)
+🎁網上限定︰送 Peak Design Slide Lite 相機背帶 (黑色，價值 $548)
+
+🎵無線降噪耳機 WH-1000XM5
+⚡️快閃價 $1,999 (建議零售價 $3,190)
+
+🎵無線降噪耳塞式耳機 WF-1000XM5
+⚡️快閃價 $1,399 (建議零售價 $2,490)
+
+📺️BRAVIA 7 II 4K 智能電視 K-55XR70M2
+⚡️快閃價 $1,7990 (建議零售價 $19,699)
+🎁網上限定︰送 Bravia Theatre Sub 7 無線重低音揚聲器及 $800 超市現金券
+
+📸24-70mm F2.8 GM II 旗艦級標準變焦鏡頭 SEL2470GM2
+⚡️15-16/8兩日快閃價 $12,290 (建議零售價 $17,990)
+🎁網上限定︰送 Matador Camera Base Layer 2.0 相機內膽包 (價值 $619)
+
+Sony Store 夏日祭仲有更多產品以限時優惠價快售，數量有限、售完即止，立即行動啦！
+
+📅快閃限期：2026年8月13至16日
+🛍️立即選購：https://bit.ly/4z2IsYY
+
+#SonyHongKong #SonyStore #夏日祭 #快閃優惠 #a7V #1000X #BRAVIA7II #SEL2470GM2
+```
+
+<a id="example-56"></a>
+## Example 56
+
+Category: photography · Format: feature_benefit · Post ID: 1558057673030267
+
+[Source photo](https://www.facebook.com/photo/?fbid=1558057643030270)
+
+```text
+【羽量級超遠攝變焦鏡頭 SEL100400 體育實戰📸鎖定賽事關鍵一刻🤾‍♂️】
+
+體育攝影分秒必爭⏱️，但即使你係剛剛接觸運動攝影，都一樣可以輕鬆捕捉賽場上嘅熱血瞬間！
+
+Sony 全新羽量級超遠攝變焦鏡頭 SEL100400 憑藉 654g 嘅超輕量設計，大幅減輕咗攝影師手持拍攝嘅負擔。配合強大嘅 OSS 光學防震功能，令你喺追蹤球員奔跑或激戰過程時，依然能夠保持機身穩定，確保每一幀畫面都清晰銳利，唔會因為體力消耗或手震而錯失關鍵入球時刻✨️。
+
+鏡頭具備 100-400mm 嘅靈活變焦範圍，無論你係喺場邊捕捉近距離嘅肢體動作，定係喺看台遠處拍攝賽事全局，都能夠隨心所欲切換視角。如果需要喺更遠距離拍攝，加配增距鏡後焦距更可延展至 800mm，輕鬆適應唔同規模嘅體育場地需求🏆️。
+
+當 SEL100400 配合Sony Alpha 系列數碼相機使用，更可發揮強勁嘅主體追蹤效能📷️！即使喺高速變焦嘅過程中，強大嘅線性馬達依然能提供極速且精準嘅自動對焦，全時鎖定運動員嘅神態，令你可以喺動態環境下依然穩定輸出專業級影像👏！
+
+👉 立即預訂：https://bit.ly/45c0pXk
+
+#SEL100400 #SonyLens #SonyAlpha
+```
+
+<a id="example-57"></a>
+## Example 57
+
+Category: photography · Format: educational_resource · Post ID: 1557397426429625
+
+[Source photo](https://www.facebook.com/photo/?fbid=1557397393096295)
+
+```text
+【全新Sony Alpha Universe 香港雀鳥攝影地圖  6-8 月鳥攝指南！】
+
+香港其實擁有非常豐富嘅雀鳥生態，一年四季都可以見到唔同雀鳥嘅蹤影！而每年 6 至 8 月更係夏候鳥繁殖同留鳥最活躍嘅季節，正正係觀雀同拍雀嘅黃金時機📸✨
+
+今次 Sony Alpha Universe 特別邀請咗幾位香港嘅專業鳥類攝影師為大家精心準備一份專屬香港嘅觀雀地圖 ！希望呢個地圖可以帶大家了解更多香港雀鳥嘅生態既同時會更清楚唔同場合要用咩鏡頭鏡頭去捕捉並紀錄低雀仔最生動精彩嘅靚樣！
+
+今期 6 至 8 月觀雀地圖，Tooleebee 特別推介以下 3 個夏季觀雀熱點，每個地點都有機會遇見唔同特色雀鳥，無論係新手定資深雀攝愛好者都值得一訪：
+
+📍西貢碼頭
+📍青衣公園
+📍大生圍
+
+香港雀鳥攝影地圖：https://bit.ly/4vT8ta8
+
+而呢個地圖之後都會定期更新，大家去到Alpha Universe頁面只要喺拍攝主題揀番「鳥攝」就可以睇到有關呢個香港雀鳥攝影地圖嘅文章啦~
+
+最重要提醒大家：親近大自然同影靚相嘅同時，記得要時刻愛護同保護生態環境，切勿騷擾野生動物，一齊做個負責任嘅攝影師！
+
+#SonyHongKong #SonyAlphaUniverse #SonyHK #Birdmap #觀雀指南 #香港野生生態 #生態攝影 #保護大自然
+```
+
+<a id="example-58"></a>
+## Example 58
+
+Category: audio · Format: feature_benefit · Post ID: 1556486476520720
+
+Source: Sony Hong Kong Facebook page; post ID recorded above.
+
+```text
+【 🎤 登上舞台，震撼全場！全新 Sony IER-M500 監聽耳機耀眼登場 ✨】
+
+🛒 即刻入手必備舞台裝備：https://bit.ly/3RqCdgE
+
+每一次站上舞台，都係展現極致 Performance、爆發個人魅力嘅最佳瞬間！ Sony IER-M500 全新舞台專用入耳式監聽耳機，為每一位專注演出嘅音樂人與藝人而生。將強大隔音、極致音效與極高穩定度集於一身，做你舞台上最堅定可靠嘅聲音後盾！🎸✨
+
+🕺 超可靠穩固貼合 ✖️ 專注全情投入
+特別配備獨家弧形支撐配件，根據耳廓結構設計，提供無可比擬嘅貼合感。即使喺舞台上隨音樂大動作跳躍或狂熱演出，耳機依然穩如泰山，讓你自由揮灑舞台魅力！💥
+
+🔊 舞台級絕佳隔音 ✖️ 極致精準音效
+採用完全密封隔音外殼配搭獨家聲學技術，瞬間隔絕外界干擾。高音清透亮麗、低音扎實有力，精準還原每一個音符同細節，助你於舞台上完美掌握節奏！👂⚡
+
+🛡️ 高強度防汗耐用 ✖️ 經得起巡演考驗
+選用高抗彎折線材並通過專業防汗測試，配搭可旋轉防拉扯線夾，有效降低摩擦雜音。以親民價位，為你帶來專業巡演級嘅耐用度與可靠表現！💪
+
+🎨 三款型格顏色選擇：
+黑色 🖤 | 白色 🤍 | 紅藍色 ❤️💙
+💰 建議零售價：HK$1,099
+🛒 即刻入手必備舞台裝備：https://bit.ly/3RqCdgE
+
+#SonyHongKong #IERM500 #舞台監聽 #舞台專用 #入耳式耳機 #專業音效
+```
+
+<a id="example-59"></a>
+## Example 59
+
+Category: audio · Format: product_launch · Post ID: 1554485173387517
+
+Source: Sony Hong Kong Facebook page; post ID recorded above.
+
+```text
+【 🫒Meet Olive Gray｜無線降噪耳機 WH-1000XM6 新色質感登場 🎧】
+🛒 即刻入手全新灰綠色配色：https://bit.ly/4hdE8j6
+
+靜謐質感，優雅隨行。Sony 無線降噪耳機 WH-1000XM6 迎來全新配色 Olive Gray (灰綠色)！將大地色系嘅自然美學融為日常 Outfit 一部分，不論係 Working Day 定 Weekend 出遊，都為你嘅造型添上沉穩高級感 ✨
+
+☁️ 軟感貼服｜全天候無感佩戴
+採用極致軟滑嘅耳墊配合寬闊頭樑設計，完美分散頭部壓力。質地貼服包覆，就算戴足全日聽歌、開會，都一樣無壓輕鬆！
+
+🕊️ 全天候舒適
+輕巧機身配合人體工學設計，實現真正零負擔嘅佩戴感，隨時隨地陪伴你投入專屬嘅無噪音樂世界。
+
+🎒 順暢耐用折疊設計
+採用全新改良嘅折疊轉軸構造，收納動作更加順暢俐落！強韌耐用之餘，輕輕一折就能輕鬆收進收納盒，隨身攜帶極之方便。
+
+🫒 Sony 無線降噪耳機 WH-1000XM6 - 灰綠色 一戴即入無噪境地，展現你嘅獨特品味！
+🛒 即刻入手全新灰綠色配色：https://bit.ly/4hdE8j6
+
+#SonyHongKong #WH1000XM6 #灰綠色 #無線降噪耳機 #FortheMusic
+```
+
+<a id="example-60"></a>
+## Example 60
+
+Category: audio · Format: promotion · Post ID: 1553680073468027
+
+[Source post (derived link)](https://www.facebook.com/sonyhongkong/posts/pfbid02AoxJeSsaBzGWp64238tojFZVSGrq2xcXyECihXkMtvpNvFP96cHhvpXEPMfNGZFhl)
+
+```text
+【高品質音效黑膠唱盤 PS-LX5BT | 3日快閃限時優惠賞 🎶】
+
+👉️立即入手：https://bit.ly/4w8pUUh
+
+3日快閃驚喜🫨！想喺屋企隨時享受黑膠唱片嗰份獨特嘅溫暖音色🎼？Sony 高品質音效黑膠唱盤 PS-LX5BT 就啱晒你！
+
+佢一按即可全程自動播放，同時支有線及藍牙無線播放🛜，夠晒簡單易用。
+
+無論你係追求音質嘅資深樂迷，定係想為家居增添品味，呢部高解析音效嘅黑膠唱機都係首選，快啲入手啦！~
+
+📅優惠日期：2026年8月7至9日
+🌟快閃價：$2,899 (建議零售價$3,199)
+👉️立即入手：https://bit.ly/4w8pUUh
+
+#SonyHongKong #全自動黑膠唱機 #PSLX5BT
+```
+
+<a id="example-61"></a>
+## Example 61
+
+Category: audio · Format: trade_in · Post ID: 1553710420131659
+
+[Source post (derived link)](https://www.facebook.com/sonyhongkong/posts/pfbid03RrMXDDCR1Z5WPZB74nSwHn6HVPVXAaUKc1SCpXvUx1v7QPPm3cFMaJTHQxCUZiCl)
+
+```text
+【升級旗艦降噪新體驗｜WH 系列舊機 Trade-in 即減高達 $700 🎧】
+
+想以最優惠價錢將音質、個人風格同降噪效能全面升級🆙？型格嘅 1000X THE COLLEXION 將旗艦聆聽體驗融入時尚設計； WH-1000XM6 則帶來更出色嘅降噪效能與細膩音色，令每段旋律更純淨、更有層次。依家帶指定 WH 系列舊機到 Sony Store Trade-in 換購，即享高達 $700 減價優惠，將舊機價值轉化成升級動力🔥！
+
+Trade-in 優惠詳情👇🏻
+🔵 優惠1️⃣ 指定舊機功能及外觀良好即減 $700
+➡頭帶及鉸鏈（轉軸）完好無損
+➡電源按鈕、NC／AMB 按鈕、觸控或耳罩控制面板、指示燈及耳機連接線輸入全部運作正常
+
+🔵 優惠套裝2️⃣ 指定舊機有部分功能損壞或無法操作照減 $150
+➡頭帶裂開、鉸鏈鬆脫或破損；或
+➡電源按鈕、NC／AMB 按鈕、觸控或耳罩控制面板、指示燈或耳機連接線輸入，其中一項失效或無法操作
+
+🔄 指定 Trade-in 型號
+WH-1000XM4／WH-1000XM5／WH-1000XM6
+
+🎧 可換購型號
+WH-1000XM6
+即刻 Trade-in，讓聲音繼續進化：https://bit.ly/4bvlTC0
+
+1000X THE COLLEXION
+即刻 Trade-in，讓聲音繼續進化：https://bit.ly/4bxyHYB
+
+由極致降噪、細膩音色，到更切合個人風格嘅設計，一次過將聆聽體驗全面升級。舊機唔使再得個擺字，嚟換新機慳得更多，享受更多！
+
+*換購優惠只限以指定舊機型號進行 Trade-in，並購買 WH-1000XM6 或 1000X THE COLLEXION。最高優惠金額視乎換購型號及舊機狀況而定。優惠受相關條款及細則約束。
+
+#SonyHK #WH1000XM6 #1000XTHECOLLEXION #SonyTradeIn #降噪耳機
+```
+
+<a id="example-62"></a>
+## Example 62
+
+Category: mobile · Format: trade_in · Post ID: 1553632330139468
+
+[Source post (derived link)](https://www.facebook.com/sonyhongkong/posts/pfbid032A2KomDDyRLoL33Xf82p6zaZooXYF7Z52WtSVbB6eK8kuJukZvrAtKjHPNkDpY2pl)
+
+```text
+【Sony 最新旗艦手機 Xperia 1 VIII | 限時Trade-in折扣及禮遇】
+立即入手:  https://bit.ly/4tulZ2S
+
+採用全新 ORE 原石美學設計嘅 Sony 新一代旗艦手機 Xperia 1 VIII，唔止外型夠晒靚仔😍，仲配備高性能主鏡頭，同時搭載BRAVIA™ 同 WALKMAN® 技術，帶畀你全方位影音娛樂體驗🤗！而家入手更可享Trade-in優惠同限時禮遇🎁，係時候換新機喇✨️！
+
+➤ My Sony 限定優惠價 [限時至8月31日]
+256GB: $10,999 (原價$12,099)
+512GB: $11,499 (原價$12,899)
+
+➤ 帶埋你手上任何 Android 或者 iOS 舊手機過嚟出機
+不限品牌、不限機身新舊狀況，即額外減 $800！
+限時三選一優惠*# (需完成換領登記程序)
+➤ $800超市現金禮劵 或
+➤ LinkBuds Clip 開放式無線耳機  (價值 $1,499)  或
+➤ 以 $999 換購 WH-1000XM6 無線降噪耳機 (價值 $3,699)
+
+Sony Store 會員獨家限定
+➤ 購買 Xperia 1 VIII 可賺取 My Sony 積分（$1 = 1分）
+➤ 免費送貨服務
+
+推廣日期︰即日起至 2026 年 8 月 31 日
+立即入手︰https://bit.ly/4tulZ2S
+
+* 指定顏色，數量有限，送完即止，優惠期至2026年8月31日
+# 需於網上登記禮品換領程序(需於購買日後90天內完成)並到指定地點/時間憑單換領，優惠詳情請瀏覽 https://www.sony.com.hk/campaigns/store_promo/#xperia ，職員會查閱有關My Sony保養登記紀錄，Sony保留更改優惠條款及細則之最後決定權
+
+#SonyHongKong #SonyStore #SonyXperia #Xperia1VIII #限時優惠
+```
+
+<a id="example-63"></a>
+## Example 63
+
+Category: photography · Format: feature_benefit · Post ID: 1553677373468297
+
+[Source photo](https://www.facebook.com/photo/?fbid=1553677353468299)
+
+```text
+【羽量級超遠攝變焦鏡頭 SEL100400 生態實戰📸捕捉細緻靈動瞬間 🐦】
+
+如果你一直想試下生態攝影，但又擔心器材太重。Sony 全新羽量級超遠攝變焦鏡頭 SEL100400 嘅出現，你嘅理想入門之選、令你更輕鬆咁紀錄大自然嘅美⛰️！
+
+呢支遠攝鏡頭雖然輕便，但對細節嘅追求絕對無妥協。憑藉 0.41x 嘅最高放大倍率🔍️，你可以近距離捕捉到雀鳥羽毛上嘅精細紋理🪶，展現出驚人細緻感。面對瞬息萬變嘅鳥類動態，鏡頭內置嘅雙線性馬達提供咗極速且精準嘅自動對焦效能，無論係喺樹枝躍動定係展翅高飛，都能夠一瞬間鎖定主體神態。
+
+最令人驚喜嘅係鏡頭只有 654g 嘅重量，配合埋強大 OSS 光學防震功能，大幅加強咗手持拍攝嘅穩定性🤗。就算無腳架喺身，手持影雀依然能夠保持畫面銳利清晰。生態攝影由呢刻開始，變成一場輕鬆自在嘅感官享受。立即趁住預售期間入手，帶埋佢去探索更多精彩生態瞬間啦！
+
+👉 立即預訂：https://bit.ly/4wMxZzh
+
+#SEL100400 #SonyLens #SonyAlpha
+```
+
+<a id="example-64"></a>
+## Example 64
+
+Category: audio · Format: product_launch · Post ID: 1553513566818011
+
+[Source post (derived link)](https://www.facebook.com/sonyhongkong/posts/pfbid0m9HvB7cHWjWx8XC7TmVqTBmuxt4CQG7dJ3DmoUdpRtV4HbQpNiVXPiCfZAayKjEGl)
+
+```text
+【舞台監聽新選擇｜全新舞台專用入耳式監聽耳機 IER-M500 震撼登場👂🏻】
+
+專為舞台演出而設，Sony 全新入耳式監聽耳機 IER-M500，集隔音表現、高質素音效、穩固配戴及耐用設計於一身⚡️，讓表演者喺高強度演出下，依然清晰掌握每個聲音細節。
+
+💪 獨家弧形支撐配件緊貼耳廓，即使演出動作激烈，依然保持穩固舒適；耳機亦經過舞台環境防水防汗及線材耐用測試，從綵排到正式演出係咁可靠。
+
+🔇 全密封式結構配合高隔音耳塞，有效減低周圍雜音，讓你專注監聽舞台上每一拍。
+
+🎶 φ5mm 微型動圈單元配合特大後腔體及多層聲學結構，兼顧低頻力量與高頻細節，呈現清晰平衡嘅監聽效果。
+
+IER-M500 全新舞台專用入耳式監聽耳機 | 黑色🖤 白色 🤍 紅藍色❤️💙
+建議零售價：HK$1,099
+
+🔥 準備好登上舞台？即刻入手：https://bit.ly/4wHXLVl
+
+#SonyHongKong #ForTheMusic #IERM500 #舞台專用入耳式監聽耳機
+```
+
+<a id="example-65"></a>
+## Example 65
+
+Category: audio · Format: feature_benefit · Post ID: 1552693930233308
+
+[Source post (derived link)](https://www.facebook.com/sonyhongkong/posts/pfbid0ovbWaTMQiQTq3eGAMhCeMwDiYzFRg8NYf7SkuCBup7VY691syVcKZRDXVz4fbdmFl)
+
+```text
+【全新灰綠色登場｜WH-1000XM6 型格升級】
+
+🛒 率先睇全新配色：https://bit.ly/4w8Ywp4
+
+無線降噪耳機 WH-1000XM6 全新灰綠色正式登場💚！沉穩灰調揉合自然綠意，低調百搭，輕鬆融入日常造型。唔止外表型到震，內裡條件仲吸引，即刻睇下👀：
+
+🔇 內置 Sony 先進降噪技術，智能分析周遭環境並調整降噪效果，有效減低交通、人聲及城市雜音，讓你隨時投入自己嘅聆聽空間。
+
+🎶 細膩音色配合豐富層次，清晰呈現人聲、樂器及低頻細節。由日常歌單到電影娛樂，都能感受更具沉浸感嘅聲音表現。
+
+📞 清晰通話表現有效減少環境噪音，加上舒適貼合設計，長時間佩戴依然自在，輕鬆應付工作、搭車以及任何旅程。
+
+💚🩶 無線降噪耳機 WH-1000XM6 灰綠色
+建議零售價：HK$3,699
+優惠價：HK$2,799
+
+🔥 把握優惠，即刻入手：https://bit.ly/4w8Ywp4
+
+#SonyHongKong #ForTheMusic #無線降噪耳機 #WH1000XM6 #灰綠色
+```
+
+<a id="example-66"></a>
+## Example 66
+
+Category: audio · Format: feature_benefit · Post ID: 1552421436927224
+
+[Source post (derived link)](https://www.facebook.com/sonyhongkong/posts/pfbid0K8Z8jFwp67FdqCb88zTLbPUez6mtmFcXYXQQXbc6LtiSJSuAYyAEohEzXNeH5xBGl)
+
+```text
+【專業舞台級靈魂！IER-M500 全新舞台專用入耳式監聽耳機震撼登場 🎤🔥】
+🎸 即刻準備你嘅完美舞台: https://bit.ly/4hdoNPu
+
+專為追求完美舞台監聽體驗嘅藝人同音樂人而設！Sony 全新舞台專用入耳式監聽耳機 IER-M500 攜手美國頂尖專業監聽調音師（Noel Edwards & Patrick LaMarca）共同研發，將極致細膩嘅聲音表現與專業級耐用性完美融入，為每一場 Live Show 帶來最可靠嘅聲音支持！🎸✨
+
+🕺 獨家弧形支撐，激烈演出依然穩固
+基於耳廓形狀嘅深厚研究，研發出獨家弧形支撐配件，提供精準貼合度。即使在舞台上再激烈跳躍或演出，耳機依然穩如泰山！💥
+
+🎶 極致隔音 & 高質素音效
+完全密封嘅隔音外殼結構，配合 Sony 獨家專利技術與高隔音耳塞，完美結合高頻與低頻表現，助你於舞台上精準掌握每個音符細節！👂⚡
+
+🛡️ 堅固耐用，專為舞台環境打造
+採用高抗彎折線材，並通過 Sony 獨家標準嘅防水防汗測試！隨附可旋轉專用線夾，防摩擦雜音又防拉扯，隨附便攜收納盒輕鬆出 Show！🎒
+
+🎨 三款型格顏色選擇：黑色🖤 白色 🤍 紅藍色❤️💙
+💰 建議零售價 ：HK$1,099
+🎸 即刻準備你嘅完美舞台: https://bit.ly/4hdoNPu
+
+#SonyHongKong #IERM500 #InEarMonitor #NewArrival #ForTheMusic
+```
+
+<a id="example-67"></a>
+## Example 67
+
+Category: audio · Format: product_launch · Post ID: 1552401886929179
+
+[Source post (derived link)](https://www.facebook.com/sonyhongkong/posts/pfbid04Mh5otezG5Fjg4YrD1zaEBDyoxddGdnH3RWA3CCRXwPaZWLVfn5Vf4d3Q6XZTUgMl)
+
+```text
+【無線降噪耳機 WH-1000XM6 家族再添新成員！🎉 全新「灰綠色」限定登場 🫒✨】
+
+新色登場👉🏻 https://bit.ly/4hdA3vg
+
+無線降噪耳機 WH-1000XM6 迎嚟最新成員——灰綠色！🫒🎧 將沉穩自然嘅大地色系融入頂尖降噪科技 ⚡，令耳機化身時尚穿搭必備 👔👟，展現你對簡約質感生活嘅追求～
+
+🫒灰綠色，演繹高級時尚美學 🎨
+獨特嘅灰綠色配色 ，低調得嚟充滿型格質感 ，為你嘅日常 Look 瞬間提升層次 ，將音樂完美融入個人穿搭美學 🕶️。
+
+🤫頂尖降噪，一鍵切換專屬靜界
+喺節奏急速嘅都市生活 ，業界頂級嘅降噪技術為你隨時築起私人寧靜屏障 。戴上耳機嘅一刻 ，即時抽離外界噪音 🚫，令聽音樂成為每日沉澱身心、重拾專注嘅 Me Time 儀式 🧘‍♀️。
+
+💆‍♂️ 雲感佩戴，零壓輕盈舒適感
+嚴選人體工學結構與軟滑親膚材質 ✨，打造出極致輕盈嘅配戴體驗 。就算由朝戴到晚 ☀️🌙，依然貼合無負擔零壓力 ，無縫陪伴你走過每個音樂時刻 🎵❤️。
+
+無線降噪耳機 WH-1000XM6 灰綠色現正型格登場 🛒 https://bit.ly/4hdA3vg
+
+#SonyHongKong #WH1000XM6 #OliveGray #灰綠色 #NoiseCancelling #ForTheMusic
+```
+
+<a id="example-68"></a>
+## Example 68
+
+Category: audio · Format: promotion · Post ID: 1551809733655061
+
+[Source photo](https://www.facebook.com/photo/?fbid=1551809666988401)
+
+```text
+【🎧 限時優惠：入手十週年奢華之作1000X THE COLLEXION 送限量護照套！】
+🛒 立即探索音樂旅程：https://bit.ly/4pVSpTP
+
+🎶✈️ 完美嘅音樂旅程，點少得提升生活質感嘅裝備？
+
+Sony 旗艦無線降噪耳機 1000X THE COLLEXION，重磅聯乘日本著名藝術家內田洋一朗 YOICHIRO UCHIDA @popw，以簽名式塗鴉字體為構想，設計限量版 Sony 1000X 護照套✨而家只要購買1000X THE COLLEXION 就有機會得到，讓你嘅時尚之旅一刻展開。
+
+🎧 1000X THE COLLEXION 跳出傳統框架，將旗艦降噪科技融入藝術美學，打造兼具卓越音質與精緻工藝嘅隨身藝術品。配合匠心舒適設計，長時間配戴都唔會壓迫耳朵，隨時將嘈雜環境嘅變成你專屬嘅音樂綠洲 ☁️。
+
+🎁 由即日起至 8 月 31 日，凡購買 1000X THE COLLEXION 並完成登記 My Sony 保養，即可免費獲贈 Sony 1000X 限量護照套一個，更可額外獲得3個月延長保養服務及其他會員優惠。立即入手，為完美旅程解鎖！🎶
+
+🛒 立即探索音樂旅程：https://bit.ly/4pVSpTP
+
+*禮品數量有限，送完即止。
+*禮品換領詳情請瀏覽網站。
+*Sony 保留更改優惠條款及細則之最終決定權。
+
+——
+
+旗艦無線降噪耳機
+Sony 1000X THE COLLEXION
+匠心調校 × 高解析音質 × 精準降噪
+融合全新設計與精選用料
+1000X
+將每一個細節，放大呈現
+
+#1000XTHECOLLEXION #1000xDetail #1000XSeries #sonyhongkong #ForTheMusic @terencelam0903 #YOICHIROUCHIDA #內田洋一朗 @popw
+```
+
+<a id="example-69"></a>
+## Example 69
+
+Category: photography · Format: workshop · Post ID: 1551658403670194
+
+[Source post (derived link)](https://www.facebook.com/sonyhongkong/posts/pfbid02RMvsXRpnnp8BGdZNsNiK6dorfddsuajDJFrSbjm31oC562FCUr73hKemcSg22py2l)
+
+```text
+【My Sony Studio Master Series | 初階鳥攝課程 捕捉雀鳥精彩瞬間】
+
+野生雀鳥色彩繽紛、神態多變🦜，一舉一動都充滿拍攝魅力，絕對係大自然中最吸引嘅拍攝題材之一！不過，要成功捕捉雀鳥精彩瞬間，除咗耐性同觀察力，亦需要掌握合適嘅拍攝技巧同相機設定，先可以喺戶外拍攝時更加得心應手。
+
+今次 My Sony Studio 為大家帶嚟 「初階鳥攝課程」，並邀請到 Sony Curators Elite — Tooleebee 擔任導師，分享多年鳥攝經驗、實用拍攝心得、入門器材選擇、鳥類習性基礎知識以及適用於鳥攝所需的相機設定。課程更會帶領學員到戶外實拍，親身嘗試捕捉雀鳥動態，再透過作品分析，了解自己嘅進步空間，逐步提升鳥攝技巧🏞️。
+
+如果你都想學識鳥攝入門技巧，影出令自己滿意嘅雀鳥作品，就快啲報名參加啦！
+
+📸課程詳情：
+My Sony Studio Master Series | 初階鳥攝課程 (4 堂)
+🔎對象：已具備基本攝影知識人士，或已完成 SA01 基礎攝影課程的學員
+
+第 1 堂：8月27號  (星期四) (理論課) 7:30pm - 9:00pm
+第 2 堂：9月3號 (星期四) (理論課) 7:30pm - 9:00pm
+第 3 堂：9月13號 (星期日) (戶外拍攝課) 3:30pm - 5:30pm
+第 4 堂：9月17號(星期四) (作品檢討) 7:30pm - 9:00pm
+
+📍理論課地點：觀塘絲寶國際大廈18樓
+📍戶外拍攝課地點：元朗區
+
+🧑🏻‍🏫導師：Sony Curators Elite Tooleebee
+👥名額：12-15人
+💰 活動費用：$2,200
+
+🔗立即報名：https://bit.ly/4h9beAB
+
+名額有限，想踏出鳥攝第一步，就唔好錯過今次課程啦！✨
+
+*成功報名之參加者會經電郵收到課程登記確認信。
+
+#SonyHongKong #MySonyStudio #SonyAlpha #SonyLens #攝影課程 #鳥攝
+```
+
+<a id="example-70"></a>
+## Example 70
+
+Category: photography · Format: preorder · Post ID: 1551541513681883
+
+[Source post (derived link)](https://www.facebook.com/sonyhongkong/posts/pfbid02ohVMAutHsscdJ5iNFBT6VcdoZiHj4zbjmMthrHt1KfzTVgVD1z7temKiQiZkA5mpl)
+
+```text
+【羽量級．遠攝新基準 | 全新 SEL100400 超遠攝變焦鏡頭 預售啟動！】
+
+以前帶長焦鏡頭出街攝影，最驚就係重量成為負擔。Sony 全新推出嘅羽量級超遠攝變焦鏡頭 SEL100400 正正係將超遠攝焦段同極致輕便完美結合，為你帶嚟前所未有嘅靈活拍攝體驗🤗！
+
+呢支鏡頭主打羽量級設計🪶，僅重654g，長途行山或旅行都完全無負擔。雖然機身輕便，但畫質表現依然強悍，高解像力能精確呈現每一處影像細節。配合100-400mm靈活焦段，如果再加配增距鏡，最遠更可延至800mm，無論係影運動、生態定係遠處美景都游刃有餘。
+
+此外，佢更具備0.41x最高放大倍率🔍️，近拍表現夠細膩，幫你輕鬆捕捉細微主體神態。鏡頭亦內置咗兩組線性馬達⚙️，能夠完美發揮 Alpha 系列相機嘅高速自動對焦效能，加上OSS光學防震功能，即使手持拍攝依然能保持畫面穩定銳利。
+
+而家預訂更送你指定Sony 多功能相機包，數量有限，送完即止！係時候解放你嘅肩膀負擔，迎接超輕量遠攝新紀元😉！
+
+📸Sony 羽量級超遠攝變焦鏡頭 SEL100400
+💰售價︰$6,290
+📅預售日期︰2026 年 8 月 5 日至 8 月 18 日
+🎁預售贈品︰Sony 多功能相機包 LCS-SL20 (價值: $450)
+
+⭐️重點一覽：
+➤超輕量654g纖巧設計配合高解像力呈現細緻畫質
+➤100-400mm靈活變焦範圍，兼容增距鏡最遠達至 800mm
+➤0.41x最高放大倍率展現細膩近拍表現
+➤採用2組線性馬達，完美發揮 Alpha 相機高水準自動對焦
+➤配備OSS光學防震功能加強手持拍攝穩定性
+
+👉️立即預訂：https://bit.ly/4pUtDDk
+
+#SonyHongKong #SEL100400 #SonyLens #SonyAlpha #羽量級長鏡
+```
+
+<a id="example-71"></a>
+## Example 71
+
+Category: photography · Format: product_launch · Post ID: 1551041790398522
+
+Source: Sony Hong Kong Facebook page; post ID recorded above.
+
+```text
+【全新羽量級超遠攝變焦鏡頭 SEL100400📸精彩瞬間 近在咫尺！】
+
+Sony 全新超遠攝變焦鏡頭 SEL100400，讓遠方瞬間近在眼前！
+
+無論係球場另一邊小朋友嘅笑容🥰，定係遠處翱翔嘅飛鳥🕊️，呢支輕巧便攜嘅超遠攝變焦鏡頭，都可以幫你捕捉以往遙不可及嘅畫面。作為踏入遠攝世界嘅理想第一步，佢為你開拓更多嶄新視角，帶嚟更廣闊嘅創作空間，讓你透過相片訴說更精彩故事。
+
+👉立即了解更多︰https://bit.ly/4vVN68k
+
+#SEL100400 #SonyLens #SonyAlpha
+```
+
+<a id="example-72"></a>
+## Example 72
+
+Category: photography · Format: event_recap · Post ID: 1549900743845960
+
+Source: Sony Hong Kong Facebook page; post ID recorded above.
+
+```text
+📸「第一屆全港小學學界三項鐵人攝影比賽」圓滿落幕 🌟
+由 Sony 贊助嘅「第一屆全港小學學界三項鐵人攝影比賽」頒獎禮早前於愛秩序灣官立小學圓滿舉行 🏫。一眾攝影新秀聚首一堂，以鏡頭定格精彩瞬間，展現無限創意與觀察力 💫。
+是次比賽涵蓋人像、生態及運動攝影三大範疇，並邀請專業攝影師親身分享拍攝技巧與實戰經驗，包括人像攝影師 Emil Tse、生態攝影師 Sony CURATOR 馮漢城，以及運動攝影師 Sony CURATORS Elite Conard Yu，啟發同學們從不同角度探索攝影藝術。
+來到壓軸嘅運動攝影環節及頒獎禮，當日活動由攝影師 Conard 率先登場，分享專業運動攝影心得。Conard 將捕捉極速動態嘅實戰心得同構圖美學傾囊相授，即時為同學仔注入滿滿嘅創作靈感！💡
+📸 同學們隨即學以致用，化身小小攝影師，喺足球同乒乓球賽事現場施展渾身解數，瞓身捕捉選手嘅英姿，將最熱血嘅畫面完美定格 ⚽🏓✨。
+
+🏆 經過評審團嘅嚴格評選，最終由 Conard 親自頒發獎項予各位得獎者，共同見證學界攝影新星嘅誕生👏
+非常感謝當日所有參賽同學嘅投入同熱情，你哋用影像凝聚力量，成就非凡創意！❤️
+#SonyHongKong #SonyAlpha #攝影比賽 #ForTheNextGenertion #第一屆全港小學學界三項鐵人攝影比賽
+```
+
+<a id="example-73"></a>
+## Example 73
+
+Category: photography · Format: event_recap · Post ID: 1547313500771351
+
+[Source photo](https://www.facebook.com/photo/?fbid=1547313167438051)
+
+```text
+【Sony 呈獻：Jason Chan Live in Frames 20 週年演唱會 精彩時刻全紀錄】
+
+陳柏宇一連三晚嘅《Live in Frames 20 週年演唱會》喺無數掌聲同感動中圓滿落幕。Jason 以歌聲細訴二十年音樂旅程，將一路走來嘅回憶、情感同成長逐一呈現；而佢喺舞台上嘅每個感動瞬間，亦當然有用專業影像永久保存啦！
+
+今次演唱會重點之一嘅微電影《人生四格》，特別選用 Sony BURANO 電影攝影機拍攝，以電影級影像質感演繹故事細節，為整個演唱會注入更深層次嘅視覺敘事。到演唱會後段，Jason 更於舞台上透過輕巧便攜嘅 Sony ZV-1 II 實時播放同 Fans 合照嘅畫面，將台上台下嘅互動與喜悅即時定格，成就難忘一刻。
+
+此外，我哋亦特別安排早前參與 My Sony Studio 工作坊嘅參加者親臨現場，使用 Sony 專業相機器材及長焦距鏡頭進行拍攝，親身體驗專業影像創作嘅魅力。同時，大會指定攝影師亦選用 Sony 專業器材，為 Jason 捕捉每一個閃耀舞台時刻，完整記錄演唱會嘅震撼與感動！
+
+由台前到幕後，由歌迷互動到官方攝影，Sony 都以專業影像技術貫穿整個演唱會製作，陪伴大家一同見證並記錄 Jason 音樂旅程中極具意義嘅一頁。
+
+而家，就一齊透過一幕幕精彩相片，重溫《Jason Chan Live in Frames 20 週年演唱會》嘅難忘瞬間。
+
+#SonyHongKong #MySonyStudio #JasonChan #陳柏宇 #LiveInFrames #20週年演唱會
+```
+
+<a id="example-74"></a>
+## Example 74
+
+Category: retail_and_brand · Format: promotion · Post ID: 1547255850777116
+
+[Source photo](https://www.facebook.com/photo/?fbid=1547255834110451)
+
+```text
+【Sony Store 夏日祭 🌻 驚喜優惠正式開催！】
+
+夏天除咗同陽光玩遊戲🌞，仲係入手Sony產品嘅好時機！一於帶住專業嘅Sony相機為夏日美好時光定格📸，同時戴上Sony耳機隨時隨地享受音樂🎵，再用埋REON POCKET消暑降溫🌬️，咁先叫Happy Summer！
+
+喺「Sony Store 夏日祭」舉行期間，精選產品低至 6 折！由相機、耳機到消暑神器都有齊，數量有限，立即選購啦！
+
+📅 優惠限期︰即日起至2026年8月30日
+🛍️ 限時熱賣：https://bit.ly/4g8bi1t
+
+#SonyHongKong #SonyStore #夏日祭 #限時優惠
+```
+
+<a id="example-75"></a>
+## Example 75
+
+Category: audio · Format: lifestyle · Post ID: 1547039507465417
+
+[Source post (derived link)](https://www.facebook.com/sonyhongkong/posts/pfbid0qNaVxJk6dVC81UnfP61xuBNPWXrCWvWQSJrwBBqS5RBSvp6aPWMCS43fZDRR9oLCl)
+
+```text
+【 無線開放式耳機 LinkBuds Clip | 升級你嘅運動造型！】
+了解更多：https://bit.ly/4cy5DS2
+
+不論起跑、衝刺定戶外訓練，最緊要自在有態度！無線開放式耳機 LinkBuds Clip，將耳扣飾物嘅時尚設計融入運動造型，無論襯運動套裝定 Sporty Look，都可以型住聽、自在郁動✨！
+
+獨特 C 形耳夾輕巧貼耳，穩固貼服，陪你專注征服每一步。開放式設計讓你一邊享受強勁節奏，一邊輕鬆掌握四周環境能量，越跑越自在！🏃🏻‍♂️✨
+
+💦 IPX4 防潑水設計，汗水同小雨都無阻節奏
+🔋 長達 37 小時電池續航力，陪你完成日常訓練
+⚡ 快速充電 3 分鐘即可使用約 1 小時
+🎧 三種聆聽模式，按環境及活動靈活切換
+
+任何時候，LinkBuds Clip 都將穩固佩戴、自然聆聽同時尚設計集於一身。運動耳機唔再只係裝備，更可以成為整體造型嘅焦點所在。
+
+4 款大熱配色：
+💜 薰衣草色 ｜ 🤍 米灰色 ｜ 💚 綠色 ｜ 🖤 黑色
+
+立即入手，用色彩與音樂，穿出你嘅運動美學
+🛒 https://bit.ly/4cy5DS2
+
+#SonyHongKong #LinkBudsClip #OpenEar #SportsStyle #ForTheMusic
+```
+
+<a id="example-76"></a>
+## Example 76
+
+Category: retail_and_brand · Format: event_announcement · Post ID: 1546221887547179
+
+[Source photo](https://www.facebook.com/photo/?fbid=1546221857547182)
+
+```text
+【🕷️ 蜘蛛俠驚喜現身 Sony Store 旺角專門店】
+
+Spider-Man 粉絲注意！8 月 1 日，蜘蛛俠將驚喜現身 Sony Store 旺角專門店，同大家近距離見面打卡！🎉當日更歡迎大家以 Spider-Man 造型到場，一齊影相、打卡，同其他粉絲交流，盡情投入蜘蛛俠宇宙。🕸️
+
+🖥️ 現場仲可以透過全新 Sony BRAVIA 電視欣賞《蜘蛛俠：英雄重生》精彩預告片，以震撼真實畫面感受蜘蛛俠嘅熱血魅力，投入更逼真嘅英雄世界！
+📸記得帶埋你嘅 Sony 相機，捕捉每個精彩英雄時刻，拍出最有型嘅 Spider-Man 主題作品！
+
+📍 地點：Sony Store 旺角專門店
+📅 日期：2026年8月1日
+🕷️ 時間：下午2:45-3:30
+
+快啲約埋朋友同屋企人一齊嚟，化身蜘蛛俠，影低最有英雄感嘅一刻！📸✨
+
+《蜘蛛俠：英雄重生》將於7月30 日大銀幕獻映
+#SonyHongKong ＃SonyPictures #蜘蛛俠英雄重生 #SpiderMan
+```
+
+<a id="example-77"></a>
+## Example 77
+
+Category: photography · Format: workshop · Post ID: 1546096217559746
+
+[Source photo](https://www.facebook.com/photo/?fbid=1546096194226415)
+
+```text
+【My Sony Studio | 流動定格．動態明信片 短片拍攝及後製剪接課程】
+
+旅行拍低一大堆短片，但剪出嚟總係少咗份故事感？🎬 其實只要掌握敘事邏輯、構圖節奏同剪接技巧，日常街頭畫面都可以變成充滿電影感嘅「動態明信片」！
+
+今次 My Sony Studio 邀請到 Sony Curators Elite — Vincent Chan (@vinvincent) 親身授課！Vincent 係一位擅長用影像紀錄人物故事嘅紀錄片工作者。近年佢更專注拍攝戶外極限探險者嘅紀錄片，透過佢嘅獨特鏡頭帶領觀眾用全新視角探索世界。今次佢將會帶你由理論、街頭實拍到作品檢討，一步步學識「動態明信片」嘅拍攝思維，將旅途同日常瞬間剪成有溫度、有節奏、有記憶點嘅短片作品。
+
+🎬 兩堂制實戰課程：由理論到街頭實拍
+第一堂：構圖美學、剪接教學＋銅鑼灣戶外拍攝
+第二堂：學員作品深度檢討及剪接指導
+
+課程對象:
+📷 已具備基本攝影知識的人士，或已完成 SA01 基礎攝影課程 的學員
+🎞️ 有興趣學習短片拍攝及剪接的初學者
+
+⚠️ 注意事項：
+第二堂課程將進行剪接實習，請學員自備手提電腦 💻。
+
+⭐️ 活動詳情
+
+【第一堂】
+📅日期： 2026年8月22日（星期六）
+📍地點：Sony 香港專門店
+🕒 時間及流程：
+下午 2:00 – 4:00：理論講解、分鏡美學及剪接教學
+下午 4:00 – 6:00：銅鑼灣戶外拍攝實習 (備註：8月22日至29日期間，學員需自行為素材進行後製剪接)
+
+【第二堂】
+📅日期： 2026年8月29日（星期六）
+📍 地點：觀塘絲寶國際大廈18樓
+🕒 時間及流程：
+下午 2:00 – 4:00：學員作品深度檢討及交流（Vincent 將針對剪接技巧作進一步指導，豐富影片成品）
+
+💰 課程費用： $980
+
+🔗 立即報名： https://bit.ly/4pThChK
+
+*成功報名之參加者會經電郵收到課程登記確認信。
+
+主辦單位擁有隨時修改及終止本活動之權利，如有任何變更將公布於 Sony Hong Kong Facebook 專頁，恕不另行通知。如有爭議，Sony 保留最終決定權。
+
+#SonyHongKong #MySonyStudio #SonyAlpha #SonyLens #動態明信片 #攝影工作坊 #影像敘事
+```
+
+<a id="example-78"></a>
+## Example 78
+
+Category: audio · Format: event_signup · Post ID: 1544208681081833
+
+[Source photo](https://www.facebook.com/photo/?fbid=1544206797748688)
+
+```text
+【無線開放式耳機 LinkBuds Clip 同你跑入香港跑步社群 🏃🏻‍♀️ 】
+
+👉 即刻跟隊報名 https://bit.ly/3Tr6XhZ
+
+跑步聽歌除咗音質，佩戴舒適度同穩定性一樣重要！今個 8 至 9 月，Sony 將聯同香港跑步社群 DUO.HK 舉辦 4 場跑步體驗活動，帶你將耳機投入真實訓練場景！一邊跑、一邊親身感受 LinkBuds Clip 嘅完美佩戴感與震撼音效🔥！
+
+DUO.HK係一個融合街頭潮流同運動機能嘅香港跑會，聚埋一班嚟自唔同生活背景、唔同年齡層，但同樣熱愛路跑同越野跑嘅都市跑手。
+
+想親身試玩？開跑前有專人協助耳機設定，等你可以全力衝刺兼即場分享感受！現場掃描 WhatsApp QR Code 完成 Check-in 並填妥跑後問卷，即有機會免費贏取 LinkBuds Clip 無線開放式耳機（每場 1 個名額）！名額有限，即刻 Click 入嚟報名啦：https://bit.ly/3Tr6XhZ
+
+🎧 LinkBuds Clip × DUO.HK跑步體驗場次
+
+🏃🏻 路跑訓練（第一場）
+🗓️ 日期：2026 年 8 月 12 日
+⏰ 時間：晚上 7:30 – 9:00
+📍 地點：城門谷運動場
+👥 名額: 25位
+
+🏃🏻 路跑訓練（第二場）
+🗓️ 日期：2026 年 8 月 26 日
+⏰ 時間：晚上 7:30 – 9:00
+📍 地點：城門谷運動場
+👥 名額: 25位
+
+🏋🏻 室內訓練
+🗓️ 日期：2026 年 9 月 12 日
+⏰ 時間：下午 4:30 – 6:30
+📍 地點：觀塘 Gym Room（詳細地點稍後公布）
+👥 名額: 18位
+
+⚡ 城市探索
+🗓️ 日期：2026 年 9 月 19 日
+⏰ 時間：上午 9:30 – 11:30
+📍 地點：元朗或觀塘（最終地點稍後公布）
+👥 名額: 25位
+
+🎁 豐富活動內容：
+✅ LinkBuds Clip 試戴及功能設定
+✅ 團體熱身及團體跑
+✅ 跑步期間全程實測耳機
+✅ 跑後體驗分享及意見收集
+✅ 活動相片及影片拍攝
+✅ 有機會免費贏取 LinkBuds Clip 無線開放式耳機
+
+報名詳情：https://bit.ly/3Tr6XhZ
+* 如報名超額，活動名額及參與場次將以隨機抽籤形式決定。
+
+LinkBuds Clip 設計輕巧舒適，仲可以透過專用耳膠調整貼合度，無論日常慢跑、節奏訓練定跑長課，都可以享受更穩固、更個人化嘅佩戴體驗；加上 IPX4 防水設計，流汗訓練都可以從容應對💦！
+
+今個夏天，同 DUO.HK一齊戴上 LinkBuds Clip，跑入城市，親身感受音樂同運動節奏完美同步🎶！
+
+#SonyHongKong #LinkBudsClip #DUOHK #RunningCommunity #ForTheMusic
+```
+
+<a id="example-79"></a>
+## Example 79
+
+Category: home_cinema · Format: lifestyle · Post ID: 1544184727750895
+
+Source: Sony Hong Kong Facebook page; post ID recorded above.
+
+```text
+【BRAVIA 9 II True RGB 極致真實色彩，完美融入你的質感家居】
+全新 BRAVIA 9 II 搭載 True RGB 技術，將影院級視覺體驗輕鬆帶進客廳。
+不只是電視，更是室內空間美學的一部分。
+True RGB 極致色彩 x 俐落線材收納，將客廳打造成兼具設計感與震撼畫質的私人影院。
+立即探索全新 BRAVIA 9 II：https://bit.ly/4xr8tzB
+
+#Sonyhongkong #SonyBRAVIA #BRAVIA9II #TrueRGB #Cinemaiscominghome #HomeCinema #HKInteriorDesign
+```
+
+<a id="example-80"></a>
+## Example 80
+
+Category: retail_and_brand · Format: service_notice · Post ID: 1543290637840304
+
+[Source post (derived link)](https://www.facebook.com/sonyhongkong/posts/pfbid0BxnrxU2hwiz3VS1NDaqrHWLuib7rBqrsV4w7fmMpvSQ4jg55FRW7caMjZkLrTT2kl)
+
+```text
+【Sony Store 尖沙咀專門店 搬遷通知】
+
+感謝您一直對我們的支持！Sony Store 尖沙咀專門店將於8月3日 起暫停營業以配合搬遷。
+
+尖沙咀專門店將營業至8月2日，時間為11:00 - 18:00
+
+新店將以全新面貌同大家見面，敬請期待！✨
+
+如有任何查詢，歡迎隨時聯絡我們。
+📞 客戶服務熱線： 2833 5129
+
+#SonyHongKong #SonyStore
+```
+
+<a id="example-81"></a>
+## Example 81
+
+Category: retail_and_brand · Format: event_recap · Post ID: 1543222514513783
+
+Source: Sony Hong Kong Facebook page; post ID recorded above.
+
+```text
+【LiSA ✖ Sony Store Hong Kong限定見面會圓滿結束🎊】
+
+多謝各位 LiSAッ子上星期日親臨 Sony Store 銅鑼灣希慎廣場分店，同我哋一齊迎接 LiSA 親臨現場🔥！大家嘅熱情歡呼同支持，令整場見面會充滿難忘又感動嘅時刻💖！
+
+活動當日，LiSA 除咗近距離同 Fans 互動、分享近況，更驚喜清唱一曲畀大家聽🎤！熟悉嘅歌聲近在耳邊，相信在場每位 LiSAッ子都感受到 LiSA 滿滿嘅能量，同埋佢對 Fans 最真摯嘅心意✨！
+
+我哋已經將當日嘅珍貴畫面剪輯好，大家一於再次重溫每個精彩瞬間🎬！多謝 LiSA 一直以音樂為我哋帶嚟無數美好回憶，亦多謝每位到場支持嘅 LiSAッ子，令今次見面會變得更加完整！
+
+期待下一次再同 LiSA 及大家見面，一齊創造更多嘅回憶⚡️！
+
+【LiSA ✖ Sony Store Hong Kong Exclusive Fan Meeting Comes to a Successful Close 🎊】
+
+A huge thank you to all the LiSAッ子 who joined us at Sony Store, Hysan Place in Causeway Bay last Sunday to welcome LiSA in person 🔥! Your passionate cheers and incredible support made the fan meeting a truly unforgettable and heartwarming occasion 💖!
+
+During the event, LiSA connected with fans up close, shared what she had been up to, and even surprised everyone with an impromptu a cappella performance 🎤! Hearing her familiar voice live and up close, every LiSAッ子 in attendance could undoubtedly feel her incredible energy and heartfelt appreciation for her fans ✨!
+
+We have put together a highlight video capturing the precious moments from the day, so let’s relive all the excitement together 🎬! Thank you, LiSA, for continuing to bring us so many wonderful memories through your music. We would also like to thank every  LiSAッ子  who joined us and made the event truly special!
+
+We look forward to welcoming LiSA and all of you again, and creating even more unforgettable memories together ⚡️!
+
+#LiSA #LiSAXSonyStoreHK #LiSAAsiaTour #LiSA15th #LiVEisSmileAlways #SonyStoreHongKong #LiSAッ子
+```
+
+<a id="example-82"></a>
+## Example 82
+
+Category: audio · Format: feature_benefit · Post ID: 1540743198095048
+
+[Source photo](https://www.facebook.com/photo/?fbid=1540743118095056)
+
+```text
+【無線開放式耳機 LinkBuds Clip 跑住聽🏃🏻‍♂️保持節奏 掌握四周】
+了解更多：https://bit.ly/46CFb5I
+
+晨操抑或放工後嘅慢跑，想用音樂帶動步伐，又唔想忽略身邊嘅交通環境聲？LinkBuds Clip 以開放式設計配合穩固耳夾結構，等你由熱身到最後衝刺都可以安心向前。
+
+🏃 C 形耳夾設計 每一步都穩定貼服
+耳機輕鬆貼合耳廓，跑動、轉彎甚至加速衝刺時，都能保持穩固佩戴。配合耳膠配件，仲可以按個人耳型調整貼合度，減少跑步途中反覆整理耳機嘅需要。
+
+👂 開放式聆聽 保持警覺性
+不阻擋耳道設計，令你做運動聽歌同時亦能留意車聲及途人動靜。無論喺街道、公園定 Gym 房，都可以掌握周圍環境，保持節奏之餘亦兼顧安全。
+
+☁️ 輕巧舒適 長跑亦無壓力
+改良氣流設計帶嚟耳道零壓力感覺，長時間佩戴依然自然舒適。加上 IPX4 防潑水規格，面對汗水或途中微雨，都可以繼續專注完成是日計劃。
+
+由第一公里到最後一步，LinkBuds Clip 提供最高品質嘅音樂節奏，同時助你維持四周環境嘅連繫。
+
+💚 了解更多https://bit.ly/46CFb5I
+
+#SonyHongKong #LinkBudsClip #Forthemusic #Running #開放式耳機
+```
+
+<a id="example-83"></a>
+## Example 83
+
+Category: photography · Format: preorder · Post ID: 1540502834785751
+
+[Source post (derived link)](https://www.facebook.com/sonyhongkong/posts/pfbid02HeH3QhAbQUXgpA9EV8w2784iZ9Wm6iv21tB26tgPFoYSNE9Ke6oY8HksgrfKcWZql)
+
+```text
+【全新 Sony Cinema Line FX5 預售登場 🎬｜電影級影像　輕巧掌控】
+
+即睇預售詳情：https://bit.ly/4fuZMwJ
+
+全新 Sony Cinema Line FX5 將電影級影像表現、專業製作彈性同輕巧機動性集於一身，無論係獨立創作、劇組、紀錄片拍攝，定係專業電影多機製作都可以更靈活應對。
+
+FX 系列首款支援 5K Open Gate 錄影嘅專業電影攝影機，FX5 為拍攝構圖、不同畫面比例輸出、anamorphic 鏡頭支援以及後期製作提供更大自由度，同時兼顧高速拍攝、低光表現同 X-OCN 工作流程。
+
+全新 FX5 即將接受預訂，並設有多款指定鏡頭及專業配件加購優惠。
+📅 預售日期：2026 年 7 月 24 至8 月 2 日
+🛒 正式發售：2026 年 8 月 4日
+
+➤ FX5 淨機身：HK$38,990
+➤ FX5 連 XLR-H2 套裝：HK$43,990
+
+✨重點功能✨
+➤ 5K Open Gate 高速錄影
+全片幅堆疊式 Exmor RS CMOS 支援高速讀出，兼顧高解像度與高幀率拍攝需要
+
+➤ 最高 5K 120p／4K 240p 慢動作錄影*
+以高解像度捕捉高速動作，為電影、廣告及創意製作帶來更強視覺表現
+
+➤ 內錄 X-OCN
+提供 LT、C1 及 C2 編碼選擇，讓創作者按製作需要，在影像質素、檔案大小與 RAW工作流程彈性之間取得平衡
+
+➤ Three Base ISO 800／4000／12800
+靈活應對日間、室內及低光環境，保持清晰度、寬容度與穩定影像表現
+
+➤ 15+ 級寬容度
+保留更多高光及暗部細節，呈現自然平滑嘅光影過渡與豐富層次
+
+➤ AI 驅動高精確度自動對焦
+升級AI人體姿勢估計技術辨識主體, 實時追蹤功能, 即使在昏暗場景也能實現出色自動對焦效能
+
+🈹鏡頭加購優惠**🈹
+➤ HK$7,190 加購 SEL24F14GM｜原價 HK$11,990
+➤ HK$7,590 加購 SEL35F14GM｜原價 HK$11,990
+➤ HK$10,290 加購 SEL50F12GM｜原價 HK$16,990
+➤ HK$10,190 加購 SEL85F14GM2｜原價 HK$13,990
+➤ HK$5,290 加購 SEL24105G｜原價 HK$6,990
+➤ HK$5,990 加購 SELP1635G｜原價 HK$10,490
+➤ HK$5,090 加購 SEL20F18G｜原價 HK$7,490
+
+🈹配件加購優惠🈹
+➤ HK$699 加購 NP-SA100｜原價 HK$840
+把握限時優惠，即睇預售詳情：http://bit.ly/4c1WCzp
+
+*Open Gate 錄影僅適用於 X-OCN 錄製。5K 120p Open Gate 及 4K 240p 裁切錄影功能計劃於 Version 2 韌體提供，實際推出安排以正式公布為準。
+
+**每單只限以加購價購買一支鏡頭及一件NP-SA100電池
+
+#SonyHongKong #CinemaLineFX5 #SonyAlpha #LightingTheWayForward #OpenGate #XOCN
+```
+
+<a id="example-84"></a>
+## Example 84
+
+Category: retail_and_brand · Format: event_announcement · Post ID: 1539643041538397
+
+[Source post (derived link)](https://www.facebook.com/sonyhongkong/posts/pfbid09urxWzmEnj4ffwZEd2B8AmKZftzZvLoYBmzRtHFGKENDtuL33zSdPbrwoEkSGmiGl)
+
+```text
+🕷️ Sony Store 期間限定《蜘蛛俠：英雄重生》主題活動登場！
+
+Sony 特別聯乘《蜘蛛俠：英雄重生》，帶來期間限定主題活動！📸
+活動期間，Sony Store 換上蜘蛛俠主題佈置，並設有多款精緻模型展示，等大家可以一邊體驗 Sony 相機產品，一邊測試對焦速度、色彩表現同細節捕捉能力，盡情享受拍攝樂趣！
+
+🎁 即場登記成為 My Sony 會員，更有機會獲得限量精美禮品一份*！
+📍 活動地點： Sony Store 香港及旺角專門店
+📅 活動日期： 即日起至 8 月 16 日
+
+快啲約埋身邊嘅蜘蛛俠粉絲，一齊去Sony Store打卡，感受英雄魅力！🕸️✨
+
+《蜘蛛俠：英雄重生》將於7月30 日大銀幕獻映
+
+*受條款及細則約束，禮品數量有限，送完即止
+#SonyHongKong ＃SonyPictures #蜘蛛俠英雄重生 #SpiderMan #Hottoyshk
+```
+
+<a id="example-85"></a>
+## Example 85
+
+Category: photography · Format: product_launch · Post ID: 1539159798253388
+
+[Source post (derived link)](https://www.facebook.com/sonyhongkong/posts/pfbid02nCZLTb7gtvzQxdnaASb7QfCb6V4tmaFggTgqxo7MQcAfNvW9WL6rrMojk8hVmKuNl)
+
+```text
+【Lighting The Way Forward 🎬 Sony 全新 Cinema Line 專業電影攝影機 FX5 隆重登場】
+
+Sony FX 系列首款支援 Open Gate 拍攝嘅專業電影攝影機 FX5 正式登場✨！
+
+全新 Sony FX5 充分運用全片幅感光元件面積，為變形寬銀幕鏡頭拍攝、後期裁切同直度影片輸出提供更大創作空間；同時升級至 Three Base ISO，讓用家更靈活應對不同光線環境。FX5 更支援內置 X-OCN 錄影、首度於 Cinema Line 引入 Dual Gain，並可記錄高質素 16-bit scene-linear RAW  影像，將高階電影製作所需嘅畫質、寬容度同後製彈性，濃縮於輕巧機身之中。
+
+🎞️ 電影級畫質與後製彈性
+
+✔️ 全片幅 Open Gate 拍攝：充分運用感光元件面積，為變形寬銀幕鏡頭拍攝、後期裁切同直度影片輸出提供更大構圖空間。
+
+✔️ 內置 X-OCN 錄影：毋須外置 Recorder，即可攝製與 VENICE 2 及 BURANO 同屬 X-OCN Compression 嘅 16-bit RAW 影像，同時兼顧檔案大小、傳輸效率與調色彈性。
+
+✔️ 15+ 級動態範圍：保留更多高光與暗部層次，呈現自然平滑嘅光影過渡。
+
+🌙 靈活應對多變光線
+
+✔️ Three Base ISO 800／4000／12800：由光線充足到低光場景拍攝，都可以更靈活配合現場曝光需要。
+
+✔️  Dual Gain：有效降低暗部雜訊並擴闊陰影動態範圍，進一步提升低光畫面嘅純淨度。
+
+⚡ 高速拍攝與 AI 智能對焦
+
+✔️ 最高 5K 120p Open Gate／4K 240p 裁切慢動作錄影*：以高解像度捕捉高速動作，為影像帶來更強視覺張力。
+
+✔️ AI 主體識別自動對焦：支援人物、動物及雀鳥識別，即使主體快速移動或身處低光環境，仍可持續穩定追蹤。
+
+🎥 專業操作・輕巧機動
+
+✔️ 輕巧 Cinema Line 機身：將專業電影拍攝能力整合於約 750g 機身之中，適合手持、穩定器、車拍及狹窄空間拍攝。
+
+✔️ 5 軸機身防震及 Dynamic Active Mode：搖擺校正範圍比以往系統擴大約兩倍*2進一步提升走動拍攝穩定性，減少對額外支援器材嘅依賴。
+
+✔️ 全新 3.5 吋 16:9 四軸多角度屏幕：提供更靈活嘅監看角度，並配備 False Colour、Waveform、Vector Scope、Focus Map 等專業監看工具。
+
+由現場拍攝到後期製作，Sony FX5 將高階電影製作能力整合於更靈活、更可靠嘅機身之中，讓創作者突破器材限制，專注於創作本身。同期更有多款專業配件同步推出，進一步完善專業拍攝流程。
+
+*5K 120p Open Gate 及 4K 240p 裁切錄影功能計劃於 Version 2 韌體提供。
+
+*2與 FX3 比較。根據 Sony 內部測試。
+
+👉立即了解更多：https://www.sony.com.hk/.../interchangeable-lens.../ilme-fx5
+
+#SonyHongKong #SonyFX5 #CinemaLine #LightingTheWayForward #OpenGate #XOCN #BIONZXR2
+```
+
+<a id="example-86"></a>
+## Example 86
+
+Category: audio · Format: feature_benefit · Post ID: 1538782311624470
+
+[Source post (derived link)](https://www.facebook.com/sonyhongkong/posts/pfbid0iZEkCebww8hVLwzGZeomDBhymAu6Uyz1bMn3ayhAURu59AdpqBpcs8TY7avPBMeHl)
+
+```text
+【🎧 匠心成就 極致之聲：旗艦無線降噪耳機 1000X THE COLLEXION】
+🛒立即了解更多：https://bit.ly/3RUZQha
+
+結束忙碌行程，對生活品味與音樂有極致追求嘅高階音響愛好者，值得擁有一個殿堂級嘅寧靜避風港。Sony 旗艦無線降噪耳機 1000X THE COLLEXION，以大師級工藝與極致調音，勾勒出聲音最完美嘅立體線條，每次戴上，都係彰顯尊貴身份與品味嘅終極象徵。✨
+
+⚜️ 拒絕妥協，沉浸發燒級鑑賞體驗
+完美支援 Hi-Res Lossless 頂級音訊，即使駁落黑膠唱盤，依然能展現三頻極致均衡嘅原音與寬闊空間感。從飽滿細膩嘅人聲到樂器微弱嘅餘音，每粒音符都絲絲入扣，完美重現錄音室現場嘅靈魂與感動。🎵
+
+💎 奢華工藝與極致聲學嘅完美交融
+將頂級聲學技術濃縮於講究嘅精準結構之中，耳機嘅每處用料都散發著無可比擬嘅輕奢質感與匠人精神。舒適無壓嘅佩戴感，配合壓倒性嘅殿堂級降噪，讓你沉浸於毫無雜質嘅極致靚聲，享受專屬頂尖階層嘅純淨 Me-Time。🛋️
+
+無論細味珍藏黑膠，定係喺繁華背後尋回純粹靜謐，1000X THE COLLEXION 都係你傲視同儕嘅頂級音響裝備。🎶即刻入手，全面昇華你嘅發燒級獨處時光。
+
+👉立即了解更多：https://bit.ly/3RUZQha
+
+——
+
+旗艦無線降噪耳機
+Sony 1000X THE COLLEXION
+匠心調校 × 高解析音質 × 精準降噪
+融合全新設計與精選用料
+1000X
+將每一個細節，放大呈現
+
+#1000XTHECOLLEXION #1000xDetail #1000XSeries
+#SonyHongKong #ForTheMusic @terencelam0903
+```
+
+<a id="example-87"></a>
+## Example 87
+
+Category: photography · Format: teaser · Post ID: 1538308291671872
+
+Source: Sony Hong Kong Facebook page; post ID recorded above.
+
+```text
+Lighting the way forward.
+光影，引領創作未來。
+
+香港時間 7 月 22 日 | 晚上 10 點
+
+#SonyHongKong #LightingTheWayForward #SonyCamera
+```
+
+<a id="example-88"></a>
+## Example 88
+
+Category: photography · Format: workshop · Post ID: 1537162875119747
+
+[Source post (derived link)](https://www.facebook.com/sonyhongkong/posts/pfbid0ZzYsCv4wi7WD8RBoxAPqyspHAncCFTSpnqSzMMxmDnZAZewh1gJhFtVSHLUPRh8ol)
+
+```text
+【My Sony Studio 8 月攝影基礎課程 | 速成攝影入門技巧】
+
+有 Sony 相機喺手，但覺得仲未善用佢嘅所有功能？🤔今個月嘅基礎攝影課程，My Sony Studio導師會用最簡單直接嘅方式教你掌握基礎拍攝技巧、構圖秘訣同常用設定💡，仲會同大家去戶外拍攝，等你以後影相嘅時候可以得心應手🤗！課程名額有限，睇完以下詳情就快啲報名啦！
+
+🎯 課程重點：
+
+👉🏻 認識光圈、快門同 ISO 對畫面嘅影響
+👉🏻 拆解 Sony 相機嘅各款拍攝模式同隱藏設定
+👉🏻 學習日常拍攝嘅正確步驟及器材保養小貼士
+👉🏻 由導師帶領戶外實習拍攝，即場執正構圖思路同相機參數
+
+📅 課程詳情：
+
+8月基礎攝影課程 (5 堂) | 課程編號：SA01
+
+📍理論課地點：觀塘絲寶國際大廈 18 樓
+
+第 1 堂：2026 年 8 月 5 日 (三) 19:00 – 20:45
+第 2 堂：2026 年 8 月 10 日 (一) 19:00 – 20:45 (相機操作班)
+第 3 堂：2026 年 8 月 12 日 (三) 19:00 – 20:45
+第 4 堂：2026 年 8 月 19 日 (三) 19:00 – 20:45
+
+📍戶外拍攝課地點：香港公園
+第 5 堂：2026 年 8 月 29 日 (六) 15:00 – 17:00
+
+👥 課程名額：10人
+💰 課程費用：$1,280
+📚 總共堂數：5 堂 (3堂理論、1堂基礎相機操作及1堂戶外拍攝)
+📸 請自備 Sony 攝影器材上堂（包括相機、鏡頭、充足電量嘅電池及記憶卡）
+👉🏻 立即報名：https://bit.ly/4fc9u6W
+
+*成功報名之參加者會經電郵收到課程登記確認信。
+
+#SonyHongKong #MySonyStudio #SonyAlpha #SonyLens #攝影課程 #新手學攝影 #SonySA01
+```
+
+<a id="example-89"></a>
+## Example 89
+
+Category: audio · Format: feature_benefit · Post ID: 1537101175125917
+
+[Source post (derived link)](https://www.facebook.com/sonyhongkong/posts/pfbid0XsMuQJjAWKe4ku9TvpbUiSAyq2Q8J9kXDmiR2YMegLGwz8g32AD9ZMQA3YzXN1gnl)
+
+```text
+【🎧 一秒隔絕煩囂：無線降噪耳機 WH-1000XM6】
+🛒立即了解更多：https://bit.ly/3RUZQha
+
+都市生活節奏急促，Sony 無線降噪耳機 WH-1000XM6 幫你瞬間切斷外界干擾！結合強悍降噪與高顏值外觀，唔單止係頂級聽覺裝備，更係展現個人品味嘅全能時尚單品！✨
+
+✈️ 搭飛機必備，完美隔絕機艙引擎聲
+準備飛去旅行，點少得最強降噪隊友？WH-1000XM6 具備壓倒性降噪實力，上機一戴即刻隔絕轟鳴嘅引擎聲。配合舒適耳罩，由起飛到落地都能真正放鬆，享受超凡嘅空中音樂旅程！☁️
+
+🎨 多款潮流配色，玩轉日常 Mix & Match
+耳機一向係潮人必備穿搭單品！WH-1000XM6 推出多款精緻配色，無論係 Casual 街頭風定係質感文青 Look，隨手戴起或掛喺頸度，即刻為造型畫龍點睛，輕鬆穿梭唔同場合！👗👔
+
+無論飛往外地定穿梭鬧市，WH-1000XM6 都係你最強嘅降噪與時尚拍檔。🎶 即刻入手，配搭出屬於你嘅專屬音樂態度！
+
+🛒立即了解更多：https://bit.ly/3RUZQha
+
+——
+無線降噪耳機
+Sony WH-1000XM6
+精準降噪 × 高解析音質
+讓音色成為你的風格
+1000X
+放大你的風格
+
+#WH1000XM6 #1000xMyself #1000XSeries
+#SonyHongKong #ForTheMusic @terencelam0903
+```
+
+<a id="example-90"></a>
+## Example 90
+
+Category: photography · Format: workshop · Post ID: 1536271995208835
+
+[Source post (derived link)](https://www.facebook.com/sonyhongkong/posts/pfbid0xLextwd7m48heNVuhfswALHx7JcMQv5sDeDqBBvNgpK6BcqfaiB4na8t422UXqtHl)
+
+```text
+【My Sony Studio | 掌握Alpha系列相機基礎技巧】
+
+就算擁有 Sony Alpha 系列相機，都要識得好好運用，先可以完整發揮相機性能！立即報名參加8月嘅SA02A課程，由My Sony Studio 導師帶你深入了解 Alpha 系列嘅各種配置、功能同操作技巧，令你輕鬆影出滿意嘅攝影作品！
+
+📸 相機基礎操作班（攝影）SA02A
+
+適用型號：α1 II / α7R VI / α7 V / α7C II / α7CR / α6700
+
+課程由 My Sony Studio 導師主講，為你拆解：
+😎 機身功能鍵配置與實際操作
+😎 攝影常用功能設定
+😎 理解 Menu 結構
+😎 即場解答各種疑問，等你更快上手
+
+📅 活動詳情
+課程日期（可選其一）：
+2026 年 8 月 4 日 (二)
+2026 年 8 月 18 日 (二)
+地點：觀塘絲寶國際大廈18樓
+時間：19:00 – 20:30
+費用：HK$260
+名額：10人（額滿即止）
+立即報名：https://bit.ly/44oI4WB
+
+❤️ 溫馨提示： 請自攜 Sony 相機、鏡頭、已充滿電嘅電池及記憶卡出席課堂。
+
+*成功報名之參加者會經電郵收到課程登記確認信。
+
+#SonyHongKong #MySonyStudio #SonyAlpha #SonyLens  #夏日攝影 #攝影教學 #室內攝影 #戶外攝影 #旅行影相
+```
+
+<a id="example-91"></a>
+## Example 91
+
+Category: audio · Format: promotion · Post ID: 1533019935534041
+
+[Source post (derived link)](https://www.facebook.com/sonyhongkong/posts/pfbid02Y11EjGfE4cCAhptH5mJTwN1eXvfRZwRWFfN8YG7jCNEba24GDjyxFcBnvrBTFRiLl)
+
+```text
+【 🎧 無線開放式耳機 LinkBuds Clip 限時優惠】
+🛒 即刻入手：https://bit.ly/3R717BJ
+
+每次行街過馬路 🚦、或者喺 Office 同同事講嘢 💬，都要反覆除低、戴返耳機，難免覺得繁瑣。
+
+無線開放式耳機 LinkBuds Clip 採用夾耳開放式設計，將音樂與你嘅生活環境無縫融合。不論係通勤、工作定係運動 🏃‍♂️，你都可以一邊沉浸喺旋律之中，一邊自然地與世界保持連結。輕柔夾於耳廓，擺脫入耳式壓迫感 ☁️，唔使除耳機都溝通無阻！加上連充電盒高達 37 小時總續航🔋，配合 IPX4 防水，無懼汗水，全天候輕鬆應對。
+
+現正推出限時禮遇，讓呢份自在舒適融入你嘅日常：
+
+💜 最新優惠價：$1,099 💜 （原價：$1,499）
+🎁 尊享保障： 登記產品保養即享「額外 3 個月延長保養」
+把握專屬禮遇，即刻入手👉 https://bit.ly/3R717BJ
+
+#SonyHongKong #LinkBudsClip #OpenEar  #開放式耳機 #限定優惠
+```
+
+<a id="example-92"></a>
+## Example 92
+
+Category: wearable · Format: promotion · Post ID: 1533752175460817
+
+[Source post (derived link)](https://www.facebook.com/sonyhongkong/posts/pfbid0rtAWxr3MBcN5okZ56JvYoWGzgSSktW7AjRWcX3ERhbGV6tuGADv1zVxx2KU47M2vl)
+
+```text
+【 🥵 暑熱生存指南 ｜REON POCKET 6 限時降溫優惠！】
+👉 限時優惠驚喜：https://bit.ly/4wEpsO6
+
+7月行出街 5 分鐘就成身汗，儀容大打折扣？💦 戴返部 REON POCKET 6 自帶「移動冷氣」，一秒重拾清爽！❄️
+
+🔥 怕熱嘅你必備！
+⚡ 全新雙溫控模組（DUAL Thermo Module） 制冷效能較上代提升，快速降溫同時減少悶熱出汗！無論通勤定戶外活動，都能幫你保持清爽與自信狀態！
+❄️ 有感極速降溫：表面溫度比上代再降約 2°C，一戴即刻冰爽。
+🔋 超強續航：更凍、更慳電，全日送涼唔怕斷電。
+👔 貼合隱形設計：全新頸帶極致貼合，完美隱藏喺衣領入面。
+
+🎁把握 7 月盛夏黃金期，用超值優惠入手呢款「消暑神器」，解放你嘅體感自由！
+📱 穿戴式智能冷暖調溫裝置 REON POCKET 6
+💰 驚喜價：$1,549（原價：$1,699）
+點擊搶購，拒絕黏笠 👉🏻 https://bit.ly/4wEpsO6
+
+#SonyHongKong #REONPOCKET6 #7月限時優惠 #夏日救星 #穿戴式冷氣
+```
+
+<a id="example-93"></a>
+## Example 93
+
+Category: mobile · Format: promotion · Post ID: 1532952112207490
+
+[Source post (derived link)](https://www.facebook.com/sonyhongkong/posts/pfbid02roU62ugsqKp4j2YT5AkNcUYnnQh6MG7qnVjauxG6XE361xpqWHaojX7GG6Fs3ewhl)
+
+```text
+【Sony 年度旗艦手機 Xperia 1 VIII | 限時優惠及禮遇 出機好機會！🤩】
+立即入手︰https://bit.ly/4tulZ2S
+
+Sony新一代旗艦手機 Xperia 1 VIII 採用全新 ORE 原石美學設計，配合Sony獨特嘅影音娛樂體驗以及極致攝影效能，係你流動娛樂、打卡嘅好伙伴🤩！
+而家出機即享限時Trade-in優惠，仲有更多禮遇同優惠等緊你，立即行動啦🏃‍♀️！
+
+➤  My Sony 限定優惠價 [限時至7月31日]
+256GB: $10,999 (原價$12,099)
+512GB: $11,499 (原價$12,899)
+
+➤ 由即日起至 7 月 31 日期間，帶埋你手上任何 Android 或者 iOS 舊手機過嚟出機
+不限品牌、不限機身新舊狀況，即減 $800！
+
+限時三選一優惠* (需完成換領登記程序)
+➤ $800超市現金禮劵 或
+➤ LinkBuds Clip 開放式無線耳機  (價值 $1,499)  或
+➤ 以 $999 換購 WH-1000XM6 無線降噪耳機 (價值 $3,699)
+
+出機即送專屬防護禮遇（總值 HKD 458）*
+➤ 專用抗菌物料手機套（價值 HKD 290）
+➤ 屏幕玻璃保護貼（價值 HKD 168）
+
+Sony Store 會員獨家限定
+➤ 購買 Xperia 1 VIII 可賺取 My Sony 積分（$1 = 1分）
+➤ 免費送貨服務
+
+推廣日期︰即日起至 2026 年 7 月 31 日
+立即入手︰https://bit.ly/4tulZ2S
+
+*優惠受條款及細則約束，指定顏色數量有限，送完即止。
+#SonyHongKong #SonyStore #SonyXperia #Xperia1VIII #限時優惠
+```
+
+<a id="example-94"></a>
+## Example 94
+
+Category: audio · Format: feature_benefit · Post ID: 1532814262221275
+
+[Source post (derived link)](https://www.facebook.com/sonyhongkong/posts/pfbid0Az15u5ZuC9DsDeny9PauqcX9KCXbSvHHbq8Kx8KReoCTL5q3gcNea8JHWvtre9B7l)
+
+```text
+【全天候無縫切換：全無線降噪耳機 WF-1000XM6 極致降噪體驗】
+🛒立即了解更多：https://bit.ly/3RUZQha
+
+都市生活節奏急促，一對極致便攜嘅高品質耳機絕對係日常必需品！✨ Sony 全無線降噪耳機 WF-1000XM6 完美結合無感佩戴同壓倒性寧靜，專為追求音質嘅都市音樂愛好者而設，隨時隨地掌控你嘅生活節奏。🎵
+
+🎒 輕巧極簡，完美融入日常
+極致輕量化嘅人體工學貼耳設計，隨手放落袋就行得！🚶‍♂️ 無論日常通勤定係街頭漫步，長時間佩戴依然輕鬆無負擔，展現俐落嘅隨行美學。✨
+
+🤫 頂級降噪，隨處開啟音樂綠洲
+身處喧鬧嘅地鐵車廂或繁華鬧市，一鍵開啟最強降噪，瞬間隔絕外界噪音。❌ 配合防風噪結構，畀你喺行進間依然能專注沉浸於高解析度嘅細膩音質，將每段路程變成專屬嘅聽覺盛宴。🎶
+
+📞 AI 超清通話，商務娛樂無縫切換
+四處奔走嘅都市人，隨時需要靈活接聽 Call。🎙️ 耳機內置 AI 科技精準收音，即使喺嘈雜嘅街頭或 Cafe 一樣清晰透亮，無論享受音樂定處理日常事務都輕鬆自如。☕
+
+全無線降噪耳機 WF-1000XM6，將頂級音質、強悍降噪與極致便攜完美結合，係你日常不可或缺嘅音樂隨身裝備。🎶 仲唔即刻入手！
+
+🛒立即了解更多：https://bit.ly/3RUZQha
+
+——
+全無線降噪耳機
+Sony WF-1000XM6
+精準降噪 × 高解析音色
+打造專屬聲音空間
+1000X
+將專注，放大呈現
+
+#WF1000XM6 #1000xFocus #1000XSeries
+#SonyHongKong #ForTheMusic @terencelam0903
+```
+
+<a id="example-95"></a>
+## Example 95
+
+Category: retail_and_brand · Format: event_announcement · Post ID: 1531989798970388
+
+[Source post (derived link)](https://www.facebook.com/sonyhongkong/posts/pfbid0w2Y4WvDJXXDNepzKp4DrUEDoUEZhupLYrib5X1QVvwrELejhuc9JPRtq1tSSWFUal)
+
+```text
+【LiSA個人出道15 週年巡迴演唱會香港站演唱會進入倒數 🔥 LiSA ✖ Sony Store Hong Kong 限定活動最後召集】
+
+各位 LiSAッ子準備好入場接受搖滾洗禮未🎸？ Sony Store 銅鑼灣希慎廣場分店嘅 LiSA 限定活動都進入最後倒數喇⏰！
+
+多款 LiSA Asia Tour 演唱會限定周邊尚餘少量現貨🛍️，想帶住專屬周邊入場支持 LiSA，就記得喺 7 月 16 日或之前嚟銅鑼灣 Sony Store 選購喇🏃‍♂️！
+
+活動期間於店內單筆消費滿 $380，並包括最少一件 LiSA 周邊商品，現場寫張畀 LiSA 嘅心意卡，即可參加抽獎贏取 LiSA 見面會入場券或親筆簽名禮物🎁！想知參加詳情，隨時嚟銅鑼灣 Sony Store 問下我哋嘅 Staff 了解更多💬！
+
+LiSA ✖ Sony Store 銅鑼灣見面會
+活動日期：7 月 19 日（星期日）
+活動時間：1:30pm (實際開始時間將以當日現場安排為準)
+名額：50 個
+
+各位 LiSAッ子快啲把握最後機會🙌，嚟Sony Store 銅鑼灣店入手限定周邊爭取見面機會🔥！
+
+#LiSA #LiSAXSonyStoreHK #LiSAAsiaTour #LiSA15th #LiVEisSmileAlways #見面會#LiSAッ子
+```
+
+<a id="example-96"></a>
+## Example 96
+
+Category: photography · Format: trade_in · Post ID: 1531176405718394
+
+[Source post (derived link)](https://www.facebook.com/sonyhongkong/posts/pfbid0GGfWFQW9tkm9f3FDvThunJ4WDv46VyPo5Fza76FCKNgJynLtnezZkUC3SGHLuZGPl)
+
+```text
+【A7R VI 全片幅相機 限時Trade-in升級優惠】
+
+想親身體驗6,680萬極致像素帶嚟嘅視覺震撼？全新A7R VI憑藉全堆疊式Exmor RS™ 感光元件與強大嘅AI處理能力，將「極致解像度」與「30fps 高速性能」完美結合，由商業攝影到動態捕捉都能呈現秒見細膩嘅層次。
+
+而家係換機升級嘅最好時機！由即日起至7月31日，A7R VI將以限時優惠價$34,990發售 (建議零售價: $35,990)！另外，憑任何全片幅相機Trade-in換購A7R VI，仲可以免費獲贈價值Sony CEA-G240T 高速記憶卡，助你無間斷捕捉每一個精彩瞬間。立即行動，感受傳奇R系列嘅巔峰進化！
+
+📸 A7R VI限時優惠價: $34,990 (建議零售價: $35,990)
+👉️ 立即選購：https://bit.ly/4f1iMmi
+
+➤ 限時Trade-in升級優惠
+📅優惠期: 即日起至7月31日
+🎁免費獲贈 Sony CEA-G240T 高速記憶卡乙張 (價值$2,490)
+
+➤ 保養登記可享額外優惠：
+1. 可獲 HK$1,500 全片幅鏡頭現金券*
+2. 產品配件加購優惠** :
+VG-C6 垂直手柄︰優惠價:HK$2,399  (建議零售價:HK$3,140)
+NP-SA100可充電電池組︰優惠價:HK$699 (建議零售價:HK$860)
+DC-C2 直流電轉接器︰優惠價:HK$699 (建議零售價:HK$1,020)
+
+*Sony 鏡頭現金券只適用於指定鏡頭型號，有效期至2026年8月31日止，使用須受有關條款及細則約束。顧客若未能於換領禮品時出示有關的文件及資料,禮品換領將無法完成。此推廣活動只限於顧客購買作個人使用,並不可用作銷售用途。
+
+**每部於授權經銷商購買之 A7RM6 相機，只可享有一加購優惠一次。完成產品保養註冊並勾選同意接收市場推廣資訊。在 2 週內透過電郵收到專屬換購電子郵件。優惠只適用於2026年7月31日或之前在Sony香港及澳門正式授權之特約零售商的零售店購買並登記保養之顧客。優惠期由即日起至2026年7月31日。顧客須在 2026 年9月30日前兌換此優惠。Sony保留隨時更改或修訂此優惠及其條款與細則之最終決定權。
+
+如推廣活動有任何變更，詳情以活動網頁資訊為準，Sony保留更改或修訂此優惠及其條款與細則之最終決定權。
+
+#SonyHongKong #SonyAlpha #A7RV
+```
+
+<a id="example-97"></a>
+## Example 97
+
+Category: photography · Format: competition · Post ID: 1529405419228826
+
+[Source photo](https://www.facebook.com/photo/?fbid=1529405372562164)
+
+```text
+【Sony作品招募 – 尋幽探野】 7 月主題
+
+大自然嘅奧秘往往隱藏喺最細微嘅角落。無論係樹叢間穿梭嘅雀鳥定係花葉上逗留嘅蝴蝶，每一次與野間生命嘅相遇，都係一趟發掘奧秘嘅奇妙旅程。
+
+由即日起至 8 月 31 日，Sony Hong Kong 正式招募以「尋幽探野」為主題嘅微生態特寫作品！所有 Sony 相機及 Sony Xperia 手機用家，快啲將你捕捉到嘅珍奇異蟲靚相上載至 Alpha Gallery 參加啦！
+
+參加方法：
+1) Follow @sonyhongkong IG
+2) 登入 Alpha Gallery 個人帳戶並上載作品
+
+Sony Hong Kong 會分別於相機組及手機組選出最切合「尋幽探野」主題嘅驚豔之作，並送出豐富 My Sony Reward 積分！每3,000分可以當港幣HK$90使用㗎！
+
+📷相機組獎品
+最佳相片可獲得 30,000 My Sony Reward 積分（名額 3 個）；
+優秀作品可獲得 5,000 My Sony Reward 積分（名額 5 個）。
+
+📱手機用家獎品
+最佳相片可獲得 10,000 My Sony Reward 積分（名額 3 個）。
+
+🌟特別追加：
+相機 / 手機用家每個攝影作品上載到 Alpha Gallery，每次都可以獲得 1,500 My Sony Reward積分（每月最多可獲 5 次），累積最多可獲取 7,500 My Sony Reward 積分㗎！
+
+每月喺 Alpha Gallery 仲有機會獲選成為「每月精選作品」，賺取 3,000 My Sony Reward 積分！https://www.sony.com.hk/alphagallery/ 準備好器材去大自然探索，分享你哋拍攝嘅微生態大作，參加比賽啦！
+
+截止日期：2026 年 8月 31 日（Photo by Sony CURATORS ELITE Tooleebee Wing Leung ）
+```
+
+<a id="example-98"></a>
+## Example 98
+
+Category: mobile · Format: feature_benefit · Post ID: 1531113242391377
+
+[Source photo](https://www.facebook.com/photo/?fbid=1531113175724717)
+
+```text
+【全新 Xperia 1 VIII ｜ 📸 「原」美捕捉每一瞬間】
+
+Sony 全新 Xperia 加入更多相機界嘅黑科技入Xperia 1 VIII，配合全新 AI 技術，直迫專業相機級數！
+
+📸 三鏡同級 ｜ 隨手部部都係 Primary Camera
+超廣角、主鏡、長焦（16/24/70mm）全焦段都用大尺寸感光元件！隨手影都媲美全片幅相機嘅高畫質
+
+📸 複合RAW 拍攝 + AI 攝影助理｜ 新手一秒變大師
+內置 AI 攝影助理幫你即時執生，自動推介最靚色彩 Atmosphere！配埋 RAW Multi-Frame Processing 技術，就算面對大逆光或者暗黑夜景，極限 HDR 幫你留住最完美光影！
+
+📸 1/1.56 吋超大長焦感光原件 ｜ 遠攝畫質極致 Detail
+影遠景、生活細節必備！等效 70mm -140mm F2.8 焦段，配埋 Xperia 史上最強超大長焦感光元件，就算拉到咁遠，細節依然清到爆，同雜訊講拜拜！👋
+
+了解更多：https://bit.ly/4vj6PhR
+
+Sample Photo by @ippei.janine
+
+#SonyHongKong #SonyXperia #Xperia1VIII #OREAesthetics #AIPhotography
+```
+
+<a id="example-99"></a>
+## Example 99
+
+Category: photography · Format: workshop · Post ID: 1528587765977258
+
+[Source photo](https://www.facebook.com/photo/?fbid=1528587752643926)
+
+```text
+【My Sony Studio 📸 專業人像攝影工作坊 ｜捕捉動人神態 ✨】
+
+想知頂尖商業攝影師點樣運用專業器材，完美捕捉主角最動人嘅神態？📸
+今次 Sony 特別邀請到Sony Curator Elite — 馬丁親自帶隊！ 佢除咗會大方分享日常嘅商業人像拍攝秘訣，仲會獨家傳授點樣活用全新 α7R VI全片幅高解像度相機嘅超高像素，捕捉震撼人心嘅細節！🔍
+
+馬丁更會帶大家前往熱門嘅拍攝景點南生圍 🌾，親身示範新機點樣令拍攝流程更輕鬆高效。現場你可以「偷師」大師級嘅實戰經驗 💡，學識點樣創作出具商業級視野嘅人像作品！
+
+活動詳情
+🗓️日期:原定於7月26日的行程將因天氣影響更改至8月9日。
+👨‍🏫導師： Sony Curator Elite 馬丁 (如人數多於10人會安排兩位模特兒)
+🏫🌳地點：課室（荔枝角）+ 外景（南生圍）
+名額： 20人（名額有限，先到先得）
+💰活動費用： $1,080
+
+⏰ 行程時間表
+📖14:00 - 15:30：專業人像攝影心得分享
+🚌 15:30 - 16:00： 專車前往拍攝地點
+🌅16:00 - 18:00：南生圍現場實戰拍攝
+
+立即報名：https://bit.ly/3RsnEsJ
+
+*成功報名之參加者會經電郵收到課程登記確認信。
+主辦單位擁有隨時修改及終止本活動之權利，如有任何變更將公布於本網頁或 Sony Hong Kong Facebook 專頁，恕不另行通知。如有爭議，Sony 保留最終決定權。
+
+#SonyHongKong #MySonyStudio #SonyAlpha #SonyLens #PortraitPhotography
+```
+
+<a id="example-100"></a>
+## Example 100
+
+Category: photography · Format: product_launch · Post ID: 1528555629313805
+
+[Source post (derived link)](https://www.facebook.com/sonyhongkong/posts/pfbid02XCvDBkALHqMuM6wUAXKVrXXYe9M67LpgHP3uNKGThdpTjnueaAD2FUtNhDkoyZiTl)
+
+```text
+【一機走天涯 📷｜全新一代 Sony RX10V 全能變焦相機強勢登場】
+
+出外拍攝想輕裝上陣，又唔想犧牲畫質同焦段選擇？全新 Sony RX10V 再次突破限制🚀！由廣闊壯麗嘅風景🏔️，去到極遠處嘅動態特寫，全部都可以一鏡過輕鬆捕捉🎯。
+
+RX10V 完美結合咗超高倍率變焦與旗艦級影像處理技術🌟。配合全新 AI 對焦系統🤖，無論係追求極速嘅動態捕捉，定係專業級嘅高規格影片創作🎥，都能夠為你帶嚟超乎想像嘅表現！真正做到遠近動靜全方位支援，一「部」到位。
+
+立即探索：https://bit.ly/4aEH9os
+
+➤ 售價︰HK$15,990 💰
+
+➤ 預售禮遇：凡參與預售即送 NP-FZ100 電池*（價值 HK$550）*預售數量有限
+
+➤ 預售日期：2026年7月10日至20日
+
+👇 重點一覽：
+
+➤機鏡合一 ZEISS Vario-Sonnar T 鏡頭 🔭
+24-600mm 超長焦段配合 F2.4-4.0 大光圈，遠近畫質同樣出色
+
+➤ BIONZ XR 影像處理器 🧠
+提供頂級高畫質表現，完美還原真實色彩與豐富細節
+
+➤ 極速 30 fps 無黑屏連拍 ⚡
+支援每秒高達 60 次 AF/AE 計算，輕鬆捕捉瞬間動態
+
+➤ AI 即時識別自動對焦 👁️
+具備更強大嘅主體識別能力，對焦快而準
+
+➤ 高解析高品質錄影 🎬
+支援 4K 120p 及 S&Q 快慢動作拍攝，踏入專業級創作領域
+
+#rx10v #SonyRX #ReachFurtherCarryless
+```

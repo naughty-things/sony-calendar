@@ -143,6 +143,20 @@ async function getMessage(gmail: gmail_v1.Gmail, id: string) {
   return res.data;
 }
 
+/** Read only the mailbox message linked to an authorized calendar post. */
+export async function readLinkedEmail(gmailId: string): Promise<{ subject: string; body: string }> {
+  if (!/^[a-zA-Z0-9_-]{1,200}$/.test(gmailId)) throw new Error('Invalid linked message');
+  const gmail = google.gmail({ version: 'v1', auth: getAuth() });
+  const { data } = await gmail.users.messages.get(
+    { userId: 'me', id: gmailId, format: 'full' },
+    { timeout: 15_000, retry: false }
+  );
+  if (!isTrustedEnvelopeSender(header(data.payload?.headers, 'From'))) {
+    throw new Error('Untrusted linked message');
+  }
+  return { subject: header(data.payload?.headers, 'Subject'), body: bodyFromPayload(data.payload) };
+}
+
 function header(headers: gmail_v1.Schema$MessagePartHeader[] | undefined, name: string): string {
   return (headers || []).find(h => (h.name || '').toLowerCase() === name.toLowerCase())?.value || '';
 }

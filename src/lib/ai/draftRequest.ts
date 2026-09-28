@@ -2,6 +2,9 @@ export type DraftRequest = {
   title: string;
   platform: string[] | string;
   notes?: string | null;
+  postId?: string;
+  category?: string[];
+  publishDate?: string | null;
 };
 
 export function validateDraftRequest(value: unknown): DraftRequest | null {
@@ -29,5 +32,12 @@ export function validateDraftRequest(value: unknown): DraftRequest | null {
     return null;
   }
 
-  return { title, platform, notes: (input.notes as string | null | undefined) ?? null };
+  if (input.postId != null && (typeof input.postId !== 'string' || !/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(input.postId))) return null;
+  if (input.category != null && (!Array.isArray(input.category) || input.category.length > 10 || !input.category.every(c => typeof c === 'string' && c.length <= 40))) return null;
+  if (input.publishDate != null && (typeof input.publishDate !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(input.publishDate))) return null;
+  return {
+    ...(input.postId ? { postId: input.postId as string } : {}),
+    ...(input.category ? { category: input.category as string[] } : {}),
+    ...(input.publishDate ? { publishDate: input.publishDate as string } : {}),
+    title, platform, notes: (input.notes as string | null | undefined) ?? null };
 }

@@ -54,6 +54,13 @@ export function PostModal({
   const [saving, setSaving] = useState(false);
   const [deleting, setDeleting] = useState(false);
   const [drafting, setDrafting] = useState(false);
+  const [draftError, setDraftError] = useState<string | null>(null);
+  const [generatedDraft, setGeneratedDraft] = useState<{
+    draft: string; warnings: string[]; emailUsed: boolean; librarySize: number;
+    references: { id: string; title: string; url: string | null }[];
+  } | null>(null);
+  const draftAbort = useRef<AbortController | null>(null);
+  useEffect(() => () => draftAbort.current?.abort(), []);
   const [savedFlash, setSavedFlash] = useState(false);
   const firstFieldRef = useRef<HTMLInputElement>(null);
 
@@ -162,16 +169,30 @@ export function PostModal({
   }
 
   async function runDraft() {
-    if (!canEdit) return;
+    if (!canEdit || drafting) return;
+    const controller = new AbortController();
+    draftAbort.current = controller;
     setDrafting(true);
-    const res = await fetch('/api/ai/draft', {
-      method: 'POST',
-      headers: { 'content-type': 'application/json' },
-      body: JSON.stringify({ title, platform, notes })
-    });
-    const j = await res.json();
-    if (j.draft) setCopyDraft(j.draft);
-    setDrafting(false);
+    setDraftError(null);
+    const timeout = setTimeout(() => controller.abort(), 120_000);
+    try {
+      const res = await fetch('/api/ai/draft', {
+        method: 'POST', signal: controller.signal,
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ title, platform, notes, category, postId: post?.id, publishDate: publishDate || null })
+      });
+      const result = await res.json();
+      if (!res.ok) throw new Error(result.error || 'Could not generate a draft. Please retry.');
+      if (typeof result.draft !== 'string' || !result.draft.trim()) throw new Error('AI returned an empty draft. Please retry.');
+      setGeneratedDraft(result);
+    } catch (error) {
+      setDraftError(error instanceof Error && error.name === 'AbortError'
+        ? 'Drafting timed out. Please retry; your existing copy has not changed.'
+        : error instanceof Error ? error.message : 'Could not generate a draft. Please retry.');
+    } finally {
+      clearTimeout(timeout);
+      setDrafting(false);
+    }
   }
 
   const showEmail = canEdit && post?.source === 'email' && post?.source_meta;
@@ -520,6 +541,34 @@ export function PostModal({
                   rows={5}
                   className={inputCls}
                   placeholder="AI-drafted or hand-written copy…" />
+                <p className="text-[11px] text-text-mute mt-1">Drafts use Sony HK reference copy, your notes and the linked email when available.</p>
+                {draftError && <p role="alert" className="mt-2 text-xs text-red-600">{draftError}</p>}
+                {generatedDraft && (
+                  <div className="mt-3 rounded-xl border border-edge bg-surface-muted p-3 space-y-3">
+                    <div className="text-xs font-semibold">AI suggestion — review before using</div>
+                    <textarea aria-label="AI suggested copy" value={generatedDraft.draft} readOnly rows={10} className={inputCls} />
+                    {generatedDraft.warnings.length > 0 && (
+                      <div className="text-xs space-y-1" role="status">
+                        <div className="font-semibold">Details to check</div>
+                        <ul className="list-disc pl-4 space-y-1">{generatedDraft.warnings.map((warning, i) => <li key={i}>{warning}</li>)}</ul>
+                      </div>
+                    )}
+                    <details className="text-[11px] text-text-mute">
+                      <summary className="cursor-pointer">{generatedDraft.references.length} examples from {generatedDraft.librarySize} Sony posts · {generatedDraft.emailUsed ? 'Linked email included' : 'Title and notes'}</summary>
+                      <ul className="mt-2 space-y-1">{generatedDraft.references.map(reference => (
+                        <li key={reference.id}>{reference.url
+                          ? <a href={reference.url} target="_blank" rel="noopener noreferrer" className="underline">{reference.title}</a>
+                          : reference.title}</li>
+                      ))}</ul>
+                    </details>
+                    <div className="flex gap-3">
+                      <button type="button" className="text-xs font-semibold text-accent-deep" onClick={() => { setCopyDraft(generatedDraft.draft); setGeneratedDraft(null); }}>
+                        {copyDraft?.trim() ? 'Replace copy with this draft' : 'Use this draft'}
+                      </button>
+                      <button type="button" className="text-xs text-text-mute" onClick={() => setGeneratedDraft(null)}>Dismiss</button>
+                    </div>
+                  </div>
+                )}
               </Field>
             )}
           </div>

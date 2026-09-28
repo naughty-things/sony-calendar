@@ -8,7 +8,8 @@
     "build": "next build",
     "start": "next start -p ${PORT:-3001}",
     "lint": "next lint",
-    "test:security": "node --test scripts/security-guards.test.ts scripts/security-source.test.mjs"
+    "test:security": "node --test scripts/security-guards.test.ts scripts/security-source.test.mjs",
+    "test:copy": "node --test scripts/copy-draft.test.ts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "0.104.1",
