@@ -701,7 +701,7 @@ export function Calendar() {
           initialDate={creating?.date}
           recentNames={recentNames}
           canEdit={isAdmin}
-          onClose={() => { setEditing(null); setCreating(null); }}
+          onClose={() => { setEditing(null); setCreating(null); void load(false); }}
           onSaved={async () => { setEditing(null); setCreating(null); await load(false); }}
         />
       )}

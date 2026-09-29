@@ -62,6 +62,8 @@ export function PostModal({
   const draftAbort = useRef<AbortController | null>(null);
   useEffect(() => () => draftAbort.current?.abort(), []);
   const [savedFlash, setSavedFlash] = useState(false);
+  const savedPostId = useRef(post?.id);
+  const saveLock = useRef(false);
   const firstFieldRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -80,8 +82,9 @@ export function PostModal({
     return () => window.removeEventListener('keydown', onKey);
   }, [onClose]);
 
-  async function save(draftOverride?: string) {
-    if (!canEdit || saving || deleting) return;
+  async function save(draftOverride?: string, keepOpen = false) {
+    if (!canEdit || saveLock.current || deleting) return;
+    saveLock.current = true;
     setSaving(true);
     setDraftError(null);
     try {
@@ -121,26 +124,32 @@ export function PostModal({
         notes,
         copy_draft: draftOverride ?? copyDraft
       };
-      if (post?.id) {
-        const { error } = await supabase.from('posts').update(payload).eq('id', post.id).select('id').single();
+      if (savedPostId.current) {
+        const { error } = await supabase.from('posts').update(payload).eq('id', savedPostId.current).select('id').single();
         if (error) throw error;
       } else {
         const { data: client, error: clientError } = await supabase.from('clients').select('id').eq('slug', 'sony').single();
         if (clientError || !client) throw clientError || new Error('Sony client not found.');
-        const { error } = await supabase.from('posts').insert({ ...payload, client_id: client.id, source: 'manual' }).select('id').single();
+        const { data: created, error } = await supabase.from('posts').insert({ ...payload, client_id: client.id, source: 'manual' }).select('id').single();
         if (error) throw error;
+        savedPostId.current = created.id;
       }
       if (draftOverride !== undefined) {
         setCopyDraft(draftOverride);
-        setGeneratedDraft(null);
+        if (!keepOpen) setGeneratedDraft(null);
       }
       setSavedFlash(true);
-      setTimeout(() => onSaved(), 250);
+      if (!keepOpen) setTimeout(() => onSaved(), 250);
     } catch {
       setDraftError('Could not save. Your draft is still here; please retry.');
+    } finally {
+      saveLock.current = false;
       setSaving(false);
     }
   }
+
+  const latestSave = useRef(save);
+  latestSave.current = save;
 
   async function remove() {
     if (!canEdit || !post?.id) return;
@@ -191,12 +200,16 @@ export function PostModal({
       const res = await fetch('/api/ai/draft', {
         method: 'POST', signal: controller.signal,
         headers: { 'content-type': 'application/json' },
-        body: JSON.stringify({ title, platform, notes, category, postId: post?.id, publishDate: publishDate || null })
+        body: JSON.stringify({ title, platform, notes, category, postId: savedPostId.current, publishDate: publishDate || null })
       });
       const result = await res.json();
       if (!res.ok) throw new Error(result.error || 'Could not generate a draft. Please retry.');
       if (typeof result.draft !== 'string' || !result.draft.trim()) throw new Error('AI returned an empty draft. Please retry.');
+      clearTimeout(timeout);
       setGeneratedDraft(result);
+      setCopyDraft(result.draft);
+      setSavedFlash(false);
+      await latestSave.current(result.draft, true);
     } catch (error) {
       setDraftError(error instanceof Error && error.name === 'AbortError'
         ? 'Drafting timed out. Please retry; your existing copy has not changed.'
@@ -555,12 +568,11 @@ export function PostModal({
                   rows={5}
                   className={inputCls}
                   placeholder="AI-drafted or hand-written copy…" />
-                <p className="text-[11px] text-text-mute mt-1">Drafts use Sony HK reference copy, your notes and the linked email when available.</p>
+                <p className="text-[11px] text-text-mute mt-1">AI drafts save automatically when generated, using Sony HK references, your notes and the linked email when available.</p>
                 {draftError && <p role="alert" className="mt-2 text-xs text-red-600">{draftError}</p>}
                 {generatedDraft && (
                   <div className="mt-3 rounded-xl border border-edge bg-surface-muted p-3 space-y-3">
-                    <div className="text-xs font-semibold">AI suggestion — review before using</div>
-                    <textarea aria-label="AI suggested copy" value={generatedDraft.draft} readOnly rows={10} className={inputCls} />
+                    <div className="text-xs font-semibold">{savedFlash ? 'AI draft saved automatically' : 'AI draft — not saved yet'}</div>
                     {generatedDraft.warnings.length > 0 && (
                       <div className="text-xs space-y-1" role="status">
                         <div className="font-semibold">Details to check</div>
@@ -575,13 +587,6 @@ export function PostModal({
                           : reference.title}</li>
                       ))}</ul>
                     </details>
-                    <p className="text-[11px] text-text-mute">Using this draft saves the post and your current edits immediately.</p>
-                    <div className="flex gap-3">
-                      <button type="button" className="text-xs font-semibold text-accent-deep" disabled={saving || deleting || !title.trim()} onClick={() => save(generatedDraft.draft)}>
-                        {saving ? 'Saving draft…' : copyDraft?.trim() ? 'Replace and save draft' : 'Use and save draft'}
-                      </button>
-                      <button type="button" className="text-xs text-text-mute" onClick={() => setGeneratedDraft(null)}>Dismiss</button>
-                    </div>
                   </div>
                 )}
               </Field>
@@ -655,19 +660,19 @@ export function PostModal({
             <button
               type="button"
               onClick={remove}
-              disabled={deleting || saving}
+              disabled={deleting || saving || drafting}
               className="text-magenta hover:text-ink text-[11px] uppercase tracking-[0.14em] font-mono font-semibold flex items-center gap-1.5 px-2 py-1 rounded-md hover:bg-surface transition disabled:opacity-40 disabled:cursor-not-allowed">
               {deleting ? <><Loader2 size={12} className="animate-spin" /> deleting</> : <><Trash2 size={12} /> Delete</>}
             </button>
           ) : <span />}
           <div className="flex items-center gap-2">
             <button onClick={onClose} className="px-4 py-1.5 text-[12px] font-medium text-text-soft hover:text-ink hover:bg-surface rounded-md transition">
-              {canEdit ? 'Cancel' : 'Close'}
+              {canEdit && !savedFlash ? 'Cancel' : 'Close'}
             </button>
             {canEdit && (
               <button
                 onClick={() => save()}
-                disabled={saving || !title}
+                disabled={saving || drafting || !title}
                 className="px-5 py-1.5 text-[12px] font-semibold bg-btn text-btn-text rounded-md hover:bg-accent hover:text-ink transition flex items-center gap-1.5 disabled:opacity-40 disabled:cursor-not-allowed shadow-soft">
                 {saving ? <><Loader2 size={12} className="animate-spin" /> saving</>
                   : savedFlash ? <><Check size={12} /> saved</>
