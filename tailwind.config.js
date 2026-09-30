@@ -47,7 +47,7 @@ export default {
         status: {
           staging:       { DEFAULT: '#EEE4F1', text: '#6B2D85' },
           in_progress:   { DEFAULT: '#DEE9F7', text: '#1F4A85' },
-          client_review: { DEFAULT: '#FCE0EA', text: '#8E1F4A' },
+          client_review: { DEFAULT: '#FEF3C7', text: '#854D0E' },
           approved:      { DEFAULT: '#FFF1D1', text: '#6B4900' },
           posted:        { DEFAULT: '#D9F0E0', text: '#1F5C36' }
         },

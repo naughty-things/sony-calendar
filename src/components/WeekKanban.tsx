@@ -126,14 +126,14 @@ function Card({ p, onClick, highlight }: { p: PostWithPeople; onClick: () => voi
   const statusBg: Record<string, string> = {
     staging:       'bg-[#F6EFF8] dark:bg-[#2A1E32]',
     in_progress:   'bg-[#ECF2FB] dark:bg-[#1B2638]',
-    client_review: 'bg-[#FBEDF1] dark:bg-[#321E26]',
+    client_review: 'bg-[#FFFBEB] dark:bg-[#332A0F]',
     approved:      'bg-accent-soft dark:bg-[#2E2510]',
     posted:        'bg-[#ECF6EF] dark:bg-[#1B2A20]'
   };
   const statusBar: Record<string, string> = {
     staging:       'before:bg-plum',
     in_progress:   'before:bg-steel',
-    client_review: 'before:bg-magenta',
+    client_review: 'before:bg-yellow-500',
     approved:      'before:bg-accent',
     posted:        'before:bg-forest'
   };

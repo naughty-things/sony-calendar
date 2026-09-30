@@ -975,21 +975,21 @@ function PostChip({ p, onOpen, highlight, draggable = true }: { p: PostWithPeopl
   const statusBar: Record<string, string> = {
     staging:       'before:bg-plum',
     in_progress:   'before:bg-steel',
-    client_review: 'before:bg-magenta',
+    client_review: 'before:bg-yellow-500',
     approved:      'before:bg-accent',
     posted:        'before:bg-forest'
   };
   const statusBg: Record<string, string> = {
     staging:       'bg-[#F6EFF8] dark:bg-[#2A1E32]',
     in_progress:   'bg-[#ECF2FB] dark:bg-[#1B2638]',
-    client_review: 'bg-[#FBEDF1] dark:bg-[#321E26]',
+    client_review: 'bg-[#FFFBEB] dark:bg-[#332A0F]',
     approved:      'bg-accent-soft dark:bg-[#2E2510]',
     posted:        'bg-[#ECF6EF] dark:bg-[#1B2A20]'
   };
   const statusBorder: Record<string, string> = {
     staging:       'border-plum/40 dark:border-plum/40',
     in_progress:   'border-steel/40 dark:border-steel/40',
-    client_review: 'border-magenta/40 dark:border-magenta/40',
+    client_review: 'border-yellow-500/50 dark:border-yellow-400/50',
     approved:      'border-accent/50 dark:border-accent/50',
     posted:        'border-forest/40 dark:border-forest/40'
   };

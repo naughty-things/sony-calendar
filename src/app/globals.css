@@ -141,14 +141,14 @@ body::before { display: none; }
 /* Status-specific (light defaults) */
 .pill-staging       { background: #EEE4F1; color: #6B2D85; }
 .pill-in_progress   { background: #DEE9F7; color: #1F4A85; }
-.pill-client_review { background: #FCE0EA; color: #8E1F4A; }
+.pill-client_review { background: #FEF3C7; color: #854D0E; }
 .pill-approved      { background: #FFF1D1; color: #6B4900; }
 .pill-posted        { background: #D9F0E0; color: #1F5C36; }
 
 /* Dark overrides — use rgba so they look good on dark surfaces */
 .dark .pill-staging       { background: rgba(217, 184, 232, 0.18); color: #E5CDF0; }
 .dark .pill-in_progress   { background: rgba(168, 197, 234, 0.18); color: #B8D2EE; }
-.dark .pill-client_review { background: rgba(240, 181, 201, 0.18); color: #F2C2D2; }
+.dark .pill-client_review { background: rgba(234, 179, 8, 0.20); color: #FDE68A; }
 .dark .pill-approved      { background: rgba(255, 217, 128, 0.20); color: #FFE0A0; }
 .dark .pill-posted        { background: rgba(166, 217, 182, 0.18); color: #B8E0C5; }
 

@@ -41,7 +41,7 @@ export const STATUS_COLOR: Record<PostStatus, string> = {
 export const STATUS_DOT_COLOR: Record<PostStatus, string> = {
   staging:       '#8B4FA8',
   in_progress:   '#4A6FA5',
-  client_review: '#E5616B',
+  client_review: '#EAB308',
   approved:      '#FFB000',
   posted:        '#3E8E5A'
 };
@@ -79,7 +79,7 @@ export const CATEGORY_GLYPH: Record<Category, string> = {
 export const STATUS_DOT: Record<PostStatus, string> = {
   staging:       'bg-plum',
   in_progress:   'bg-steel',
-  client_review: 'bg-magenta',
+  client_review: 'bg-yellow-500',
   approved:      'bg-accent',
   posted:        'bg-forest'
 };
@@ -89,7 +89,7 @@ export const STATUS_DOT: Record<PostStatus, string> = {
 export const STATUS_BG: Record<PostStatus, string> = {
   staging:       'bg-[#EEE4F1] text-[#6B2D85] dark:bg-[#3A2A45] dark:text-[#D9B8E8]',
   in_progress:   'bg-[#DEE9F7] text-[#1F4A85] dark:bg-[#1E2E45] dark:text-[#A8C5EA]',
-  client_review: 'bg-[#FCE0EA] text-[#8E1F4A] dark:bg-[#3D212E] dark:text-[#F0B5C9]',
+  client_review: 'bg-[#FEF3C7] text-[#854D0E] dark:bg-[#422F0B] dark:text-[#FDE68A]',
   approved:      'bg-accent-soft text-accent-ink dark:bg-[#3A2F18] dark:text-[#FFD980]',
   posted:        'bg-[#D9F0E0] text-[#1F5C36] dark:bg-[#1F3A28] dark:text-[#A6D9B6]'
 };
