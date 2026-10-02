@@ -10,12 +10,13 @@ import { useIsMobile } from '@/lib/useIsMobile';
 import { normalizeMentionedPeople } from '@/lib/emailParticipants';
 
 const ALL_STATUSES: PostStatus[] = STATUS_ORDER;
+const DESIGNERS = ['Leo', 'Jessica'] as const;
 const INTERNAL_PICS = ['Sam', 'Cheri', 'Irvin', 'Raymond'] as const;
 
-function normalizeInternalPic(value?: string | null) {
+function normalizeAllowedName(value: string | null | undefined, allowed: readonly string[]) {
   const normalized = value?.trim().toLowerCase();
   if (!normalized) return '';
-  return INTERNAL_PICS.find(name => {
+  return allowed.find(name => {
     const firstName = name.toLowerCase();
     return normalized === firstName || normalized.startsWith(`${firstName} `);
   }) ?? '';
@@ -55,9 +56,9 @@ export function PostModal({
   const [targetLaunchDate, setTargetLaunchDate] = useState<string>(post?.target_launch_date ?? '');
   const [requestDate, setRequestDate] = useState<string>(post?.request_date ?? '');
   const [status, setStatus] = useState<PostStatus>(post?.status ?? 'in_progress');
-  const [designer, setDesigner] = useState<string>(post?.designer ?? '');
+  const [designer, setDesigner] = useState<string>(normalizeAllowedName(post?.designer, DESIGNERS));
   const [copyWriter, setCopyWriter] = useState<string>(post?.copy_writer ?? '');
-  const [internalPic, setInternalPic] = useState<string>(normalizeInternalPic(post?.internal_pic));
+  const [internalPic, setInternalPic] = useState<string>(normalizeAllowedName(post?.internal_pic, INTERNAL_PICS));
   const [clientPic, setClientPic] = useState<string>(post?.client_pic ?? '');
   const [notes, setNotes] = useState(post?.notes ?? '');
   const [copyDraft, setCopyDraft] = useState(post?.copy_draft ?? '');
@@ -507,13 +508,14 @@ export function PostModal({
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {canEdit && (
                 <Field label={<><Pen size={11} className="inline mr-1" />Designer</>}>
-                  <NameInput
+                  <select
                     id="designer"
                     value={designer}
-                    onChange={setDesigner}
-                    suggestions={recentNames.designer}
-                    placeholder="e.g. Sam Lee"
-                    className={inputCls} />
+                    onChange={e => setDesigner(e.target.value)}
+                    className={inputCls}>
+                    <option value="">Select designer</option>
+                    {DESIGNERS.map(name => <option key={name} value={name}>{name}</option>)}
+                  </select>
                 </Field>
               )}
               {canEdit && (
