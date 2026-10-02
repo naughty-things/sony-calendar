@@ -22,6 +22,20 @@ function normalizeAllowedName(value: string | null | undefined, allowed: readonl
   }) ?? '';
 }
 
+const PUBLISH_TIME_24H = /^(?:[01]\d|2[0-3]):[0-5]\d$/;
+
+function formatPublishTimeEntry(raw: string) {
+  const cleaned = raw.replace(/[^\d:]/g, '').slice(0, 5);
+  if (cleaned.includes(':')) {
+    const [rawHour = '', rawMinute = ''] = cleaned.split(':');
+    const hour = rawHour.slice(0, 2);
+    const minute = rawMinute.slice(0, 2);
+    return `${hour.length === 1 ? `0${hour}` : hour}:${minute}`;
+  }
+  const digits = cleaned.replace(/\D/g, '').slice(0, 4);
+  return digits.length > 2 ? `${digits.slice(0, 2)}:${digits.slice(2)}` : digits;
+}
+
 export type RecentNames = {
   designer: string[];
   copy_writer: string[];
@@ -50,6 +64,7 @@ export function PostModal({
       ?? (stagingPost ? '' : new Date().toISOString().slice(0, 10))
   );
   const [publishTime, setPublishTime] = useState(formatPublishTime(post?.publish_time));
+  const publishTimeValid = !publishTime || PUBLISH_TIME_24H.test(publishTime);
   const [quotaMonth, setQuotaMonth] = useState<string>(post?.quota_month ? post.quota_month.slice(0, 7) : '');
   const [quotaEnabled, setQuotaEnabled] = useState(post?.quota_enabled ?? true);
   const [quotaCount, setQuotaCount] = useState<string>(String(normalizeQuotaCount(post?.quota_count)));
@@ -94,7 +109,7 @@ export function PostModal({
   }, [onClose]);
 
   async function save(draftOverride?: string, keepOpen = false) {
-    if (!canEdit || saveLock.current || deleting) return;
+    if (!canEdit || saveLock.current || deleting || !publishTimeValid) return;
     saveLock.current = true;
     setSaving(true);
     setDraftError(null);
@@ -392,12 +407,17 @@ export function PostModal({
                 <Field label="Publish time">
                   <div className="flex items-center gap-2">
                     <input
-                      type="time"
+                      type="text"
+                      inputMode="numeric"
+                      placeholder="HH:mm"
+                      maxLength={5}
+                      pattern="(?:[01][0-9]|2[0-3]):[0-5][0-9]"
                       value={publishTime}
-                      onChange={e => setPublishTime(e.target.value)}
+                      onChange={e => setPublishTime(formatPublishTimeEntry(e.target.value))}
                       readOnly={!canEdit}
                       disabled={!canEdit}
-                      className={inputCls}
+                      aria-invalid={!publishTimeValid}
+                      className={`${inputCls} ${!publishTimeValid ? 'border-red-500' : ''}`}
                     />
                     <button
                       type="button"
@@ -414,8 +434,11 @@ export function PostModal({
                     </button>
                   </div>
                   <div className="mt-1 text-[10px] font-mono text-text-faint">
-                    Optional — leave blank until the post is ready to schedule.
+                    24-hour HH:mm · Optional — leave blank until the post is ready to schedule.
                   </div>
+                  {!publishTimeValid && (
+                    <div className="mt-1 text-[10px] text-red-600">Enter a valid 24-hour time from 00:00 to 23:59.</div>
+                  )}
                 </Field>
                 <Field label="Quota month">
                   <input
@@ -568,7 +591,7 @@ export function PostModal({
                       aria-label="AI draft"
                       type="button"
                       onClick={runDraft}
-                      disabled={drafting || saving || deleting || !title}
+                      disabled={drafting || saving || deleting || !title || !publishTimeValid}
                       className="text-[10px] uppercase tracking-[0.14em] font-mono flex items-center gap-1.5 text-accent-deep hover:text-ink disabled:text-text-faint font-semibold">
                       {drafting ? <><Loader2 size={11} className="animate-spin" /> drafting</> : <><Sparkles size={11} /> AI draft</>}
                     </button>
@@ -684,7 +707,7 @@ export function PostModal({
             {canEdit && (
               <button
                 onClick={() => save()}
-                disabled={saving || drafting || !title}
+                disabled={saving || drafting || !title || !publishTimeValid}
                 className="px-5 py-1.5 text-[12px] font-semibold bg-btn text-btn-text rounded-md hover:bg-accent hover:text-ink transition flex items-center gap-1.5 disabled:opacity-40 disabled:cursor-not-allowed shadow-soft">
                 {saving ? <><Loader2 size={12} className="animate-spin" /> saving</>
                   : savedFlash ? <><Check size={12} /> saved</>
