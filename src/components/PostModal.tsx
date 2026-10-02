@@ -10,6 +10,16 @@ import { useIsMobile } from '@/lib/useIsMobile';
 import { normalizeMentionedPeople } from '@/lib/emailParticipants';
 
 const ALL_STATUSES: PostStatus[] = STATUS_ORDER;
+const INTERNAL_PICS = ['Sam', 'Cheri', 'Irvin', 'Raymond'] as const;
+
+function normalizeInternalPic(value?: string | null) {
+  const normalized = value?.trim().toLowerCase();
+  if (!normalized) return '';
+  return INTERNAL_PICS.find(name => {
+    const firstName = name.toLowerCase();
+    return normalized === firstName || normalized.startsWith(`${firstName} `);
+  }) ?? '';
+}
 
 export type RecentNames = {
   designer: string[];
@@ -47,7 +57,7 @@ export function PostModal({
   const [status, setStatus] = useState<PostStatus>(post?.status ?? 'in_progress');
   const [designer, setDesigner] = useState<string>(post?.designer ?? '');
   const [copyWriter, setCopyWriter] = useState<string>(post?.copy_writer ?? '');
-  const [internalPic, setInternalPic] = useState<string>(post?.internal_pic ?? '');
+  const [internalPic, setInternalPic] = useState<string>(normalizeInternalPic(post?.internal_pic));
   const [clientPic, setClientPic] = useState<string>(post?.client_pic ?? '');
   const [notes, setNotes] = useState(post?.notes ?? '');
   const [copyDraft, setCopyDraft] = useState(post?.copy_draft ?? '');
@@ -518,15 +528,15 @@ export function PostModal({
                 </Field>
               )}
               <Field label={<><Briefcase size={11} className="inline mr-1" />Internal PIC</>}>
-                <NameInput
+                <select
                   id="internal-pic"
                   value={internalPic}
-                  onChange={canEdit ? setInternalPic : () => {}}
-                  suggestions={recentNames.internal_pic}
-                  readOnly={!canEdit}
+                  onChange={e => setInternalPic(e.target.value)}
                   disabled={!canEdit}
-                  placeholder="e.g. Sam Lee"
-                  className={inputCls} />
+                  className={inputCls}>
+                  <option value="">Select internal PIC</option>
+                  {INTERNAL_PICS.map(name => <option key={name} value={name}>{name}</option>)}
+                </select>
               </Field>
               <Field label={<><Building2 size={11} className="inline mr-1" />Client PIC</>}>
                 <NameInput
