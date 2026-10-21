@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { ParseResultSchema } from '../src/lib/ai/parseEmailSchema.ts';
+import { normalizeDesigner, normalizeInternalPic, resolveInternalPic } from '../src/lib/assignmentOptions.ts';
 
 const post = {
   publish_date: '2026-10-23',
@@ -35,4 +36,20 @@ test('still rejects invalid assignment types and malformed post results', () => 
   }
   assert.equal(ParseResultSchema.safeParse({ ...post, email_summary: null }).success, false);
   assert.equal(ParseResultSchema.safeParse({ posts: [{ ...post, confidence: 2 }], email_summary: null }).success, false);
+});
+
+test('normalizes allowed calendar assignments to their first-name options', () => {
+  assert.equal(normalizeDesigner('Jessica Wong'), 'Jessica');
+  assert.equal(normalizeInternalPic('Irvin Chan'), 'Irvin');
+  assert.equal(normalizeInternalPic('Raymond Kwan <raymond.kwan@naughtythings.com.hk>'), 'Raymond');
+  assert.equal(normalizeInternalPic('Unknown Person'), '');
+});
+
+test('uses an explicit valid PIC before falling back to the email forwarder', () => {
+  const raymond = 'Raymond Kwan <raymond.kwan@naughtythings.com.hk>';
+  assert.equal(resolveInternalPic('Irvin Chan', raymond), 'Irvin');
+  assert.equal(resolveInternalPic(null, 'Cheri Cheung <cheri.cheung@naughtythings.com.hk>'), 'Cheri');
+  assert.equal(resolveInternalPic(undefined, 'sam.lee@naughtythings.com.hk'), 'Sam');
+  assert.equal(resolveInternalPic('Unknown Person', raymond), 'Raymond');
+  assert.equal(resolveInternalPic(null, 'outside@example.com'), null);
 });

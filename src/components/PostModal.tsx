@@ -8,19 +8,9 @@ import { Tape } from './ui/Tape';
 import { NameInput } from './ui/NameInput';
 import { useIsMobile } from '@/lib/useIsMobile';
 import { normalizeMentionedPeople } from '@/lib/emailParticipants';
+import { DESIGNERS, INTERNAL_PICS, normalizeDesigner, normalizeInternalPic } from '@/lib/assignmentOptions';
 
 const ALL_STATUSES: PostStatus[] = STATUS_ORDER;
-const DESIGNERS = ['Leo', 'Jessica'] as const;
-const INTERNAL_PICS = ['Sam', 'Cheri', 'Irvin', 'Raymond'] as const;
-
-function normalizeAllowedName(value: string | null | undefined, allowed: readonly string[]) {
-  const normalized = value?.trim().toLowerCase();
-  if (!normalized) return '';
-  return allowed.find(name => {
-    const firstName = name.toLowerCase();
-    return normalized === firstName || normalized.startsWith(`${firstName} `);
-  }) ?? '';
-}
 
 const PUBLISH_TIME_24H = /^(?:[01]\d|2[0-3]):[0-5]\d$/;
 
@@ -71,9 +61,9 @@ export function PostModal({
   const [targetLaunchDate, setTargetLaunchDate] = useState<string>(post?.target_launch_date ?? '');
   const [requestDate, setRequestDate] = useState<string>(post?.request_date ?? '');
   const [status, setStatus] = useState<PostStatus>(post?.status ?? 'in_progress');
-  const [designer, setDesigner] = useState<string>(normalizeAllowedName(post?.designer, DESIGNERS));
+  const [designer, setDesigner] = useState<string>(normalizeDesigner(post?.designer));
   const [copyWriter, setCopyWriter] = useState<string>(post?.copy_writer ?? '');
-  const [internalPic, setInternalPic] = useState<string>(normalizeAllowedName(post?.internal_pic, INTERNAL_PICS));
+  const [internalPic, setInternalPic] = useState<string>(normalizeInternalPic(post?.internal_pic));
   const [clientPic, setClientPic] = useState<string>(post?.client_pic ?? '');
   const [notes, setNotes] = useState(post?.notes ?? '');
   const [copyDraft, setCopyDraft] = useState(post?.copy_draft ?? '');

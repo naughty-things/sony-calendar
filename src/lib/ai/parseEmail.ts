@@ -38,7 +38,10 @@ For EACH post, extract:
   "Approved, plz schedule"). Keep it concise.
 - designer (free-text name) if mentioned
 - copy_writer (free-text name) if mentioned
-- internal_pic (free-text name) — main internal contact
+- internal_pic — main internal contact. Return exactly Sam, Cheri, Irvin,
+  Raymond, or null. The From header is the internal teammate who forwarded
+  the email; use that teammate unless the brief explicitly assigns another
+  one of these four people.
 - client_pic (free-text name) — main client contact
 - mentioned_internal, mentioned_client: arrays of names mentioned
 - confidence 0-1 for this specific post (your own honest assessment of

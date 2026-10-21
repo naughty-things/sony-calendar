@@ -15,6 +15,7 @@ import { normalizeCategories, normalizePlatforms } from '@/lib/types';
 import { inferEffectiveFrom, normalizeMentionedPeople } from '@/lib/emailParticipants';
 import { isTrustedEnvelopeSender } from '@/lib/inbound/senderPolicy';
 import { routeEmailPost } from '@/lib/inbound/routing';
+import { resolveInternalPic } from '@/lib/assignmentOptions';
 
 const APP_STATE_KEY = 'gmail_last_history_id';
 const LEGACY_APP_STATE_KEYS = ['gmail_…_history_id', 'gmail_…y_id'] as const;
@@ -551,7 +552,7 @@ export async function pollGmail(): Promise<PollResult> {
               status: postStatus,
               designer: item.designer || null,
               copy_writer: item.copy_writer || null,
-              internal_pic: item.internal_pic || null,
+              internal_pic: resolveInternalPic(item.internal_pic, from),
               client_pic: item.client_pic || null,
               notes: item.notes,
               source: 'email',
