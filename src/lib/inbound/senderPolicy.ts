@@ -1,11 +1,13 @@
-const DEFAULT_ALLOWED_DOMAINS = ['naughtythings.com.hk'];
+const DEFAULT_ALLOWED_DOMAINS = ['naughtythings.com.hk', 'sony.com'];
 
 export function allowedInboundDomains(value = process.env.INBOUND_ALLOWED_DOMAINS): string[] {
   const configured = value
     ?.split(',')
     .map(domain => domain.trim().toLowerCase().replace(/^@/, ''))
     .filter(Boolean);
-  return configured && configured.length > 0 ? configured : DEFAULT_ALLOWED_DOMAINS;
+  // Keep the two supported organizations enabled even on deployments with
+  // the original internal-only environment value. Configuration adds domains.
+  return [...new Set([...DEFAULT_ALLOWED_DOMAINS, ...(configured || [])])];
 }
 
 export function isTrustedEnvelopeSender(

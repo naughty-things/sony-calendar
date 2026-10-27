@@ -413,8 +413,8 @@ export async function pollGmail(): Promise<PollResult> {
         const subject = header(msg.payload?.headers, 'Subject');
         const body = bodyFromPayload(msg.payload);
 
-        // Only internal forwarders may spend model quota or create calendar
-        // records. The original sender inside a forwarded body is still
+        // Only supported organization senders may spend model quota or create
+        // calendar records. The original sender inside a forwarded body is still
         // captured by inferEffectiveFrom(), but cannot authorize ingestion.
         if (!isTrustedEnvelopeSender(from)) {
           console.warn(`[inbound] rejected untrusted envelope sender for gmail_id=${id}`);

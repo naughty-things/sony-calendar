@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { safeReturnPath } from '../src/lib/auth/redirect.ts';
 import { authorizePollRequest } from '../src/lib/security/pollAuth.ts';
 import { consumeRateLimit } from '../src/lib/security/rateLimit.ts';
-import { isTrustedEnvelopeSender } from '../src/lib/inbound/senderPolicy.ts';
+import { allowedInboundDomains, isTrustedEnvelopeSender } from '../src/lib/inbound/senderPolicy.ts';
 import { validateDraftRequest } from '../src/lib/ai/draftRequest.ts';
 import { routeEmailPost } from '../src/lib/inbound/routing.ts';
 
@@ -49,10 +49,23 @@ test('rate limit rejects requests after the fixed-window allowance', () => {
   assert.equal(consumeRateLimit(key, 2, 60_000, 61_001).allowed, true);
 });
 
-test('inbound sender policy accepts the internal forwarding domain only', () => {
+test('inbound sender policy accepts internal and direct Sony emails', () => {
   assert.equal(isTrustedEnvelopeSender('Sam <sam@naughtythings.com.hk>'), true);
   assert.equal(isTrustedEnvelopeSender('Sam <sam@sub.naughtythings.com.hk>'), true);
+  assert.equal(isTrustedEnvelopeSender('Barnard.Luk@sony.com'), true);
+  assert.equal(isTrustedEnvelopeSender('Barnard <Barnard.Luk@SONY.COM>'), true);
+  assert.equal(isTrustedEnvelopeSender('Sender <sender@ap.sony.com>'), true);
   assert.equal(isTrustedEnvelopeSender('attacker@example.com'), false);
+  assert.equal(isTrustedEnvelopeSender('Sony <attacker@sony.com.evil.example>'), false);
+  assert.equal(isTrustedEnvelopeSender('attacker@notsony.com'), false);
+  assert.equal(isTrustedEnvelopeSender('attacker@sony-com.example'), false);
+});
+
+test('legacy inbound configuration keeps Sony enabled and permits extra domains', () => {
+  assert.deepEqual(allowedInboundDomains('naughtythings.com.hk'), ['naughtythings.com.hk', 'sony.com']);
+  assert.deepEqual(allowedInboundDomains(' @Partner.example, SONY.COM '), ['naughtythings.com.hk', 'sony.com', 'partner.example']);
+  assert.equal(isTrustedEnvelopeSender('Barnard.Luk@sony.com', allowedInboundDomains('naughtythings.com.hk')), true);
+  assert.equal(isTrustedEnvelopeSender('sender@partner.example', allowedInboundDomains('partner.example')), true);
 });
 
 test('draft request validation enforces field types and bounds', () => {

@@ -42,8 +42,9 @@ agent creates draft posts for human review.
    - `MINIMAX_API_KEY` — MiniMax API key for the Anthropic-compatible endpoint
    - `POLL_SECRET` — required in production to lock down the poll endpoints;
      send it in an authorization header, never a query string
-   - `INBOUND_ALLOWED_DOMAINS` — comma-separated domains allowed to forward
-     messages for AI ingestion (defaults to `naughtythings.com.hk`)
+   - `INBOUND_ALLOWED_DOMAINS` — comma-separated additional sender domains for
+     AI ingestion. `naughtythings.com.hk` and `sony.com` are always supported,
+     including direct Sony emails with the agent in To or CC.
    - (Optional) `COPY_TEMPLATE` — the template Sam will provide
      later for AI copy generation
 
@@ -57,7 +58,7 @@ agent creates draft posts for human review.
 
 | Step | Who | What |
 |------|-----|------|
-| 1 | Internal team | Sends (or forwards) email to `agent@naughtythings.com.hk` |
+| 1 | Internal team / Sony | Sends (or forwards) email to `agent@naughtythings.com.hk`, including CC |
 | 2 | App | Polls the inbox every 60s, picks up new messages |
 | 3 | AI agent | Parses date, platform, title, people mentioned |
 | 4 | AI agent | Places posts with a concrete target launch date on the calendar; undated posts remain in `staging` |
