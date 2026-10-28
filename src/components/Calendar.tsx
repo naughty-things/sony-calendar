@@ -818,7 +818,7 @@ function MonthQuota({
           </span>
         </div>
         <div className="flex items-baseline gap-1">
-          <span className="numeral font-display text-[22px] sm:text-[26px] leading-none font-semibold text-ink">
+          <span className={`numeral font-display text-[22px] sm:text-[26px] leading-none font-semibold ${count > target ? 'text-red-600 dark:text-red-400' : 'text-ink'}`}>
             {count}
           </span>
           <span className="font-mono text-[11px] sm:text-[12px] text-text-faint">
