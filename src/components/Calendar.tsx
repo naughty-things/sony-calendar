@@ -7,7 +7,7 @@ import { getBrowserClient } from '@/lib/supabase/client';
 import { PostWithPeople, PostStatus, Person, STATUS_COLOR, STATUS_LABEL, STATUS_ORDER, STATUS_DOT, PLATFORM_GLYPH, CATEGORY_GLYPH, CATEGORIES, CATEGORY_LABEL, comparePostsByPublishTime, formatPublishTime, postCategories, normalizePlatforms, normalizeQuotaCount } from '@/lib/types';
 import { PlatformChip } from './ui/PlatformChip';
 import { QuotaBadge } from './ui/QuotaBadge';
-import { ChevronLeft, ChevronRight, Plus, Search, Mail, Loader2, Sun, Moon, ChevronDown } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Plus, Search, Mail, Loader2, Sun, Moon, ChevronDown, X } from 'lucide-react';
 import { PostModal } from './PostModal';
 import { WeekKanban } from './WeekKanban';
 import { Tape } from './ui/Tape';
@@ -147,6 +147,30 @@ export function Calendar() {
     }
   }, [supabase, load, isAdmin]);
 
+  const handleCloseStaging = useCallback(async (post: PostWithPeople, closed: boolean) => {
+    if (!isAdmin || post.status !== 'staging' || post.publish_date) {
+      throw new Error('Only undated staging items can be closed.');
+    }
+    const { data, error } = await supabase
+      .from('posts')
+      .update({
+        source_meta: { ...post.source_meta, staging_closed_at: closed ? new Date().toISOString() : null }
+      })
+      .eq('id', post.id)
+      .eq('status', 'staging')
+      .is('publish_date', null)
+      .eq('updated_at', post.updated_at)
+      .select('*')
+      .maybeSingle();
+    if (error) throw new Error(error.message);
+    if (!data) {
+      await load(true);
+      throw new Error('This item has changed. Please try again.');
+    }
+    setPosts(prev => prev.map(p => p.id === post.id ? data as PostWithPeople : p));
+    return data as PostWithPeople;
+  }, [supabase, load, isAdmin]);
+
   /* ─── last ingest timestamp ─── */
   useEffect(() => {
     if (!isAdmin) {
@@ -282,7 +306,7 @@ export function Calendar() {
   );
 
   const stagingQueue = useMemo(
-    () => posts.filter(p => p.status === 'staging')
+    () => posts.filter(p => p.status === 'staging' && (p.publish_date || !p.source_meta?.staging_closed_at))
       .sort((a, b) => (b.updated_at || '').localeCompare(a.updated_at || '')),
     [posts]
   );
@@ -690,6 +714,7 @@ export function Calendar() {
           reviewItems={reviewQueue}
           stagingItems={stagingQueue}
           people={people}
+          onCloseStaging={handleCloseStaging}
           onClose={() => setShowReviewInbox(false)}
           onOpen={(p) => { openEdit(p); setShowReviewInbox(false); }} />
       )}
@@ -1171,17 +1196,35 @@ function MobileDayRow({
    Review inbox (slide-over) with Review + Staging tabs
    ───────────────────────────────────────── */
 function ReviewInbox({
-  reviewItems, stagingItems, people, onClose, onOpen
+  reviewItems, stagingItems, people, onClose, onOpen, onCloseStaging
 }: {
   reviewItems: PostWithPeople[];
   stagingItems: PostWithPeople[];
   people: Person[];
   onClose: () => void;
   onOpen: (p: PostWithPeople) => void;
+  onCloseStaging: (p: PostWithPeople, closed: boolean) => Promise<PostWithPeople>;
 }) {
   const [tab, setTab] = useState<'review' | 'staging'>(reviewItems.length > 0 ? 'review' : 'staging');
+  const [closingId, setClosingId] = useState<string | null>(null);
+  const [lastClosed, setLastClosed] = useState<PostWithPeople | null>(null);
+  const [closeError, setCloseError] = useState<string | null>(null);
   const items = tab === 'review' ? reviewItems : stagingItems;
   const total = reviewItems.length + stagingItems.length;
+
+  async function closeItem(post: PostWithPeople, closed: boolean) {
+    if (closingId) return;
+    setClosingId(post.id);
+    setCloseError(null);
+    try {
+      const saved = await onCloseStaging(post, closed);
+      setLastClosed(closed ? saved : null);
+    } catch (error) {
+      setCloseError(error instanceof Error ? error.message : 'Could not update this item.');
+    } finally {
+      setClosingId(null);
+    }
+  }
 
   return (
     <>
@@ -1223,6 +1266,13 @@ function ReviewInbox({
           </div>
         </div>
 
+        {closeError && <div role="alert" className="px-6 py-3 text-sm text-red-600 dark:text-red-400 border-b border-edge">{closeError}</div>}
+        {lastClosed && (
+          <div role="status" className="px-6 py-3 flex items-center gap-3 text-xs bg-surface-muted border-b border-edge">
+            <span className="flex-1 min-w-0 text-text-soft">Closed: {lastClosed.title}</span>
+            <button type="button" disabled={!!closingId} onClick={() => void closeItem(lastClosed, false)} className="font-semibold text-ink underline shrink-0 disabled:opacity-50">Undo</button>
+          </div>
+        )}
         <div className="flex-1 overflow-y-auto">
           {items.length === 0 && (
             <div className="px-6 py-16 text-center">
@@ -1234,7 +1284,7 @@ function ReviewInbox({
               ) : (
                 <>
                   <div className="font-display italic text-3xl text-text-faint">Staging is clear</div>
-                  <div className="text-sm text-text-mute mt-2">Every forwarded email has a launch date. PIC doesn't need to assign anything.</div>
+                  <div className="text-sm text-text-mute mt-2">No open staging items need a launch date.</div>
                 </>
               )}
             </div>
@@ -1243,11 +1293,12 @@ function ReviewInbox({
             {items.map(p => {
               const peopleLine = [p.designer, p.copy_writer, p.internal_pic, p.client_pic].filter(Boolean).join(' · ');
               const isStaging = p.status === 'staging';
+              const canClose = isStaging && !p.publish_date;
               return (
-                <li key={p.id} className="border-b border-edge last:border-b-0">
+                <li key={p.id} className="relative border-b border-edge last:border-b-0">
                   <button
                     onClick={() => onOpen(p)}
-                    className="w-full text-left px-4 sm:px-6 py-4 hover:bg-surface-muted transition block">
+                    className={`w-full text-left px-4 sm:px-6 py-4 hover:bg-surface-muted transition block ${canClose ? 'pr-14 sm:pr-16' : ''}`}>
                     <div className="flex items-center gap-2 mb-1.5 flex-wrap">
                       {isStaging ? (
                         <span className="font-mono text-[9px] uppercase tracking-[0.14em] px-2 py-0.5 rounded-full bg-plum text-white">
@@ -1301,6 +1352,17 @@ function ReviewInbox({
                       </div>
                     )}
                   </button>
+                  {canClose && (
+                    <button
+                      type="button"
+                      aria-label={`Close staging item: ${p.title}`}
+                      title="Close staging item"
+                      disabled={!!closingId}
+                      onClick={() => void closeItem(p, true)}
+                      className="absolute right-3 sm:right-4 top-3 w-9 h-9 rounded-md flex items-center justify-center text-text-mute hover:text-ink hover:bg-surface-muted transition disabled:opacity-50">
+                      {closingId === p.id ? <Loader2 size={16} className="animate-spin" /> : <X size={16} />}
+                    </button>
+                  )}
                 </li>
               );
             })}
