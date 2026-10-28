@@ -318,10 +318,12 @@ export function Calendar() {
   }, [datedPosts]);
 
   const counts = useMemo(() => {
-    const c: Record<string, number> = { all: quotaScopedPosts.length };
-    STATUS_ORDER.forEach(s => { c[s] = quotaScopedPosts.filter(p => p.status === s).length; });
+    const monthKey = format(cursor, 'yyyy-MM');
+    const monthPosts = quotaScopedPosts.filter(p => p.publish_date?.slice(0, 7) === monthKey);
+    const c: Record<string, number> = { all: monthPosts.length };
+    STATUS_ORDER.forEach(s => { c[s] = monthPosts.filter(p => p.status === s).length; });
     return c;
-  }, [quotaScopedPosts]);
+  }, [quotaScopedPosts, cursor]);
 
   /** Posts scheduled for the currently-viewed month (used for the month summary card) */
   const monthStats = useMemo(() => {
