@@ -72,6 +72,13 @@ agent creates draft posts for human review.
 Viewers can follow every task status, but internal notes, email contents, and
 draft copy remain private.
 
+Replies and re-forwards are reconciled with existing posts in the same email
+thread (or matching subject). Explicit date and brief changes update those
+records; quoted historical rows do not create new posts. Only an explicitly
+requested additional deliverable creates a new record. Copy drafts, assignments,
+quota settings, and workflow status are preserved. Uncertain matches are logged
+for review rather than inserted as duplicates.
+
 ## Views
 
 - **Month grid** — overview, click a day to create, click a chip to edit

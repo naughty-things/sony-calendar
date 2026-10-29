@@ -16,6 +16,7 @@ import { inferEffectiveFrom, normalizeMentionedPeople } from '@/lib/emailPartici
 import { isTrustedEnvelopeSender } from '@/lib/inbound/senderPolicy';
 import { routeEmailPost } from '@/lib/inbound/routing';
 import { resolveInternalPic } from '@/lib/assignmentOptions';
+import { buildThreadUpdate, matchThreadPost, normalizeThreadSubject, type ThreadPost } from './reconcile';
 
 const APP_STATE_KEY = 'gmail_last_history_id';
 const LEGACY_APP_STATE_KEYS = ['gmail_…_history_id', 'gmail_…y_id'] as const;
@@ -27,7 +28,31 @@ export type PollResult = {
   rejected: number;
   errors: number;
   skipped: number;
+  updated: number;
 };
+
+async function loadThreadPosts(admin: ReturnType<typeof createAdminClient>, threadId: string | null | undefined, subject: string, clientId: string): Promise<ThreadPost[]> {
+  const key = normalizeThreadSubject(subject);
+  // Gmail groups replies by thread ID. Subject matching also catches internal
+  // re-forwards, which Gmail can place in a separate thread.
+  const escaped = key.replace(/[\\%_]/g, '\\$&');
+  const [threadRows, subjectRows] = await Promise.all([
+    threadId ? admin.from('email_ingests').select('id, subject, raw_payload').eq('raw_payload->>threadId', threadId).limit(200) : Promise.resolve({ data: [], error: null }),
+    key ? admin.from('email_ingests').select('id, subject, raw_payload').ilike('subject', `%${escaped}`).limit(200) : Promise.resolve({ data: [], error: null })
+  ]);
+  if (threadRows.error || subjectRows.error) throw new Error('Could not load email thread history');
+  if (threadRows.data?.length === 200 || subjectRows.data?.length === 200) throw new Error('Email thread context exceeds safe limit; review required');
+  const ids = [...new Set([
+    ...(threadRows.data || []),
+    ...(subjectRows.data || []).filter(row => normalizeThreadSubject(row.subject || '') === key)
+  ].map(row => row.id))];
+  if (!ids.length) return [];
+  const { data, error } = await admin.from('posts').select('id,title,publish_date,notes,status,updated_at,source_meta')
+    .eq('client_id', clientId).in('source_meta->>ingest_id', ids)
+    .is('source_meta->>duplicate_of', null).order('created_at').limit(200);
+  if (error || data?.length === 200) throw new Error('Could not load complete thread posts');
+  return (data || []) as ThreadPost[];
+}
 
 /**
  * Process-level mutex: only one pollGmail() runs at a time across the whole
@@ -299,11 +324,11 @@ export async function pollGmail(): Promise<PollResult> {
   // Concurrency guard: if another poll is in flight, skip this one. This
   // protects against self-pinger / cron / route handler all firing at once.
   if (globalThis.__sonyPollInFlight) {
-    return { scanned: 0, ingested: 0, rejected: 0, errors: 0, skipped: 1 };
+    return { scanned: 0, ingested: 0, rejected: 0, errors: 0, skipped: 1, updated: 0 };
   }
 
   const run = (async () => {
-    const result: PollResult = { scanned: 0, ingested: 0, rejected: 0, errors: 0, skipped: 0 };
+    const result: PollResult = { scanned: 0, ingested: 0, rejected: 0, errors: 0, skipped: 0, updated: 0 };
 
     const auth = getAuth();
     const gmail = google.gmail({ version: 'v1', auth });
@@ -391,7 +416,9 @@ export async function pollGmail(): Promise<PollResult> {
     }
     if (latestHistoryId) newestHistoryId = latestHistoryId;
 
-    for (const id of ids) {
+    // Gmail message IDs sort chronologically; process the brief before replies
+    // when a resync returns newest-first inbox results.
+    for (const id of ids.sort((a, b) => a.length - b.length || a.localeCompare(b))) {
       result.scanned++;
       try {
         // Dedup: skip if we've already logged this Gmail message id.
@@ -450,8 +477,6 @@ export async function pollGmail(): Promise<PollResult> {
 
       // 2. parse with AI
       try {
-        const ai = await parseEmail({ from, subject, body });
-
         // 3. resolve client (v1: only SONY)
         const { data: clientRow } = await admin
           .from('clients')
@@ -466,6 +491,12 @@ export async function pollGmail(): Promise<PollResult> {
           result.errors++;
           continue;
         }
+
+        const threadPosts = await loadThreadPosts(admin, msg.threadId, subject, clientRow.id);
+        const ai = await parseEmail({ from, subject, body, existingPosts: threadPosts });
+        // Validate all matches before writing anything. Unknown IDs must never
+        // fall back to inserting a new record.
+        const matches = ai.posts.map(item => matchThreadPost(item, threadPosts));
 
         // 4. One email can describe multiple posts (planning table with
         //    one row per post, numbered briefs, etc.). The AI returns an
@@ -493,6 +524,25 @@ export async function pollGmail(): Promise<PollResult> {
 
         for (let i = 0; i < ai.posts.length; i++) {
           const item = ai.posts[i];
+          const existingPost = matches[i];
+          if (existingPost) {
+            const patch = buildThreadUpdate(existingPost, item, id, subject);
+            if (patch) {
+              const { data: updated, error } = await admin.from('posts').update(patch)
+                .eq('id', existingPost.id).eq('client_id', clientRow.id)
+                .eq('updated_at', existingPost.updated_at).select('id').maybeSingle();
+              if (error || !updated) {
+                lastError = error?.message || 'Post changed during email update; review required';
+                continue;
+              }
+              result.updated++;
+            } else {
+              result.skipped++;
+            }
+            createdPostIds.push(existingPost.id);
+            if (!primaryPostId) primaryPostId = existingPost.id;
+            continue;
+          }
           const normalizedMentions = normalizeMentionedPeople(
             {
               mentioned_internal: item.mentioned_internal,
@@ -562,6 +612,7 @@ export async function pollGmail(): Promise<PollResult> {
                 effective_from: effectiveFrom,
                 subject,
                 gmail_id: id,
+                thread_id: msg.threadId,
                 row_index: i,
                 total_rows: ai.posts.length,
                 mentioned_internal: normalizedMentions.mentioned_internal,
@@ -596,14 +647,14 @@ export async function pollGmail(): Promise<PollResult> {
         // Tag the ingest
         // Dated rows are placed on the calendar. Undated rows stay in staging
         // until staff assign a concrete launch date.
-        const status = createdPostIds.length === 0
+        const status = lastError || createdPostIds.length === 0
           ? 'error'
           : stagingPostCount === 0 ? 'created' : 'rejected';
-        const errMsg = createdPostIds.length === 0
+        const errMsg = lastError || (createdPostIds.length === 0
           ? (lastError || `Parsed ${ai.posts.length} post(s) but none inserted`)
           : stagingPostCount > 0
           ? `Parsed ${ai.posts.length} post(s); ${stagingPostCount} missing a concrete launch date (in staging)`
-          : null;
+          : null);
 
         await admin
           .from('email_ingests')

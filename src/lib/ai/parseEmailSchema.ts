@@ -1,6 +1,9 @@
 import { z } from 'zod';
 
 export const PostSchema = z.object({
+  existing_post_id: z.string().uuid().nullable().default(null),
+  is_new_post: z.boolean().default(false),
+  changed_fields: z.array(z.enum(['publish_date', 'target_launch_date', 'request_date', 'notes'])).default([]),
   publish_date: z.string().nullable(),          // YYYY-MM-DD
   // The "Target Launch Date" column from the planning table, if present.
   // This is the column Jennifer / Sony fills in when she knows when the
