@@ -378,6 +378,11 @@ export async function parseEmail(input: {
       body;
   }
 
+  // Keep audit metadata and recovery snapshots out of the model's identity
+  // list; only the top-level canonical IDs are valid reconciliation targets.
+  const existingContext = (input.existingPosts || []).map(({ id, title, publish_date, notes, status }) => ({
+    id, title, publish_date, notes, status
+  }));
   const msg = await minimax.messages.create({
     model: MINIMAX_CHAT_MODEL,
     max_tokens: 6144, // increased from 4096: parse_warnings can be verbose on table emails
@@ -385,7 +390,7 @@ export async function parseEmail(input: {
     messages: [
       {
         role: 'user',
-        content: `EXISTING THREAD POSTS (match IDs; do not duplicate):\n${JSON.stringify(input.existingPosts || [])}\n\nFrom: ${input.from}\nSubject: ${input.subject}\n\n${body.slice(0, 14000)}`
+        content: `EXISTING THREAD POSTS (match IDs; do not duplicate):\n${JSON.stringify(existingContext)}\n\nFrom: ${input.from}\nSubject: ${input.subject}\n\n${body.slice(0, 14000)}`
       }
     ]
   });
