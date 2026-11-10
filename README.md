@@ -79,6 +79,15 @@ requested additional deliverable creates a new record. Copy drafts, assignments,
 quota settings, and workflow status are preserved. Uncertain matches are logged
 for review rather than inserted as duplicates.
 
+## Monthly quota
+
+Quota counts use each post's current publish month. Rescheduling a post moves
+its quota to the new month without changing the number of quota slots. Undated
+posts and posts with “Include in monthly quota” switched off do not count.
+Email received dates and target launch dates do not determine the quota month.
+The legacy `quota_month` column stays null, enforced by a database trigger for
+compatibility with older clients.
+
 ## Views
 
 - **Month grid** — overview, click a day to create, click a chip to edit

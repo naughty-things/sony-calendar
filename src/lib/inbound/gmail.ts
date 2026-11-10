@@ -311,15 +311,6 @@ function stripHtml(html: string): string {
     .trim();
 }
 
-function firstDayOfMonth(value: string | number | Date | null | undefined): string | null {
-  if (value == null || value === '') return null;
-  const date = value instanceof Date ? value : new Date(value);
-  if (Number.isNaN(date.getTime())) return null;
-  return new Date(Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), 1))
-    .toISOString()
-    .slice(0, 10);
-}
-
 export async function pollGmail(): Promise<PollResult> {
   // Concurrency guard: if another poll is in flight, skip this one. This
   // protects against self-pinger / cron / route handler all firing at once.
@@ -450,9 +441,6 @@ export async function pollGmail(): Promise<PollResult> {
         }
 
         const effectiveFrom = inferEffectiveFrom(from, body);
-        const quotaMonth = firstDayOfMonth(
-          msg.internalDate ? Number(msg.internalDate) : null
-        );
 
         // 1. log raw
         const { data: ingest, error: logErr } = await admin
@@ -592,7 +580,7 @@ export async function pollGmail(): Promise<PollResult> {
               platform: normalizePlatforms(item.platform, ['IG']),
               category: normalizedCategory.length > 0 ? normalizedCategory : null,
               publish_date: route.publishDate,
-              quota_month: quotaMonth,
+              quota_month: null, // Quota follows publish_date, including after rescheduling.
               // The two date columns from the planning table (Request Date
               // = copy delivery deadline; Target Launch Date = column the
               // client wrote in). Useful even when publish_date is null

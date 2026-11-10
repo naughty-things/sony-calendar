@@ -112,8 +112,7 @@ export type Post = {
   // Optional time-only scheduling value. Kept separate from publish_date
   // because posts often receive a date before their final posting time.
   publish_time?: string | null;
-  // Optional manual month override for quota / month-summary counting.
-  // Stored as the first day of the chosen month (YYYY-MM-01).
+  // Legacy column kept for older clients; always null. Quota follows publish_date.
   quota_month?: string | null;
   // Set to false for work that should appear on the calendar but never be
   // included in any monthly quota total.
@@ -147,6 +146,11 @@ export type Post = {
 export type PostWithPeople = Post; // legacy alias — fields are now inline strings
 
 export const DEFAULT_QUOTA_COUNT = 1;
+
+/** Undated and excluded posts do not consume a monthly quota. */
+export function postQuotaMonth(post: Pick<Post, 'publish_date' | 'quota_enabled'>): string {
+  return post.quota_enabled === false ? '' : post.publish_date?.slice(0, 7) || '';
+}
 
 /** Normalize the per-post quota weight while keeping it valid for Postgres integer storage. */
 export function normalizeQuotaCount(value: unknown): number {

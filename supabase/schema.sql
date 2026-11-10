@@ -39,7 +39,7 @@ create table if not exists posts (
   category text[],             -- PA / TV / MO / DI / EC / INZONE / OTHER (SONY product line)
   publish_date date,           -- nullable while a post sits in staging
   publish_time time without time zone, -- optional schedule time, independent of publish_date
-  quota_month date,            -- optional manual month override for quota / summary counting
+  quota_month date,            -- legacy column; kept null so quota follows publish_date
   quota_enabled boolean not null default true, -- false excludes separate work from every quota month
   quota_count integer not null default 1 check (quota_count >= 1), -- quota slots consumed by this post
   target_launch_date date,
@@ -68,6 +68,27 @@ create index on posts(designer) where designer is not null;
 create index on posts(copy_writer) where copy_writer is not null;
 create index on posts(internal_pic) where internal_pic is not null;
 create index on posts(client_pic) where client_pic is not null;
+
+-- Quota always follows the current publish_date. Retain the legacy column
+-- as null so older deployed clients also fall back to the publish month.
+-- Never rewrite publish_date, target_launch_date, status, or quota weights.
+create or replace function public.use_publish_month_for_quota()
+returns trigger
+language plpgsql
+security invoker
+set search_path = pg_catalog
+as $$
+begin
+  new.quota_month := null;
+  return new;
+end;
+$$;
+
+revoke all on function public.use_publish_month_for_quota() from public;
+
+create trigger posts_use_publish_month_for_quota
+before insert or update of quota_month, publish_date on public.posts
+for each row execute function public.use_publish_month_for_quota();
 
 -- helper: app-wide moddatetime, kept outside the exposed public schema
 create schema if not exists extensions;

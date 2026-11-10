@@ -4,7 +4,7 @@ import { useEffect, useMemo, useState, useCallback, useRef } from 'react';
 import { addDays, addMonths, eachDayOfInterval, endOfMonth, endOfWeek, format, isSameDay, isSameMonth, startOfMonth, startOfWeek, subMonths } from 'date-fns';
 import { Holiday, getHolidaysInRange } from '@/lib/holidays';
 import { getBrowserClient } from '@/lib/supabase/client';
-import { PostWithPeople, PostStatus, Person, STATUS_COLOR, STATUS_LABEL, STATUS_ORDER, STATUS_DOT, PLATFORM_GLYPH, CATEGORY_GLYPH, CATEGORIES, CATEGORY_LABEL, comparePostsByPublishTime, formatPublishTime, postCategories, normalizePlatforms, normalizeQuotaCount } from '@/lib/types';
+import { PostWithPeople, PostStatus, Person, STATUS_COLOR, STATUS_LABEL, STATUS_ORDER, STATUS_DOT, PLATFORM_GLYPH, CATEGORY_GLYPH, CATEGORIES, CATEGORY_LABEL, comparePostsByPublishTime, formatPublishTime, postCategories, normalizePlatforms, normalizeQuotaCount, postQuotaMonth } from '@/lib/types';
 import { PlatformChip } from './ui/PlatformChip';
 import { QuotaBadge } from './ui/QuotaBadge';
 import { ChevronLeft, ChevronRight, Plus, Search, Mail, Loader2, Sun, Moon, ChevronDown, X } from 'lucide-react';
@@ -235,12 +235,7 @@ export function Calendar() {
     return getHolidaysInRange(start, end);
   }, [monthDays, weekDays]);
 
-  const quotaMonthKey = useCallback((p: Pick<PostWithPeople, 'quota_enabled' | 'quota_month' | 'publish_date'>) => {
-    if (p.quota_enabled === false) return '';
-    const monthSource = p.quota_month || p.publish_date;
-    if (!monthSource) return '';
-    return monthSource.slice(0, 7);
-  }, []);
+  const quotaMonthKey = postQuotaMonth;
 
   const matchesQuotaMonth = useCallback((p: PostWithPeople) => {
     return quotaMonthKey(p) === format(cursor, 'yyyy-MM');
